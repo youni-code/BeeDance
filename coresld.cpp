@@ -17,7 +17,11 @@ double CoreSLD::calculate()
 
 bool CoreSLD::isMultiFormula()
 {
-    QStringList a;
+    long count(0);
+
+    for(auto it = str_formula.cbegin(); it != str_formula.cend(); it++) if((*it) == ']') count++;
+
+    if(count > 2) return true;
     return false;
 }
 
