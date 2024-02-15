@@ -125,7 +125,7 @@
 
         core->setFormula(formula_TextEdit->toPlainText());
         core->setDensity(density_LineEdit->value());
-        double result = core->getResult();
+        double result = core->get_sld();
         result_LineEdit->setText(QString::number(result));
         main_statusbar->showMessage("Complited", 5000);
 

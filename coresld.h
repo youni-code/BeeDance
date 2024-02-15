@@ -14,14 +14,15 @@ private:
     DataTableSLD *dt_sld;
     QString str_formula;
 
-    double calculate();
+    double calculate_sld();
     bool isMultiFormula();
+
 
 public:
     CoreSLD();
     void setFormula(QString);
     void setDensity(double density) { density_ = density; };
-    double getResult();
+    double get_sld();
 };
 
 #endif // CORESLD_H

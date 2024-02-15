@@ -1,6 +1,6 @@
 #include "coresld.h"
 
-double CoreSLD::calculate()
+double CoreSLD::calculate_sld()
 {
     double a_formula(0);
     double b_formula(0);
@@ -21,7 +21,7 @@ bool CoreSLD::isMultiFormula()
 
     for(auto it = str_formula.cbegin(); it != str_formula.cend(); it++) if((*it) == ']') count++;
 
-    if(count > 2) return true;
+    if(count > 1) return true;
     return false;
 }
 
@@ -39,7 +39,7 @@ void CoreSLD::setFormula(QString formula)
     chem_formula->setFormula(formula);
 }
 
-double CoreSLD::getResult()
+double CoreSLD::get_sld()
 {
-    return calculate();
+    return calculate_sld();
 }
