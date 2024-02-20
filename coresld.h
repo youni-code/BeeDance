@@ -14,7 +14,11 @@ private:
     DataTableSLD *dt_sld;
     QString str_formula;
 
+
+    double full_mass(QString const);
+
     double calculate_sld();
+    double calculate_multisld();
     bool isMultiFormula();
 
 

@@ -1,5 +1,19 @@
 #include "coresld.h"
 
+double CoreSLD::full_mass(QString const line)
+{
+    auto temp_chem_formula = new ChemicalFormula("");
+    temp_chem_formula->setFormula(line);
+    auto vec_elem = temp_chem_formula->getElements();
+
+    double mass(0.0);
+
+    for(auto it(vec_elem.cbegin()); it != vec_elem.cend(); it++)
+        mass += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).getMass();
+
+    return mass;
+}
+
 double CoreSLD::calculate_sld()
 {
     double a_formula(0);
@@ -13,6 +27,21 @@ double CoreSLD::calculate_sld()
 
     }
     return (density_ * b_formula) / (a_formula * 1.660153907);
+}
+
+double CoreSLD::calculate_multisld()
+{
+    // QString temp_strformula = str_formula;
+
+    // QStringList strformuls = temp_strformula.split("]");
+
+    // for(auto it(strformuls.cbegin()); it != strformuls.cend(); it++)
+    // {
+    //     QString str_str = it->section('[', 0, 0);
+    //     QString str_num = it->section('[', 1, 1);
+    //     double mass = full_mass(str_str);
+    // }
+
 }
 
 bool CoreSLD::isMultiFormula()
