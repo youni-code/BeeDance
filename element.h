@@ -11,60 +11,44 @@ class Element
     double conc;
     double mass;
     long atomic_number;
-    std::complex<double> coh_b;
-    std::complex<double> inc_b;
+
+    std::complex<double> bc;
+    std::complex<double> bi;
+    double sigma_a;
+
+    std::complex<double> bc_error;
+    std::complex<double> bi_error;
+
     double coh_xs;
     double inc_xs;
     double scatt_xs;
-    double abs_xs;
-
-
-    bool is_isotope; // является ли элемент изотопом или суммарный химический элемент
-
-    bool is_conc;
-    bool is_atomic_number;
-    bool is_coh_b;
-    bool is_coh_xs;
-    bool is_inc_b;
-    bool is_inc_xs;
-    bool is_scatt_xs;
-    bool is_abs_xs;
-    bool is_mass;
-
-    void initialize();
 
 public:
 
-    bool setMass(double);
-    bool setConc(double);
-    bool setAtomicNumber(unsigned long);
-    bool setCohb(std::complex<double>);
-    bool setIncb(std::complex<double>);
-    bool setCohxs(double);
-    bool setIncxs(double);
-    bool setScattxs(double);
-    bool setAbsxs(double);
+    void set_mass(double value) 					{ mass = value; }
+    void set_concentrate(double co) 				{ conc = co; }
+    void set_atomicNumber(unsigned long atom) 		{ atomic_number = atom; }
+    void set_bc(std::complex<double> value) 		{ bc = value; }
+    void set_bi(std::complex<double> value) 		{ bi = value; }
+    void set_sigmaa(double value) 					{ sigma_a = value; }
 
-    QString getSymbol() const;
-    double getMass() const;
-    double getConc() const;
-    unsigned long getCountNucleons() const;
-    unsigned long getAtomicNumber() const;
-    std::complex<double> getCohb() const;
-    std::complex<double> getIncb() const;
-    double getCohxs() const;
-    double getScatxs() const;
-    double getAbsxs() const;
 
-    bool isConc() const;
-    bool isIsotope() const;
-    bool isCohb() const;
-    bool isIncb() const;
-    bool isCohxs() const;
-    bool isInxs() const;
-    bool isScattxs() const;
-    bool isAbsxs() const;
-    bool isMass() const;
+    void setCohxs(double value) { coh_xs = value; }
+    void setIncxs(double val) { inc_xs = val; }
+    void setScattxs(double value) { scatt_xs = value; }
+
+
+    QString getSymbol() const { return symbol; }
+    double get_mass() const { return mass; }
+    double get_concentrate() const { return conc; }
+    unsigned long get_countNucleons() const { return count_nucleons; }
+    unsigned long get_atomicNumber() const { return atomic_number;  }
+    std::complex<double> getCohb() const { return bc; }
+    std::complex<double> getIncb() const { return bi;  }
+    double getCohxs() const { return coh_xs;  }
+    double getScatxs() const { return scatt_xs;  }
+    double getAbsxs() const { return sigma_a;  }
+
 
 
     Element(QString, unsigned long, unsigned long = 0);

@@ -15,6 +15,9 @@ private:
     void readIsotopes();
     void readData();
 
+    void readData2();
+    void writeData2(QStringList);
+
     void writeElement(QStringList);
     void writeIsotopes(QStringList);
     void writeData(QStringList);

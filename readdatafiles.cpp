@@ -6,7 +6,7 @@ Element *ReadDataFiles::findElement(QString symb, unsigned long mass)
 {
     for(auto it = set_Elements.begin(); it != set_Elements.end(); it++)
     {
-        if(it->getSymbol() == symb && it->getCountNucleons() == mass) return &*it;
+        if(it->getSymbol() == symb && it->get_countNucleons() == mass) return &*it;
     }
     return nullptr;
 }
@@ -72,10 +72,39 @@ void ReadDataFiles::readData()
 
 }
 
+void ReadDataFiles::readData2()
+{
+    QFile file("data/sld_data2.txt");
+
+    if (!file.exists()) qDebug() << file.fileName() << "File doesn't exist";
+
+    file.open(QIODevice::ReadOnly | QIODevice::Text); // open file for read like TextFormat
+    if(file.atEnd()) return;
+    file.readLine(); // throw out frst line (title)
+    while(!file.atEnd())
+    {
+        QString line(file.readLine());
+        line.chop(1);                       // delete last character '\n'
+        auto l = line.split('\t')[0];
+        qDebug() << l;
+        l = line.split('\t')[1];
+        qDebug() << l;
+        l = line.split('\t')[2];
+        qDebug() << l;
+        l = line.split('\t')[3];
+        qDebug() << l;
+        // writeData(line.split('\t'));
+        // qDebug() << line.split('\t');
+        // writeIsotopes(line.split('\t'));
+    }
+    file.close();
+
+}
+
 void ReadDataFiles::writeElement(QStringList list_e)
 {
     Element el(list_e.at(1), list_e.at(0).toULong());
-    if(list_e.at(2) != "---") el.setMass(list_e.at(2).toDouble());
+    if(list_e.at(2) != "---") el.set_mass(list_e.at(2).toDouble());
 
     ElemNum.insert(std::pair<QString, unsigned long>(list_e.at(1), list_e.at(0).toULong()));
     return set_Elements.push_back(el);
@@ -84,7 +113,7 @@ void ReadDataFiles::writeElement(QStringList list_e)
 void ReadDataFiles::writeIsotopes(QStringList list_i)
 {
     Element el(list_i.at(0), ElemNum[list_i.at(0)], list_i.at(1).toULong());
-    if(list_i.at(2) != "---") el.setMass(list_i.at(2).toDouble());
+    if(list_i.at(2) != "---") el.set_mass(list_i.at(2).toDouble());
 
     return set_Elements.push_back(el);
 }
@@ -125,9 +154,9 @@ void ReadDataFiles::writeData(QStringList list_d)
         qDebug() << "Not found: " << symb << count_isot;
         return;
     }
-    find_elem->setConc(conc);
-    find_elem->setCohb(std::complex<double>(cohb_real, cohb_im));
-    find_elem->setIncb(std::complex<double>(inc_real, inc_im));
+    find_elem->set_concentrate(conc);
+    find_elem->set_bc(std::complex<double>(cohb_real, cohb_im));
+    find_elem->set_bi(std::complex<double>(inc_real, inc_im));
     find_elem->setCohxs(cohxs);
     find_elem->setIncxs(incxs);
 }
@@ -141,6 +170,7 @@ ReadDataFiles::ReadDataFiles()
     // qDebug() << "ElemNum Na: " << ElemNum["Na"];
     readIsotopes();
     readData();
+    readData2();
 
     // for(auto it = set_Elements.begin(); it != set_Elements.end(); it++)
     //     qDebug() << it->getSymbol() << it->getAtomicNumber() << it->getCountNucleons();

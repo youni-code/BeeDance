@@ -13,7 +13,7 @@ void DataTableSLD::setReadData(ReadDataFiles *read)
 Element DataTableSLD::getElement(const QString symb, const unsigned long nucl) const
 {
     for(auto it = set_elements.cbegin(); it != set_elements.cend(); it++)
-        if(it->getSymbol() == symb && it->getCountNucleons() == nucl)
+        if(it->getSymbol() == symb && it->get_countNucleons() == nucl)
             return (*it);
     return Element("", 0);
 }

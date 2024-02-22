@@ -25,6 +25,7 @@ private:
 
     void multiple_on_index(std::vector<SimpleFormulaElement>&, double);
 
+
 public:
     ChemicalFormula(QString);
     void setFormula(QString const line) { formula = line; }

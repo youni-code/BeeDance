@@ -9,7 +9,7 @@ double CoreSLD::full_mass(QString const line)
     double mass(0.0);
 
     for(auto it(vec_elem.cbegin()); it != vec_elem.cend(); it++)
-        mass += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).getMass();
+        mass += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_mass();
 
     return mass;
 }
@@ -22,7 +22,7 @@ double CoreSLD::calculate_sld()
 
     for(auto it(vec_elem.cbegin()); it != vec_elem.cend(); it++)
     {
-        a_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).getMass();
+        a_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_mass();
         b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).getCohb().real();
 
     }

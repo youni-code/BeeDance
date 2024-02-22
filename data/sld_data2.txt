@@ -1,4 +1,4 @@
-Isotope	Element	Mass_Isotope	conc	bc	Error	real_bi	Error	Im_bi	Error	Abs_xs	Error
+Isotope	Element	Mass_Isotope	conc	bc	Error	R_bi	Error	Im_bi	Error	sigma_a	Error
 H	H	---	---	-3.7390	11	---		---	---	0.3326	7
 1H	H	1	99.985	-3.7406	11	25.274	9	0.0	---	0.3326	7
 2H	H	2	0.015	6.671	4	4.04	3	0.0	---	0.000519	7
