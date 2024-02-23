@@ -23,7 +23,7 @@ double CoreSLD::calculate_sld()
     for(auto it(vec_elem.cbegin()); it != vec_elem.cend(); it++)
     {
         a_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_mass();
-        b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).getCohb().real();
+        b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc().real();
 
     }
     return (density_ * b_formula) / (a_formula * 1.660153907);

@@ -9,6 +9,7 @@ class ReadDataFiles
 private:
     std::vector<Element> set_Elements;
     std::map<QString, unsigned long> ElemNum;
+    std::map<std::pair<QString, unsigned long>, QString> ElemMass;
 
 
     void readElements();
