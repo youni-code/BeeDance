@@ -55,9 +55,9 @@ void t_datatablesld::cleanupTestCase()
 void t_datatablesld::test_case1()
 {
     dts = new DataTableSLD();
-    rdf = new ReadDataFiles();
+    // rdf = new ReadDataFiles();
 
-    dts->setReadData(rdf);
+    // dts->setReadData(rdf);
     // Element a = ad->getElement("H", 1);
     // qDebug() << a.getSymbol() << a.getCountNucleons();
 

@@ -23,15 +23,18 @@ private:
     std::pair<QString::ConstIterator, QString::ConstIterator> brackets_inside(QString const &);
     double get_index(QString const &);
 
-    void multiple_on_index(std::vector<SimpleFormulaElement>&, double);
 
 
+    SimpleFormulaElement get_firstElement(QString const line);
+    QString del_firstElement(QString const line);
 public:
+    void multiple_on_index(std::vector<SimpleFormulaElement>&, double);
     ChemicalFormula(QString);
     void setFormula(QString const line) { formula = line; }
     std::vector<SimpleFormulaElement> getElements();
-    SimpleFormulaElement get_firstElement(QString const line);
-    QString del_firstElement(QString const line);
+
+
+
 };
 
 #endif // CHEMICALFORMULA_H

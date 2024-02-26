@@ -1,14 +1,15 @@
+#include "readdatafiles.h"
 #include "datatablesld.h"
 
 
-DataTableSLD::DataTableSLD() {}
 
-void DataTableSLD::setReadData(ReadDataFiles *read)
+DataTableSLD::DataTableSLD()
 {
-
+    auto read = new ReadDataFiles();
     set_elements = read->getElements();
-    elemNum = read->getMap();
+    delete read;
 }
+
 
 Element DataTableSLD::getElement(const QString symb, const unsigned long nucl) const
 {

@@ -2,34 +2,19 @@
 #define READDATAFILES_H
 #include "element.h"
 #include <vector>
-#include <map>
 
 class ReadDataFiles
 {
 private:
     std::vector<Element> set_Elements;
-    std::map<QString, unsigned long> ElemNum;
-    std::map<std::pair<QString, unsigned long>, QString> ElemMass;
 
-
-    void readElements();
-    void readIsotopes();
     void readData();
-
-    void readData2();
-    void writeData2(QStringList);
-
-    void writeElement(QStringList);
-    void writeIsotopes(QStringList);
     void writeData(QStringList);
-
+    void show(Element el);
 
 public:
     std::vector<Element> getElements() { return set_Elements; }
-    std::map<QString, unsigned long> getMap() { return ElemNum; };
     ReadDataFiles();
-    Element* findElement(QString, unsigned long = 0);
-
 };
 
 #endif // READDATAFILES_H

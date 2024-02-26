@@ -2,6 +2,7 @@
 #define ELEMENT_H
 #include <QString>
 #include <complex>
+#include <QDebug>
 
 class Element
 {
@@ -20,9 +21,17 @@ class Element
     std::complex<double> bi_error;
     double sigma_a_error;
 
-    double coh_xs;
-    double inc_xs;
-    double scatt_xs;
+
+    bool is_conc;
+    bool is_mass;
+    bool is_atomic_mass;
+
+    bool is_bc;
+    bool is_bi;
+    bool is_sigma_a;
+    // double coh_xs;
+    // double inc_xs;
+    // double scatt_xs;
 
 public:
 
@@ -40,9 +49,9 @@ public:
 
 
 
-    void setCohxs(double value) { coh_xs = value; }
-    void setIncxs(double val) { inc_xs = val; }
-    void setScattxs(double value) { scatt_xs = value; }
+    // void setCohxs(double value) { coh_xs = value; }
+    // void setIncxs(double val) { inc_xs = val; }
+    // void setScattxs(double value) { scatt_xs = value; }
 
 
     QString get_symbol() const { return symbol; }
@@ -60,16 +69,15 @@ public:
     std::complex<double> get_sigma_a_error() const { return sigma_a;  }
 
 
-    double getCohxs() const { return coh_xs;  }
-    double getScatxs() const { return scatt_xs;  }
-    double getAbsxs() const { return sigma_a;  }
+    // double getCohxs() const { return coh_xs;  }
+    // double getScatxs() const { return scatt_xs;  }
+    // double getAbsxs() const { return sigma_a;  }
 
 
 
     Element(QString, unsigned long, unsigned long = 0);
     bool operator==(const Element&) const;
     bool operator!=(const Element&) const;
-    // bool operator<(const Element&) const;
 
 };
 
