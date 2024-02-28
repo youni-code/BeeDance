@@ -191,6 +191,11 @@ std::vector<SimpleFormulaElement> ChemicalFormula::getElements() // line is corr
     return getElements(formula);
 }
 
+bool ChemicalFormula::check_brackets()
+{
+
+}
+
 SimpleFormulaElement ChemicalFormula::get_firstElement(const QString line)
 {
     return readIsotope(getLine(line.begin(), it_on_SecondElement(line)));

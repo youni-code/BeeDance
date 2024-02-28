@@ -157,3 +157,8 @@ bool CoreSLD::check_roundbrackets(QString)
 {
 
 }
+
+bool CoreSLD::check_valueexitst(QString)
+{
+
+}
