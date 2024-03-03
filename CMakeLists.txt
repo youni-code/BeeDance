@@ -34,6 +34,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         coresld.h coresld.cpp
         datatablesld.h datatablesld.cpp
         chemicallabel.h chemicallabel.cpp
+        chemicalformulachecking.h chemicalformulachecking.cpp
         # tests/test_datatablesld/CMakeLists.txt
         # tests/test_datatablesld/t_datatablesld.cpp
 
@@ -97,12 +98,17 @@ if(QT_VERSION_MAJOR EQUAL 6)
 endif()
 
 
+add_library(chemicallabel chemicallabel.cpp chemicallabel.h)
 add_library(chemicalformula chemicalformula.cpp chemicalformula.h simpleformulaelement.cpp simpleformulaelement.h)
 add_library(element element.cpp element.h)
 add_library(simpleformulaelement simpleformulaelement.cpp simpleformulaelement.h)
 add_library(datatablesld datatablesld.cpp datatablesld.h)
 add_library(readdatafiles readdatafiles.cpp readdatafiles.h)
 
+# target_link_libraries(calculator_sld chemicallabel)
+# target_link_libraries(calculator_sld element chemicalformula)
+
+target_link_libraries(chemicallabel Qt6::Widgets)
 target_link_libraries(chemicalformula Qt6::Widgets)
 target_link_libraries(element Qt6::Widgets)
 target_link_libraries(simpleformulaelement Qt6::Widgets)

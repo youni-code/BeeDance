@@ -1,6 +1,6 @@
 #include "coresld.h"
 
-double CoreSLD::full_mass(QString const line)
+double CoreSLD::full_mass(QString line)
 {
     auto temp_chem_formula = new ChemicalFormula("");
     temp_chem_formula->setFormula(line);
@@ -110,7 +110,7 @@ std::vector<SimpleFormulaElement> CoreSLD::subcalculate_subline(QString line)
     qDebug() << "k = " << koef;
     ChemicalFormula chem_f(formula);
     auto elements = chem_f.getElements();
-    chem_f.multiple_on_index(elements, koef);
+    chem_f.multiple_by_index(elements, koef);
 
     for(auto it(elements.begin()); it != elements.end(); it++)
     {
@@ -151,14 +151,4 @@ double CoreSLD::get_sld()
 double CoreSLD::get_sld(QString line)
 {
     return calculate_sld(line);
-}
-
-bool CoreSLD::check_roundbrackets(QString)
-{
-
-}
-
-bool CoreSLD::check_valueexitst(QString)
-{
-
 }

@@ -29,9 +29,6 @@ class Element
     bool is_bc;
     bool is_bi;
     bool is_sigma_a;
-    // double coh_xs;
-    // double inc_xs;
-    // double scatt_xs;
 
 public:
 
@@ -48,12 +45,6 @@ public:
     void set_sigmaa_error(double value) 			{ sigma_a_error = value; }
 
 
-
-    // void setCohxs(double value) { coh_xs = value; }
-    // void setIncxs(double val) { inc_xs = val; }
-    // void setScattxs(double value) { scatt_xs = value; }
-
-
     QString get_symbol() const { return symbol; }
     double get_mass() const { return mass; }
     double get_concentrate() const { return conc; }
@@ -67,12 +58,6 @@ public:
     std::complex<double> get_bc_error() const { return bc_error; }
     std::complex<double> get_bi_error() const { return bi_error;  }
     std::complex<double> get_sigma_a_error() const { return sigma_a;  }
-
-
-    // double getCohxs() const { return coh_xs;  }
-    // double getScatxs() const { return scatt_xs;  }
-    // double getAbsxs() const { return sigma_a;  }
-
 
 
     Element(QString, unsigned long, unsigned long = 0);

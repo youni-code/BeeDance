@@ -14,7 +14,7 @@ private:
     QString str_formula;
 
 
-    double full_mass(QString const);
+    double full_mass(QString);
 
     double calculate_sld(QString);
     double calculate_multisld(QString);
@@ -26,11 +26,8 @@ private:
     QString delete_squarebrackets(QString);
 
 
-    bool check_roundbrackets(QString);
-    bool check_squarebrackets(QString);
-    bool check_correctline(QString);
-    bool check_elementexists(QString);
-    bool check_valueexitst(QString);
+signals:
+
 
 public:
     CoreSLD();
@@ -38,6 +35,7 @@ public:
     void setDensity(double density) { density_ = density; };
     double get_sld();
     double get_sld(QString line);
+
 };
 
 #endif // CORESLD_H

@@ -25,6 +25,11 @@ private slots:
     void get_firstElement();
     void del_firstElement();
 
+    void is_multiformula();
+    void check_roundbrackets();
+    void check_format();
+    void is_correct();
+
     void getElements();
 };
 
@@ -45,7 +50,7 @@ void t_chemicalformula::test_case1()
 
 void t_chemicalformula::test_brackets_index_inside()
 {
-    ChemicalFormula a(" ");
+    ChemicalFormula a;
 
     QCOMPARE(a.getLine(a.brackets_index_inside("^13CHe2^2H5(O2^1H2)2Fe2O3")),       "(O2^1H2)2");
     QCOMPARE(a.getLine(a.brackets_index_inside("He2^2H5(O^1H2)2Fe2O3")),            "(O^1H2)2");
@@ -56,7 +61,7 @@ void t_chemicalformula::test_brackets_index_inside()
 
 void t_chemicalformula::test_brackets_inside()
 {
-    ChemicalFormula a(" ");
+    ChemicalFormula a;
 
     QCOMPARE(a.getLine(a.brackets_inside("^13CHe2^2H5(O2^1H2)2Fe2O3")),       "O2^1H2");
     QCOMPARE(a.getLine(a.brackets_inside("He2^2H5(O^1H2)2Fe2O3")),            "O^1H2");
@@ -69,7 +74,7 @@ void t_chemicalformula::test_brackets_inside()
 
 void t_chemicalformula::test_readIsotope1()
 {
-    ChemicalFormula cf("");
+    ChemicalFormula cf;
 
     QCOMPARE(cf.readIsotope("^2H2"),            SimpleFormulaElement("H", 2));
     QCOMPARE(cf.readIsotope("^2H2"),            SimpleFormulaElement("H", 2));
@@ -100,7 +105,7 @@ void t_chemicalformula::test_readIsotope2()
 
 void t_chemicalformula::get_index()
 {
-    ChemicalFormula a(" ");
+    ChemicalFormula a("");
 
     QCOMPARE((a.get_index("(O2^1H2)2")), 2);
     QCOMPARE((a.get_index("(O^1H2).2")),       0.2);
@@ -166,9 +171,61 @@ void t_chemicalformula::del_firstElement()
 
 }
 
+void t_chemicalformula::is_multiformula()
+{
+    ChemicalFormula cf;
+    QCOMPARE(cf.is_multiformula("^2H2"),            false);
+    QCOMPARE(cf.is_multiformula("H2O"),             false);
+    QCOMPARE(cf.is_multiformula("H2O[2]"),          true);
+}
+
+void t_chemicalformula::check_roundbrackets()
+{
+    ChemicalFormula cf;
+    QCOMPARE(cf.check_roundbrackets("2H2"), true);
+    QCOMPARE(cf.check_roundbrackets("(2H2"), false);
+    QCOMPARE(cf.check_roundbrackets("(2H2)"), true);
+    QCOMPARE(cf.check_roundbrackets("(2H)2"), true);
+    QCOMPARE(cf.check_roundbrackets("(2H2)"), true);
+    QCOMPARE(cf.check_roundbrackets("(2(H2)"), false);
+    QCOMPARE(cf.check_roundbrackets("()(2H2)"), true);
+    QCOMPARE(cf.check_roundbrackets("((2H2)"), false);
+    QCOMPARE(cf.check_roundbrackets("((2H2))"), true);
+    QCOMPARE(cf.check_roundbrackets("()(2H)2"), true);
+    QCOMPARE(cf.check_roundbrackets("(2H2))"), false);
+    QCOMPARE(cf.check_roundbrackets("((2H2))"), true);
+}
+
+void t_chemicalformula::check_format()
+{
+    ChemicalFormula cf;
+    // QCOMPARE(cf.check_format("[3]"), true);
+    // QCOMPARE(cf.check_format("[3.3][3]"), true);
+    // QCOMPARE(cf.check_format("[][3]"), false);
+    // QCOMPARE(cf.check_format("[.][90.334]"), false);
+    // QCOMPARE(cf.check_format("[3.][3]"), true);
+    // QCOMPARE(cf.check_format("[3.33][.3]"), true);
+
+
+    QCOMPARE(cf.check_format("^2H2OHe"), true);
+    QCOMPARE(cf.check_format("(^2H2^34O)2He"), true);
+
+}
+
+void t_chemicalformula::is_correct()
+{
+    ChemicalFormula cf;
+    QCOMPARE(cf.is_correct(""), false);
+    QCOMPARE(cf.is_correct("H2O"), true);
+    QCOMPARE(cf.is_correct("H2[3]O"), false);
+    QCOMPARE(cf.is_correct("H2[3]O[3]"), true);
+    QCOMPARE(cf.is_correct("H2O[3]"), true);
+
+}
+
 void t_chemicalformula::getElements()
 {
-    ChemicalFormula cf("");
+    ChemicalFormula cf;
     auto res = cf.getElements("(^13C2He2^2H5((O2).2^1H2)2Fe2O3)2");
     // for(auto it(res.begin()); it != res.end(); it++) qDebug() << it->symbol() << "(" << it->nucleons() << ", " << it->index() << ")";
 
