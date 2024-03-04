@@ -2,7 +2,7 @@
 #include <stack>
 
 
-bool ChemicalFormulaChecking::has_brackets() const
+bool ChemicalFormulaChecking::has_square_brackets() const
 {
     return line_.contains(re_square_brackets);
 }
@@ -17,6 +17,7 @@ bool ChemicalFormulaChecking::check_format() const
     line = line.remove(re_element_format);
     line = line.remove(re_brackets);
 
+    qDebug() << "error here: " << line;
     if(line.isEmpty()) return true;
     return false;
 }
@@ -48,8 +49,21 @@ bool ChemicalFormulaChecking::check_brackets() const
 
 bool ChemicalFormulaChecking::check_sqbrackets() const
 {
-    if(!has_brackets()) return true;
-    return line_.contains(re_square_brackets);
+    if(!has_square_brackets()) return true;
+    return line_.contains(re_square_brackets_end);
+}
+
+
+ChemicalFormulaChecking::ChemicalFormulaChecking(QString line)
+{
+    set_line(line);
+    open_brackets =               QRegularExpression("[(]");
+    close_brackets =              QRegularExpression("[)]");
+
+    re_element_format =           QRegularExpression("([\\^][0-9]+)?[A-Z][a-z]*([0-9]+[.]?[0-9]*|[0-9]*[.][0-9]+)?");
+    re_square_brackets =          QRegularExpression("[\\[]([0-9]+[.]?[0-9]*|[0-9]*[.][0-9]+)[\\]]");
+    re_square_brackets_end =      QRegularExpression("[\\[]([0-9]+[.]?[0-9]*|[0-9]*[.][0-9]+)[\\]]$");
+    re_brackets =                 QRegularExpression("[(][)]([0-9]+[.]?[0-9]*|[0-9]*[.][0-9]+)?");
 }
 
 bool ChemicalFormulaChecking::is_correct() const

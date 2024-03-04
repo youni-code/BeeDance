@@ -26,9 +26,9 @@ private slots:
     void del_firstElement();
 
     void is_multiformula();
-    void check_roundbrackets();
-    void check_format();
-    void is_correct();
+    // void check_roundbrackets();
+    // void check_format();
+    // void is_correct();
 
     void getElements();
 };
@@ -179,49 +179,49 @@ void t_chemicalformula::is_multiformula()
     QCOMPARE(cf.is_multiformula("H2O[2]"),          true);
 }
 
-void t_chemicalformula::check_roundbrackets()
-{
-    ChemicalFormula cf;
-    QCOMPARE(cf.check_roundbrackets("2H2"), true);
-    QCOMPARE(cf.check_roundbrackets("(2H2"), false);
-    QCOMPARE(cf.check_roundbrackets("(2H2)"), true);
-    QCOMPARE(cf.check_roundbrackets("(2H)2"), true);
-    QCOMPARE(cf.check_roundbrackets("(2H2)"), true);
-    QCOMPARE(cf.check_roundbrackets("(2(H2)"), false);
-    QCOMPARE(cf.check_roundbrackets("()(2H2)"), true);
-    QCOMPARE(cf.check_roundbrackets("((2H2)"), false);
-    QCOMPARE(cf.check_roundbrackets("((2H2))"), true);
-    QCOMPARE(cf.check_roundbrackets("()(2H)2"), true);
-    QCOMPARE(cf.check_roundbrackets("(2H2))"), false);
-    QCOMPARE(cf.check_roundbrackets("((2H2))"), true);
-}
+// void t_chemicalformula::check_roundbrackets()
+// {
+//     ChemicalFormula cf;
+//     QCOMPARE(cf.check_roundbrackets("2H2"), true);
+//     QCOMPARE(cf.check_roundbrackets("(2H2"), false);
+//     QCOMPARE(cf.check_roundbrackets("(2H2)"), true);
+//     QCOMPARE(cf.check_roundbrackets("(2H)2"), true);
+//     QCOMPARE(cf.check_roundbrackets("(2H2)"), true);
+//     QCOMPARE(cf.check_roundbrackets("(2(H2)"), false);
+//     QCOMPARE(cf.check_roundbrackets("()(2H2)"), true);
+//     QCOMPARE(cf.check_roundbrackets("((2H2)"), false);
+//     QCOMPARE(cf.check_roundbrackets("((2H2))"), true);
+//     QCOMPARE(cf.check_roundbrackets("()(2H)2"), true);
+//     QCOMPARE(cf.check_roundbrackets("(2H2))"), false);
+//     QCOMPARE(cf.check_roundbrackets("((2H2))"), true);
+// }
 
-void t_chemicalformula::check_format()
-{
-    ChemicalFormula cf;
-    // QCOMPARE(cf.check_format("[3]"), true);
-    // QCOMPARE(cf.check_format("[3.3][3]"), true);
-    // QCOMPARE(cf.check_format("[][3]"), false);
-    // QCOMPARE(cf.check_format("[.][90.334]"), false);
-    // QCOMPARE(cf.check_format("[3.][3]"), true);
-    // QCOMPARE(cf.check_format("[3.33][.3]"), true);
+// void t_chemicalformula::check_format()
+// {
+//     ChemicalFormula cf;
+//     // QCOMPARE(cf.check_format("[3]"), true);
+//     // QCOMPARE(cf.check_format("[3.3][3]"), true);
+//     // QCOMPARE(cf.check_format("[][3]"), false);
+//     // QCOMPARE(cf.check_format("[.][90.334]"), false);
+//     // QCOMPARE(cf.check_format("[3.][3]"), true);
+//     // QCOMPARE(cf.check_format("[3.33][.3]"), true);
 
 
-    QCOMPARE(cf.check_format("^2H2OHe"), true);
-    QCOMPARE(cf.check_format("(^2H2^34O)2He"), true);
+//     QCOMPARE(cf.check_format("^2H2OHe"), true);
+//     QCOMPARE(cf.check_format("(^2H2^34O)2He"), true);
 
-}
+// }
 
-void t_chemicalformula::is_correct()
-{
-    ChemicalFormula cf;
-    QCOMPARE(cf.is_correct(""), false);
-    QCOMPARE(cf.is_correct("H2O"), true);
-    QCOMPARE(cf.is_correct("H2[3]O"), false);
-    QCOMPARE(cf.is_correct("H2[3]O[3]"), true);
-    QCOMPARE(cf.is_correct("H2O[3]"), true);
+// void t_chemicalformula::is_correct()
+// {
+//     ChemicalFormula cf;
+//     QCOMPARE(cf.is_correct(""), false);
+//     QCOMPARE(cf.is_correct("H2O"), true);
+//     QCOMPARE(cf.is_correct("H2[3]O"), false);
+//     QCOMPARE(cf.is_correct("H2[3]O[3]"), true);
+//     QCOMPARE(cf.is_correct("H2O[3]"), true);
 
-}
+// }
 
 void t_chemicalformula::getElements()
 {

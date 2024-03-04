@@ -99,7 +99,7 @@ endif()
 
 
 add_library(chemicallabel chemicallabel.cpp chemicallabel.h)
-add_library(chemicalformula chemicalformula.cpp chemicalformula.h simpleformulaelement.cpp simpleformulaelement.h)
+add_library(chemicalformula chemicalformula.cpp chemicalformula.h simpleformulaelement.cpp simpleformulaelement.h chemicalformulachecking.cpp chemicalformulachecking.h)
 add_library(element element.cpp element.h)
 add_library(simpleformulaelement simpleformulaelement.cpp simpleformulaelement.h)
 add_library(datatablesld datatablesld.cpp datatablesld.h)

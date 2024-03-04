@@ -1,7 +1,6 @@
 #include "chemicalformula.h"
 #include <QRegularExpression>
 #include <deque>
-#include <stack>
 
 QString ChemicalFormula::getLine(QString::ConstIterator cbegin, QString::ConstIterator cend)
 {
@@ -16,6 +15,12 @@ QString ChemicalFormula::getLine(QString::ConstIterator cbegin, QString::ConstIt
 ChemicalFormula::ChemicalFormula(QString line)
 {
     setFormula(line);
+}
+
+bool ChemicalFormula::is_correct()
+{
+    cfch.set_line(formula);
+    return cfch.is_correct();
 }
 QString::ConstIterator ChemicalFormula::it_on_SecondElement(const QString &line)
 {
@@ -69,38 +74,16 @@ bool ChemicalFormula::hasSquareBrackets(QString line) const
 {
     return line.contains(QRegularExpression("[\\[]"));
 }
-std::vector<SimpleFormulaElement> ChemicalFormula::getElements(QString subformula)
-{
-    std::vector<SimpleFormulaElement> result;
-    QString temp_formula = subformula;
-
-
-    while(hasBrackets(temp_formula))
-    {
-        auto iters_brackets_with_index = (brackets_index_inside(temp_formula)); // получаем выражение со скобками и индексом
-        QString brackets_with_index = getLine(iters_brackets_with_index); // получаем полное выражение
-        temp_formula.erase(iters_brackets_with_index.first, iters_brackets_with_index.second); // удаляем из исходной строки
-        QString inner_brackets = getLine(brackets_inside(brackets_with_index)); // получаем внутреннее выражение
-        double brackets_index = get_index(brackets_with_index); // получаем индекс
-        std::vector<SimpleFormulaElement> temp_res = getElements(inner_brackets);
-        multiple_by_index(temp_res, brackets_index);
-        result.insert(result.end(), temp_res.begin(), temp_res.end());
-    }
-
-    while(!temp_formula.isEmpty())
-    {
-        result.push_back(get_firstElement(temp_formula));
-        temp_formula = del_firstElement(temp_formula);
-    }
-
-    return result;
-}
 
 bool ChemicalFormula::is_multiformula(QString line)
 {
-    for(auto it = line.cbegin(); it != line.cend(); it++) if((*it) == ']') return true;
+    for(auto it = line.cbegin(); it != line.cend(); it++)
+        if((*it) == ']')
+            return true;
+
     return false;
 }
+
 std::pair<QString::ConstIterator, QString::ConstIterator> ChemicalFormula::brackets_index_inside(QString const &line)
 {
     std::pair<QString::ConstIterator, QString::ConstIterator> result(nullptr, nullptr);
@@ -192,73 +175,39 @@ double ChemicalFormula::get_index(const QString &line)
 
 }
 
-// line is correct. In other way - undefined behavior
-std::vector<SimpleFormulaElement> ChemicalFormula::getElements()
+
+std::vector<SimpleFormulaElement> ChemicalFormula::getElements(QString subformula)
 {
-    return getElements(formula);
-}
-
-bool ChemicalFormula::is_correct()
-{
-    return check_format()
-           && check_roundbrackets()
-           && check_sqbrackets();
-}
-
-bool ChemicalFormula::check_roundbrackets(QString line) const
-{
-    static QRegularExpression open_brackets("[(]");
-    static QRegularExpression close_brackets("[)]");
-
-    std::stack<QChar> b_stack;
-
-    for(auto it(line.cbegin()); it != line.cend(); it++)
+    std::vector<SimpleFormulaElement> result;
+    cfch.set_line(subformula);
+    if(!cfch.is_correct())
     {
-        if(QString(*it).contains(open_brackets))
-            b_stack.push(*it);
-
-        if(QString(*it).contains(close_brackets))
-        {
-            if(b_stack.empty())
-                return false;
-
-            if(QString(b_stack.top()).contains(open_brackets))
-                    b_stack.pop();
-            else
-                return false;
-        }
+        qDebug() << subformula << ": incorrect";
+        return result;
     }
-    return b_stack.empty();
-}
 
-bool ChemicalFormula::check_format(QString line) const
-{
-    static QRegularExpression re_element("([\\^][0-9]+)?[A-Z][a-z]*([0-9]+[.]?[0-9]*|[0-9]*[.][0-9]+)?");
-    static QRegularExpression re_squarebrackets("[\\[]([0-9]+[.]?[0-9]*|[0-9]*[.][0-9]+)[\\]]");
-    static QRegularExpression re_brackets("[(][)]([0-9]+[.]?[0-9]*|[0-9]*[.][0-9]+)?");
+    QString temp_formula = subformula;
 
-    if(!line.contains(re_element)) return false;
 
-    line = line.remove(re_squarebrackets);
-    line = line.remove(re_element);
-    line = line.remove(re_brackets);
+    while(hasBrackets(temp_formula))
+    {
+        auto iters_brackets_with_index = (brackets_index_inside(temp_formula)); // получаем выражение со скобками и индексом
+        QString brackets_with_index = getLine(iters_brackets_with_index); // получаем полное выражение
+        temp_formula.erase(iters_brackets_with_index.first, iters_brackets_with_index.second); // удаляем из исходной строки
+        QString inner_brackets = getLine(brackets_inside(brackets_with_index)); // получаем внутреннее выражение
+        double brackets_index = get_index(brackets_with_index); // получаем индекс
+        std::vector<SimpleFormulaElement> temp_res = getElements(inner_brackets);
+        multiple_by_index(temp_res, brackets_index);
+        result.insert(result.end(), temp_res.begin(), temp_res.end());
+    }
 
-    if(line.isEmpty()) return true;
-    return false;
-}
+    while(!temp_formula.isEmpty())
+    {
+        result.push_back(get_firstElement(temp_formula));
+        temp_formula = del_firstElement(temp_formula);
+    }
 
-bool ChemicalFormula::check_sqbrackets(QString line) const
-{
-    if(!hasSquareBrackets(line)) return true;
-    return line.contains(QRegularExpression("[\\[]([0-9]+[.]?[0-9]*|[0-9]*[.][0-9]+)[\\]]$"));
-}
-
-bool ChemicalFormula::is_correct(QString line)
-{
-    return check_format(line)
-           && check_roundbrackets(line)
-           && check_sqbrackets(line);
-
+    return result;
 }
 
 SimpleFormulaElement ChemicalFormula::get_firstElement(const QString line)

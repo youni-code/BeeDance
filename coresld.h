@@ -5,8 +5,9 @@
 #include "chemicalformula.h"
 #include "datatablesld.h"
 
-class CoreSLD
+class CoreSLD : public QObject
 {
+    Q_OBJECT
 private:
     double density_;
     ChemicalFormula *chem_formula = nullptr;
