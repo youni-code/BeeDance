@@ -31,7 +31,7 @@ QString ChemicalTextEdit::plainToHtml(QString plaintext)
             htmltext.append("<sup>");
             continue;
         };
-        if((*p).isLetter() || (*p) == ')' || (*p) == '(')
+        if((*p).isLetter() || (*p) == ')' || (*p) == '(' || (*p) == '[')
         {
             if(state_sup) htmltext.append("</sup>");
             if(state_sub) htmltext.append("</sub>");
@@ -58,8 +58,6 @@ QString ChemicalTextEdit::plainToHtml(QString plaintext)
         htmltext.append(*p);
     }
     return htmltext;
-
-
 }
 
 ChemicalTextEdit::ChemicalTextEdit()

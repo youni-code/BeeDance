@@ -31,6 +31,7 @@ class Element
     bool is_sigma_a;
 
 public:
+    bool is_empty() { return symbol == "";};
 
     void set_mass(double value) 					{ mass = value; }
     void set_concentrate(double co) 				{ conc = co; }

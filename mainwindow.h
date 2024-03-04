@@ -18,11 +18,12 @@ class MainWindow : public QMainWindow
 {
     CoreSLD *core = nullptr;
 
+    QValidator *valid_double = nullptr; //new QDoubleValidator()
 
     QWidget *centralWidget = nullptr;
     ChemicalTextEdit *formula_TextEdit = nullptr;
     ChemicalLabel *formula_Label = nullptr;
-    QDoubleSpinBox *density_LineEdit = nullptr;
+    QLineEdit *density_LineEdit = nullptr;
     QLineEdit *result_LineEdit = nullptr;
     QPushButton *calculate_PushButton = nullptr;
     QVBoxLayout *chemicalLayout = nullptr;
@@ -35,6 +36,8 @@ class MainWindow : public QMainWindow
 
     void createmenubar();
     void createstatusbar();
+
+    void error_message();
 
 
     Q_OBJECT

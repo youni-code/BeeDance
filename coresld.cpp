@@ -2,7 +2,7 @@
 
 double CoreSLD::full_mass(QString line)
 {
-    auto temp_chem_formula = new ChemicalFormula("");
+    auto temp_chem_formula = new ChemicalFormula();
     temp_chem_formula->setFormula(line);
     auto vec_elem = temp_chem_formula->getElements();
 
@@ -17,9 +17,7 @@ double CoreSLD::full_mass(QString line)
 double CoreSLD::calculate_sld(QString line)
 {
     if(!isMultiFormula(line)) return calculate_singlesld(line);
-    qDebug() << "multiformula";
     return calculate_multisld(line);
-
     return 0.0;
 }
 
@@ -129,15 +127,30 @@ QString CoreSLD::delete_squarebrackets(QString line)
     }
     line.erase(del_it, line.cend());
 
-    qDebug() << "delete_squarebrackets: " << line;
     return line;
 }
+
 
 CoreSLD::CoreSLD()
 {
     chem_formula = new ChemicalFormula("");
     dt_sld = new DataTableSLD();
 }
+
+bool CoreSLD::is_all_data_exist()
+{
+    auto elements = chem_formula->getElements();
+
+    for(auto const &it : elements)
+    {
+        if(dt_sld->getElement(it.symbol(), it.nucleons()).is_empty())
+            return false;
+    }
+
+    return true;
+
+}
+
 
 void CoreSLD::setFormula(QString formula)
 {

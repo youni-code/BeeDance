@@ -27,11 +27,16 @@ private:
     QString delete_squarebrackets(QString);
 
 
-signals:
 
 
 public:
     CoreSLD();
+    bool is_correct() { return is_line_correct() && is_density_correct() && is_all_data_exist(); };
+
+    bool is_line_correct() { return chem_formula->is_correct(); };
+    bool is_density_correct() { return density_ > 0.0; };
+    bool is_all_data_exist();
+
     void setFormula(QString);
     void setDensity(double density) { density_ = density; };
     double get_sld();

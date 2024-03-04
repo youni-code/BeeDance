@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     newPalette.setColor(QPalette::Mid,             QColor( 37,  37,  37));
     newPalette.setColor(QPalette::Shadow,          QColor( 0,    0,   0));
 
+
     newPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
 
 
