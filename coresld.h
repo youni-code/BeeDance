@@ -20,7 +20,9 @@ private:
     double calculate_sld(QString);
     double calculate_multisld(QString);
     double calculate_singlesld(QString);
-    double calculate_singlesld(std::vector<SimpleFormulaElement> elem_vec);
+    double calculate_singlesld(std::vector<SimpleFormulaElement>);
+    double calculate_singlesld_err(QString);
+    double calculate_singlesld_err(std::vector<SimpleFormulaElement>);
     bool isMultiFormula(QString);
     double read_value_squarebrackets(QString);
     std::vector<SimpleFormulaElement> subcalculate_subline(QString);
@@ -40,6 +42,7 @@ public:
     void setFormula(QString);
     void setDensity(double density) { density_ = density; };
     double get_sld();
+    double get_sld_err();
     double get_sld(QString line);
 
 };

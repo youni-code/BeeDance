@@ -28,7 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         chemicaltextedit.h chemicaltextedit.cpp
         readdatafiles.h readdatafiles.cpp
         element.h element.cpp
-        data/sld_data.txt
+        data/data_sld.txt
         chemicalformula.h chemicalformula.cpp
         simpleformulaelement.h simpleformulaelement.cpp
         coresld.h coresld.cpp

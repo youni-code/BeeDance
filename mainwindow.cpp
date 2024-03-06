@@ -21,7 +21,7 @@ void MainWindow::createmenubar()
     menu_file->addAction("Save");
     menu_file->addAction("Save as...");
     menu_file->addSeparator();
-    menu_file->addAction("Exit");
+    QAction *a = menu_file->addAction("Exit");
 
 
     QMenu *menu_help = new QMenu("Help", main_menubar);
@@ -136,7 +136,8 @@ void MainWindow::pressCalculateButton()
         return error_message();
 
     double result = core->get_sld();
-    result_LineEdit->setText(QString::number(result));
+    double error = core->get_sld_err();
+    result_LineEdit->setText(QString::number(result) + "±" + QString::number(error));
     main_statusbar->showMessage("Complited", 5000);
 }
 

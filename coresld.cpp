@@ -44,19 +44,8 @@ double CoreSLD::calculate_multisld(QString line)
 
 double CoreSLD::calculate_singlesld(QString line)
 {
-    double a_formula(0);
-    double b_formula(0);
     chem_formula->setFormula(line);
-    auto vec_elem = chem_formula->getElements();
-
-    for(auto it(vec_elem.cbegin()); it != vec_elem.cend(); it++)
-    {
-        a_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_mass();
-        b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc().real();
-
-    }
-    return (density_ * b_formula) / (a_formula * 1.660153907);
-
+    return calculate_singlesld(chem_formula->getElements());
 }
 
 double CoreSLD::calculate_singlesld(std::vector<SimpleFormulaElement> elem_vec)
@@ -71,7 +60,29 @@ double CoreSLD::calculate_singlesld(std::vector<SimpleFormulaElement> elem_vec)
         b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc().real();
 
     }
-    return (density_ * b_formula) / (a_formula * 1.660153907);
+    return (density_ * b_formula) / (a_formula * 1.660153907) * std::pow(10, -6);
+
+}
+
+double CoreSLD::calculate_singlesld_err(QString line)
+{
+    chem_formula->setFormula(line);
+    return calculate_singlesld_err(chem_formula->getElements());
+}
+
+double CoreSLD::calculate_singlesld_err(std::vector<SimpleFormulaElement> elem_vec)
+{
+    double a_formula(0);
+    double b_formula(0);
+    auto vec_elem = elem_vec;
+
+    for(auto it(vec_elem.cbegin()); it != vec_elem.cend(); it++)
+    {
+        a_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_mass();
+        b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc_error().real();
+
+    }
+    return pow((density_ * (b_formula * b_formula)) / (a_formula * 1.660153907) * std::pow(10, -6), 0.5);
 
 }
 
@@ -133,7 +144,7 @@ QString CoreSLD::delete_squarebrackets(QString line)
 
 CoreSLD::CoreSLD()
 {
-    chem_formula = new ChemicalFormula("");
+    chem_formula = new ChemicalFormula();
     dt_sld = new DataTableSLD();
 }
 
@@ -160,6 +171,11 @@ void CoreSLD::setFormula(QString formula)
 double CoreSLD::get_sld()
 {
     return calculate_sld(str_formula);
+}
+
+double CoreSLD::get_sld_err()
+{
+    return calculate_singlesld_err(str_formula);
 }
 double CoreSLD::get_sld(QString line)
 {
