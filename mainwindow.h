@@ -50,6 +50,8 @@ class MainWindow : public QMainWindow
 // private slots:
     void initialize();
     void calculate();
+
+    QString result_string(double value, double error);
 private slots:
     void pressCalculateButton();
 

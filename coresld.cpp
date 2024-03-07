@@ -27,7 +27,6 @@ double CoreSLD::calculate_multisld(QString line)
     temp_line.chop(1);
 
     QStringList list_formuls = temp_line.split(']');
-    // qDebug() << "size: " << list_formuls.size();
 
     std::vector<SimpleFormulaElement> formula_for_single;
 
@@ -57,10 +56,10 @@ double CoreSLD::calculate_singlesld(std::vector<SimpleFormulaElement> elem_vec)
     for(auto it(vec_elem.cbegin()); it != vec_elem.cend(); it++)
     {
         a_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_mass();
-        b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc().real();
+        b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc().real() * std::pow(10, -5);
 
     }
-    return (density_ * b_formula) / (a_formula * 1.660153907) * std::pow(10, -6);
+    return (density_ * b_formula) / (a_formula * 1.660153907) ;
 
 }
 
@@ -79,10 +78,10 @@ double CoreSLD::calculate_singlesld_err(std::vector<SimpleFormulaElement> elem_v
     for(auto it(vec_elem.cbegin()); it != vec_elem.cend(); it++)
     {
         a_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_mass();
-        b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc_error().real();
-
+        double sq_b = it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc_error().real() * std::pow(10, -5);
+        b_formula += sq_b * sq_b;
     }
-    return pow((density_ * (b_formula * b_formula)) / (a_formula * 1.660153907) * std::pow(10, -6), 0.5);
+    return (density_ * std::pow(b_formula, 0.5)) / (a_formula * 1.660153907);
 
 }
 

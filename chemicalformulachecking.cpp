@@ -17,7 +17,6 @@ bool ChemicalFormulaChecking::check_format() const
     line = line.remove(re_element_format);
     line = line.remove(re_brackets);
 
-    qDebug() << "error here: " << line;
     if(line.isEmpty()) return true;
     return false;
 }
