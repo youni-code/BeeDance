@@ -2,6 +2,7 @@
 #define DATATABLESLD_H
 #include "element.h"
 #include <vector>
+#include "simpleformulaelement.h"
 
 class DataTableSLD
 {
@@ -10,7 +11,8 @@ class DataTableSLD
     void setData(std::vector<Element>);
 public:
     DataTableSLD();
-    Element getElement(QString const, unsigned long const = 0) const;
+    Element getElement(QString, unsigned long = 0) const;
+    Element getElement(const SimpleFormulaElement&) const;
 };
 
 #endif // DATATABLESLD_H

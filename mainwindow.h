@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include "chemicaltextedit.h"
 #include "chemicallabel.h"
 
@@ -12,53 +13,55 @@
 #include <QDoubleSpinBox>
 #include <QGroupBox>
 #include <QLabel>
+#include <QComboBox>
 #include "coresld.h"
 
 class MainWindow : public QMainWindow
 {
+    Q_OBJECT
+
     CoreSLD *core = nullptr;
-
-    QValidator *valid_double = nullptr; //new QDoubleValidator()
-
-    QWidget *centralWidget = nullptr;
-    ChemicalTextEdit *formula_TextEdit = nullptr;
-    ChemicalLabel *formula_Label = nullptr;
-    QLineEdit *density_LineEdit = nullptr;
-    QLineEdit *result_LineEdit = nullptr;
-    QPushButton *calculate_PushButton = nullptr;
-    QVBoxLayout *chemicalLayout = nullptr;
-    QHBoxLayout *chemical_sublayout = nullptr;
-
-    QGroupBox *inputdata_group_box = nullptr;
+    QWidget *central_widget = nullptr;
 
     QMenuBar *main_menubar = nullptr;
     QStatusBar *main_statusbar = nullptr;
 
-    void createmenubar();
-    void createstatusbar();
+    QVBoxLayout *chemical_layout = nullptr;
+    ChemicalTextEdit *formula_TextEdit = nullptr;
+    ChemicalLabel *formula_Label = nullptr;
 
-    void error_message();
+    QHBoxLayout *density_sublayout = nullptr;
+    QLineEdit *density_LineEdit = nullptr;
+    QComboBox *density_ComboBox = nullptr;
+    QPushButton *calculate_PushButton = nullptr;
 
+    QHBoxLayout *sldresult_sublayout = nullptr;
+    QLabel      *sldresult_Label = nullptr;
+    QLineEdit   *sldresult_LineEdit = nullptr;
+    QComboBox   *sldresult_combobox = nullptr;
 
-    Q_OBJECT
-
-
-    QWidget* setChemicalLine();
-    void setLayouts();
-    void setSignals();
-
-// private slots:
     void initialize();
-    void calculate();
+
+    void set_menubar();
+    void set_statusbar();
+
+    void set_widgets();
+    void set_chemicalline();
+    void set_densityline();
+    void set_results();
+    void set_sldresult();
+
+    void set_layouts();
+    void set_signals();
+
+    void show_sld_error_message();
 
     QString result_string(double value, double error);
+    QString mantissa_string(QString value);
 private slots:
-    void pressCalculateButton();
-
+    void press_calculate_button();
 public:
-
     MainWindow(QWidget *parent = nullptr);
-    // void show();
     ~MainWindow();
 };
 #endif // MAINWINDOW_H

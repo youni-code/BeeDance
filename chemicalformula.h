@@ -3,6 +3,7 @@
 #include <QString>
 #include "simpleformulaelement.h"
 #include "chemicalformulachecking.h"
+// #include "calculation.h"
 
 
 class ChemicalFormula

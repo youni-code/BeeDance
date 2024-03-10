@@ -18,3 +18,8 @@ Element DataTableSLD::getElement(const QString symb, const unsigned long nucl) c
             return (*it);
     return Element("", 0);
 }
+
+Element DataTableSLD::getElement(const SimpleFormulaElement &el) const
+{
+    return getElement(el.symbol(), el.nucleons());
+}

@@ -9,20 +9,17 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QString>
-
 #include <QRegularExpression>
 
-void MainWindow::createmenubar()
+void MainWindow::set_menubar()
 {
-
     QMenu *menu_file = new QMenu("File", main_menubar);
     menu_file->addAction("Open...");
     menu_file->addSeparator();
     menu_file->addAction("Save");
     menu_file->addAction("Save as...");
     menu_file->addSeparator();
-    QAction *a = menu_file->addAction("Exit");
-
+    menu_file->addAction("Exit");
 
     QMenu *menu_help = new QMenu("Help", main_menubar);
     menu_help->addAction("Help...");
@@ -30,22 +27,14 @@ void MainWindow::createmenubar()
     QMenu *menu_view = new QMenu("View");
     menu_view->addAction("Style...");
 
-
-
     main_menubar->addMenu(menu_file);
     main_menubar->addMenu(menu_view);
     main_menubar->addSeparator();
     main_menubar->addMenu(menu_help);
-
-    valid_double = new QDoubleValidator();
-    valid_double->setLocale(QLocale::English);
-
 }
-void MainWindow::createstatusbar() {  }
-
-void MainWindow::error_message()
+void MainWindow::show_sld_error_message()
 {
-    result_LineEdit->setText("Error!");
+    sldresult_LineEdit->setText("Error!");
     if(!core->is_line_correct())
         return main_statusbar->showMessage("Error! Something wrong with the input line", 5000);
     if(!core->is_density_correct())
@@ -55,122 +44,159 @@ void MainWindow::error_message()
 
     return;
 }
-QWidget* MainWindow::setChemicalLine()
+void MainWindow::set_widgets()
 {
+    set_chemicalline();
+    set_densityline();
+    set_results();
 
-    formula_TextEdit->setUndoRedoEnabled(true);
+    this->setMenuBar(main_menubar);
+    this->setStatusBar(main_statusbar);
+}
 
-
-    chemicalLayout->addWidget(formula_TextEdit);
-    chemicalLayout->addWidget(formula_Label);
-
-    chemical_sublayout->addWidget(new QLabel("Density:"));
-    chemical_sublayout->addWidget(density_LineEdit);
-    chemical_sublayout->addStretch(1);
-    chemical_sublayout->addWidget(calculate_PushButton);
-    chemicalLayout->addLayout(chemical_sublayout);
-    chemicalLayout->addStretch(10);
-
-    chemicalLayout->addWidget(result_LineEdit);
-
-
-
+void MainWindow::set_chemicalline()
+{
     auto f = formula_TextEdit->font();
     f.setPointSize(16);
 
-
-    connect(formula_TextEdit, SIGNAL(changeFormula(QString)), formula_Label, SLOT(setFormula(QString)));
-    //formula_Label->setAlignment(Qt::AlignCenter);
     formula_Label->setFont(f);
 
     formula_TextEdit->setAcceptRichText(false);
     formula_TextEdit->setText("H2ONeCaMgFeCo");
     formula_TextEdit->setMaximumHeight(1.2 * density_LineEdit->height());
     formula_TextEdit->setFont(f);
-
-
-    density_LineEdit->setValidator(valid_double);
-    density_LineEdit->setText("1.0");
-
-    chemicalLayout->setAlignment(Qt::AlignTop);
-    centralWidget->setLayout(chemicalLayout);
-
-    return centralWidget;
-
 }
 
-void MainWindow::setSignals()
+void MainWindow::set_densityline()
 {
-    connect(calculate_PushButton, SIGNAL(pressed()), this, SLOT(pressCalculateButton()));
+    density_LineEdit->setValidator(new QDoubleValidator());
+    density_LineEdit->setText("1.0");
+
+    density_ComboBox->addItem("g/cm³");
+
+    calculate_PushButton->setText("Run");
+}
+
+void MainWindow::set_results()
+{
+    set_sldresult();
+}
+
+void MainWindow::set_sldresult()
+{
+    sldresult_Label->setText("SLD");
+    sldresult_LineEdit->setReadOnly(true);
+    sldresult_combobox->addItem("1/Å²");
+}
+
+void MainWindow::set_layouts()
+{
+    central_widget->setLayout(chemical_layout);
+
+    chemical_layout->addWidget(formula_TextEdit);
+    chemical_layout->addWidget(formula_Label);
+    chemical_layout->setAlignment(Qt::AlignTop);
+
+
+    density_sublayout->addWidget(new QLabel("Density:"));
+    density_sublayout->addWidget(density_LineEdit);
+    density_sublayout->addWidget(density_ComboBox);
+    density_sublayout->addWidget(calculate_PushButton);
+
+    chemical_layout->addLayout(density_sublayout);
+    chemical_layout->addStretch(10);
+
+    sldresult_sublayout->addWidget(sldresult_Label);
+    sldresult_sublayout->addWidget(sldresult_LineEdit);
+    sldresult_sublayout->addWidget(sldresult_combobox);
+
+    chemical_layout->addLayout(sldresult_sublayout);
+}
+
+void MainWindow::set_signals()
+{
+    connect(formula_TextEdit, SIGNAL(changeFormula(QString)), formula_Label, SLOT(setFormula(QString)));
+    connect(calculate_PushButton, SIGNAL(pressed()), this, SLOT(press_calculate_button()));
+
+    emit formula_TextEdit->changeFormula(formula_TextEdit->toPlainText());
 }
 
 void MainWindow::initialize()
 {
     core = new CoreSLD();
 
-    centralWidget = new QWidget(this);
+    central_widget = new QWidget(this);
+
+    main_menubar = new QMenuBar(central_widget);
+    main_statusbar = new QStatusBar(central_widget);
+
+
+    chemical_layout =        new QVBoxLayout(central_widget);
     formula_TextEdit = new ChemicalTextEdit();
     formula_Label = new ChemicalLabel();
 
-    density_LineEdit = new QLineEdit(centralWidget);
-    calculate_PushButton = new QPushButton("Run", centralWidget);
-    result_LineEdit = new QLineEdit(centralWidget);
-    result_LineEdit->setPlaceholderText("Result");
 
-    chemicalLayout = new QVBoxLayout(centralWidget);
+    density_sublayout =    new QHBoxLayout();
+    sldresult_sublayout =      new QHBoxLayout();
 
-    chemical_sublayout = new QHBoxLayout();
+    density_LineEdit = new QLineEdit(central_widget);
+    density_ComboBox = new QComboBox();
+    calculate_PushButton = new QPushButton(central_widget);
 
-    main_menubar = new QMenuBar(centralWidget);
-    main_statusbar = new QStatusBar(centralWidget);
 
+    sldresult_Label = new QLabel();
+    sldresult_LineEdit = new QLineEdit(central_widget);
+
+    sldresult_combobox =  new QComboBox();
 }
 
 QString MainWindow::result_string(double value, double error)
 {
-    double exp_value = std::floor(std::log10(value));
-    double exp_error = std::floor(std::log10(error));
+    double exp_value = std::floor(std::log10(std::abs(value)));
+    double exp_error = std::floor(std::log10(std::abs(error)));
 
     double min_exp = std::min(exp_value, exp_error);
 
+    double mantissa_value = std::round(value / std::pow(10, min_exp - 1)); // мантисса без дробной части
+    double mantissa_error = std::round(error / std::pow(10, min_exp - 1)); // мантисса без дробной части
 
 
+    QString result = mantissa_string(QString::number(std::round(value / std::pow(10, min_exp - 1))));
+    QString value_str = QString::number(std::copysign(mantissa_value, value) * std::pow(10, min_exp - 1));
+    qDebug() << value_str << "count of digits: "<< value_str.count("[0-9]");
+    qDebug() << "value_str" << value_str;
 
-    qDebug() << exp_value << " " << exp_error;
-    qDebug() << value / std::pow(10, min_exp - 1) << " " << error / std::pow(10, min_exp - 1);
-    qDebug() << std::round(value / std::pow(10, min_exp - 1)) << " " << std::round(error / std::pow(10, min_exp - 1));
+    if(value_str.split('e').size() == 2)
+        result += "(" + QString::number(mantissa_error) + ")E" + value_str.split('e').last();
+    else
+        result += "(" + QString::number(mantissa_error) + ")";
 
-    qDebug() << std::round(value / std::pow(10, min_exp - 1)) * std::pow(10, min_exp - 1);
-
-    auto num = QString::number(std::round(value / std::pow(10, min_exp - 1)) * std::pow(10, min_exp - 1));
-    qDebug() << num;
-    auto mantisa = num.split('e').first();
-    num.removeFirst();
-    auto ex = "E" + num.split('e').last();
-    if(num.isEmpty()) ex = "";
-    auto err = QString::number(std::round(error / std::pow(10, min_exp - 1)));
-
-    // QStringList;
-    qDebug() << mantisa + "(" + err + ")" + ex;
-
-    return QString();
+    return result;
 }
 
-void MainWindow::pressCalculateButton()
+QString MainWindow::mantissa_string(QString value)
+{
+    if(value[0] == '-')
+        value.insert(2, ".");
+    else
+        value.insert(1, ".");
+    return value;
+}
+
+void MainWindow::press_calculate_button()
 {
     main_statusbar->showMessage("Calculating...");
 
     core->setFormula(formula_TextEdit->toPlainText());
     core->setDensity(density_LineEdit->text().toDouble());
 
-    if(!core->is_correct())
-        return error_message();
+    if(!core->is_correct()) return show_sld_error_message();
 
     double result = core->get_sld();
     double error = core->get_sld_err();
-    result_string(result, error);
 
-    result_LineEdit->setText(QString::number(result) + "±" + QString::number(error));
+    sldresult_LineEdit->setText(result_string(result, error));
+
     main_statusbar->showMessage("Completed", 5000);
 }
 
@@ -179,16 +205,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     initialize();
-    createmenubar();
-    createstatusbar();
-    setChemicalLine();
-    this->setWindowTitle("SLD Calculator");
-    this->setCentralWidget(centralWidget);
+    set_menubar();
+    set_widgets();
+    set_layouts();
+    this->setWindowTitle("BeeDance");
+    this->setCentralWidget(central_widget);
 
-    this->setMenuBar(main_menubar);
-    this->setStatusBar(main_statusbar);
-
-    setSignals();
+    set_signals();
 }
 
 MainWindow::~MainWindow()

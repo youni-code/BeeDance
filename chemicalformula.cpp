@@ -6,6 +6,7 @@ QString ChemicalFormula::getLine(QString::ConstIterator cbegin, QString::ConstIt
 {
     QString result;
 
+
     if(cbegin == nullptr || cend == nullptr) return result;
 
     for(auto it(cbegin); it != cend; it++) result.push_back(*it);

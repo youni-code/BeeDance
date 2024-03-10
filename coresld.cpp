@@ -16,9 +16,9 @@ double CoreSLD::full_mass(QString line)
 
 double CoreSLD::calculate_sld(QString line)
 {
-    if(!isMultiFormula(line)) return calculate_singlesld(line);
+    if(!isMultiFormula(line))
+        return calculate_singlesld(line);
     return calculate_multisld(line);
-    return 0.0;
 }
 
 double CoreSLD::calculate_multisld(QString line)
@@ -37,7 +37,6 @@ double CoreSLD::calculate_multisld(QString line)
     }
 
     return calculate_singlesld(formula_for_single);
-
 }
 
 
@@ -57,10 +56,8 @@ double CoreSLD::calculate_singlesld(std::vector<SimpleFormulaElement> elem_vec)
     {
         a_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_mass();
         b_formula += it->index() * dt_sld->getElement(it->symbol(), it->nucleons()).get_bc().real() * std::pow(10, -5);
-
     }
     return (density_ * b_formula) / (a_formula * 1.660153907) ;
-
 }
 
 double CoreSLD::calculate_singlesld_err(QString line)
@@ -82,7 +79,6 @@ double CoreSLD::calculate_singlesld_err(std::vector<SimpleFormulaElement> elem_v
         b_formula += sq_b * sq_b;
     }
     return (density_ * std::pow(b_formula, 0.5)) / (a_formula * 1.660153907);
-
 }
 
 bool CoreSLD::isMultiFormula(QString line)
@@ -106,7 +102,6 @@ double CoreSLD::read_value_squarebrackets(QString line)
     }
     qDebug() << number.toDouble();
     return number.toDouble();
-
 }
 
 std::vector<SimpleFormulaElement> CoreSLD::subcalculate_subline(QString line)
@@ -158,7 +153,6 @@ bool CoreSLD::is_all_data_exist()
     }
 
     return true;
-
 }
 
 
