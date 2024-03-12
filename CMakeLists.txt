@@ -36,6 +36,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         chemicallabel.h chemicallabel.cpp
         chemicalformulachecking.h chemicalformulachecking.cpp
         calculationsld.h calculationsld.cpp
+        chemicalformulaelement.h chemicalformulaelement.cpp
 
         # tests/test_datatablesld/CMakeLists.txt
         # tests/test_datatablesld/t_datatablesld.cpp

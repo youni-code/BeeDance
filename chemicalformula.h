@@ -44,9 +44,7 @@ public:
     void setFormula(QString line) { formula = line; vec = getElements(line); cfch.set_line(line); }
     std::vector<SimpleFormulaElement> getElements() { return getElements(formula); }
 
-
     void multiple_by_index(std::vector<SimpleFormulaElement>& vec, double index) { for(auto it(vec.begin()); it != vec.end(); it++) it->mult(index); }
-
     bool is_correct();
 };
 

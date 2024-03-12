@@ -7,9 +7,7 @@ DataTableSLD::DataTableSLD()
 {
     auto read = new ReadDataFiles();
     set_elements = read->getElements();
-    delete read;
 }
-
 
 Element DataTableSLD::getElement(const QString symb, const unsigned long nucl) const
 {
@@ -21,5 +19,6 @@ Element DataTableSLD::getElement(const QString symb, const unsigned long nucl) c
 
 Element DataTableSLD::getElement(const SimpleFormulaElement &el) const
 {
+    qDebug() << "simpleformulaelement: " << el.symbol() << "nucleons: " << el.nucleons();
     return getElement(el.symbol(), el.nucleons());
 }
