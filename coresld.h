@@ -17,32 +17,14 @@ private:
     QString str_formula;
     CalculationSLD *calc_sld = nullptr;
 
-
     double full_mass(QString);
 
-    double calculate_sld(QString);
-    double calculate_sld_err(QString);
-
-    double calculate_multisld(QString);
-    double calculate_multisld_err();
-    double calculate_multisld_err(QString);
-
-    double calculate_singlesld() { return calc_sld->get_real_sld(); }
-
-    double calculate_singlesld_err(QString);
-    double calculate_singlesld_err(std::vector<SimpleFormulaElement>);
-
-    bool isMultiFormula(QString line) { return line.contains(']'); }
     double read_value_squarebrackets(QString);
     std::vector<SimpleFormulaElement> subcalculate_subline(QString);
-    QString delete_squarebrackets(QString);
-
     std::vector<ChemicalFormulaElement> to_chemical_formula_element(std::vector<SimpleFormulaElement>);
-    std::vector<ChemicalFormulaElement> to_chemical_formula_element();
 
     std::vector<SimpleFormulaElement> multiformula_to_singleformula(QString);
-
-
+    bool isMultiFormula(QString line) { return line.contains(']'); }
 
 public:
     CoreSLD();
@@ -52,11 +34,11 @@ public:
     bool is_density_correct() { return density_ > 0.0; };
     bool is_all_data_exist();
 
-    void setFormula(QString formula) { chem_formula->setFormula(str_formula = formula); }
+    void setFormula(QString formula);
     void setDensity(double density) { density_ = density; };
 
-    double get_sld() { return calculate_sld(str_formula); }
-    double get_sld_err() { return calculate_singlesld_err(str_formula); }
+    double get_sld();
+    double get_sld_err();
 
 };
 

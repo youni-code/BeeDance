@@ -8,13 +8,11 @@
 
 class ChemicalFormula
 {
-
     std::vector<SimpleFormulaElement> vec;
     QString formula;
     ChemicalFormulaChecking cfch;
 
 private:
-
     std::pair<QString::ConstIterator, QString::ConstIterator> brackets_index_inside(QString const &);
     std::pair<QString::ConstIterator, QString::ConstIterator> brackets_inside(QString const &);
     double get_index(QString const &);
@@ -31,15 +29,12 @@ private:
     QString del_firstElement(QString const line);
 
 
-
-
     std::vector<SimpleFormulaElement> getElements(QString);
 
     bool is_multiformula(QString);
     bool is_multiformula() { return is_multiformula(formula); };
 
 public:
-
     ChemicalFormula(QString = "");
     void setFormula(QString line) { formula = line; vec = getElements(line); cfch.set_line(line); }
     std::vector<SimpleFormulaElement> getElements() { return getElements(formula); }
