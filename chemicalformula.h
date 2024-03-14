@@ -3,11 +3,14 @@
 #include <QString>
 #include "simpleformulaelement.h"
 #include "chemicalformulachecking.h"
+#include "datatablesld.h"
 // #include "calculation.h"
 
 
 class ChemicalFormula
 {
+
+
     std::vector<SimpleFormulaElement> vec;
     QString formula;
     ChemicalFormulaChecking cfch;
@@ -35,12 +38,15 @@ private:
     bool is_multiformula() { return is_multiformula(formula); };
 
 public:
-    ChemicalFormula(QString = "");
-    void setFormula(QString line) { formula = line; vec = getElements(line); cfch.set_line(line); }
-    std::vector<SimpleFormulaElement> getElements() { return getElements(formula); }
+    ChemicalFormula(QString line = "");
+    void setFormula(QString line);
+    std::vector<SimpleFormulaElement> getElements();
 
-    void multiple_by_index(std::vector<SimpleFormulaElement>& vec, double index) { for(auto it(vec.begin()); it != vec.end(); it++) it->mult(index); }
-    bool is_correct();
+    void multiple_by_index(std::vector<SimpleFormulaElement>& vec, double index);
+    bool is_correct()
+    {
+        return cfch.is_correct();
+    }
 };
 
 #endif // CHEMICALFORMULA_H

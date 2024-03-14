@@ -1,19 +1,45 @@
 #include "element.h"
 
 
+void Element::set_mass(double value)
+{
+    is_mass = true;
+    mass = value;
+}
+
+void Element::set_bc(std::complex<double> value)
+{
+    is_bc = true;
+    bc = value;
+}
+
+void Element::set_bi(std::complex<double> value)
+{
+    is_bi = true;
+    bi = value;
+}
+
+void Element::set_sigmaa(double value)
+{
+    is_sigma_a = true;
+    sigma_a = value;
+}
+
+
 Element::Element(QString elem, unsigned long atom_num, unsigned long c_nucleons)
 {
-    symbol = elem;
+    symbol_ = elem;
     atomic_number = atom_num;
-    count_nucleons = c_nucleons;
+    count_nucleons_ = c_nucleons;
 
     is_mass = false;
     is_bc = false;
+    is_bi = false;
 }
 
 bool Element::operator==(const Element &el) const
 {
-    if(this->symbol == el.symbol && this->count_nucleons == el.count_nucleons)
+    if(this->symbol_ == el.symbol_ && this->count_nucleons_ == el.count_nucleons_)
         return true;
 
     return false;

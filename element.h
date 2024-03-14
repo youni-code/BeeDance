@@ -6,8 +6,8 @@
 
 class Element
 {
-    QString symbol;
-    unsigned long count_nucleons;
+    QString symbol_;
+    unsigned long count_nucleons_;
 
     double conc;
     double mass;
@@ -31,25 +31,25 @@ class Element
     bool is_sigma_a;
 
 public:
-    bool is_empty() { return symbol == "";};
+    bool is_empty() { return symbol_ == "";};
 
-    void set_mass(double value) 					{ mass = value; }
+    void set_mass(double);
     void set_concentrate(double co) 				{ conc = co; }
     void set_atomic_number(unsigned long atom) 		{ atomic_number = atom; }
 
-    void set_bc(std::complex<double> value) 		{ bc = value; }
-    void set_bi(std::complex<double> value) 		{ bi = value; }
-    void set_sigmaa(double value) 					{ sigma_a = value; }
+    void set_bc(std::complex<double>);
+    void set_bi(std::complex<double>);
+    void set_sigmaa(double);
 
     void set_bc_error(std::complex<double> value) 	{ bc_error = value; }
     void set_bi_error(std::complex<double> value) 	{ bi_error = value; }
     void set_sigmaa_error(double value) 			{ sigma_a_error = value; }
 
 
-    QString get_symbol() const { return symbol; }
+    QString get_symbol() const { return symbol_; }
     double get_mass() const { return mass; }
     double get_concentrate() const { return conc; }
-    unsigned long get_countNucleons() const { return count_nucleons; }
+    unsigned long get_countNucleons() const { return count_nucleons_; }
     unsigned long get_atomicNumber() const { return atomic_number;  }
 
     std::complex<double> get_bc() const { return bc; }

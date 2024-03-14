@@ -1,27 +1,22 @@
 #include "chemicalformula.h"
 #include <QRegularExpression>
+#include <QRegularExpressionMatch>>
 #include <deque>
 
 QString ChemicalFormula::getLine(QString::ConstIterator cbegin, QString::ConstIterator cend)
 {
     QString result;
+    if(cbegin == nullptr || cend == nullptr)
+        return result;
+    for(auto it(cbegin); it != cend; it++)
+        result.push_back(*it);
 
-    if(cbegin == nullptr || cend == nullptr) return result;
-
-    for(auto it(cbegin); it != cend; it++) result.push_back(*it);
     return result;
 }
 
-ChemicalFormula::ChemicalFormula(QString line)
-{
-    setFormula(line);
-}
 
-bool ChemicalFormula::is_correct()
-{
-    cfch.set_line(formula);
-    return cfch.is_correct();
-}
+
+
 QString::ConstIterator ChemicalFormula::it_on_SecondElement(const QString &line)
 {
     auto it = line.cbegin();
@@ -77,11 +72,41 @@ bool ChemicalFormula::hasSquareBrackets(QString line) const
 
 bool ChemicalFormula::is_multiformula(QString line)
 {
-    for(auto it = line.cbegin(); it != line.cend(); it++)
-        if((*it) == ']')
+    for (auto &it : line)
+        if(it == ']')
             return true;
-
     return false;
+}
+
+ChemicalFormula::ChemicalFormula(QString line)
+{
+    setFormula(line);
+}
+
+void ChemicalFormula::setFormula(QString line)
+{
+    formula = line;
+    vec = getElements(line);
+    cfch.set_line(line);
+}
+
+std::vector<SimpleFormulaElement> ChemicalFormula::getElements()
+{
+    // QRegularExpression reg("([\\^](?<count>[0-9]*))?(?<element>[A-Z][a-z]*)(?<index>([0-9]*[.][0-9]*)|([0-9]*))?");
+    // QString line = formula;
+
+    // qDebug() << "GetElements: " << line << ", " << reg.match(line).captured("count");
+    // qDebug() << "GetElements: " << line << ", " << reg.match(line).captured("element");
+    // qDebug() << "GetElements: " << line << ", " << reg.match(line).captured("index");
+    // qDebug() << "GetElements: " << line << ", " << reg.match(line).captured();
+
+    return getElements(formula);
+}
+
+void ChemicalFormula::multiple_by_index(std::vector<SimpleFormulaElement> &vec, double index)
+{
+    for(auto &it : vec)
+        it.mult(index);
 }
 
 std::pair<QString::ConstIterator, QString::ConstIterator> ChemicalFormula::brackets_index_inside(QString const &line)
@@ -160,19 +185,19 @@ std::pair<QString::ConstIterator, QString::ConstIterator> ChemicalFormula::brack
 }
 double ChemicalFormula::get_index(const QString &line)
 {
-    if(!hasBrackets(line)) return 0.0;
+    if(!hasBrackets(line))
+        return 0.0;
 
     QString::ConstIterator temp_it = line.cend();
     for(auto it(line.cbegin()); it != line.cend(); it++) { if(*it == ')') temp_it = it; }
 
     temp_it++;
 
-    if(temp_it == line.cend()) return 1.0;
-
+    if(temp_it == line.cend())
+        return 1.0;
     QString str_index = getLine(temp_it, line.cend());
 
     return str_index.toDouble();
-
 }
 
 
@@ -180,14 +205,10 @@ std::vector<SimpleFormulaElement> ChemicalFormula::getElements(QString subformul
 {
     std::vector<SimpleFormulaElement> result;
     cfch.set_line(subformula);
-    if(!cfch.is_correct())
-    {
-        qDebug() << subformula << ": incorrect";
-        return result;
-    }
+
+    if(!cfch.is_correct()) return result;
 
     QString temp_formula = subformula;
-
 
     while(hasBrackets(temp_formula))
     {

@@ -9,7 +9,7 @@
 
 class CoreSLD : public QObject
 {
-    Q_OBJECT
+    // Q_OBJECT
 private:
     double density_;
     ChemicalFormula *chem_formula = nullptr;
@@ -17,6 +17,7 @@ private:
     QString str_formula;
     CalculationSLD *calc_sld = nullptr;
 
+private:
     double full_mass(QString);
 
     double read_value_squarebrackets(QString);
@@ -35,7 +36,7 @@ public:
     bool is_all_data_exist();
 
     void setFormula(QString formula);
-    void setDensity(double density) { density_ = density; };
+    void setDensity(double density);;
 
     double get_sld();
     double get_sld_err();

@@ -85,8 +85,12 @@ void CoreSLD::setFormula(QString formula)
     str_formula = formula;
 
     chem_formula->setFormula(formula);
-    calc_sld->set_density(density_);
     calc_sld->set_elements(to_chemical_formula_element(multiformula_to_singleformula(formula)));
+}
+void CoreSLD::setDensity(double density)
+{
+    density_ = density;
+    calc_sld->set_density(density_);
 }
 
 double CoreSLD::get_sld()
@@ -94,6 +98,7 @@ double CoreSLD::get_sld()
     chem_formula->setFormula(str_formula);
     calc_sld->set_density(density_);
     calc_sld->set_elements(to_chemical_formula_element(multiformula_to_singleformula(str_formula)));
+    qDebug() << " not error " << calc_sld->get_real_sld();
     return calc_sld->get_real_sld();
 }
 
@@ -101,6 +106,8 @@ double CoreSLD::get_sld_err()
 {
     chem_formula->setFormula(str_formula);
     calc_sld->set_density(density_);
+    for(auto &it : chem_formula->getElements()) qDebug() << "get_sld_err: " << it.symbol() << it.index();
     calc_sld->set_elements(to_chemical_formula_element(chem_formula->getElements()));
+    // qDebug() << " error " << calc_sld->get_real_sld_error();
     return calc_sld->get_real_sld_error();
 }
