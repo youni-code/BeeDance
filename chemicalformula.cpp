@@ -93,14 +93,6 @@ void ChemicalFormula::setFormula(QString line)
 
 std::vector<SimpleFormulaElement> ChemicalFormula::getElements()
 {
-    // QRegularExpression reg("([\\^](?<count>[0-9]*))?(?<element>[A-Z][a-z]*)(?<index>([0-9]*[.][0-9]*)|([0-9]*))?");
-    // QString line = formula;
-
-    // qDebug() << "GetElements: " << line << ", " << reg.match(line).captured("count");
-    // qDebug() << "GetElements: " << line << ", " << reg.match(line).captured("element");
-    // qDebug() << "GetElements: " << line << ", " << reg.match(line).captured("index");
-    // qDebug() << "GetElements: " << line << ", " << reg.match(line).captured();
-
     return getElements(formula);
 }
 
