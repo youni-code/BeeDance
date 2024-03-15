@@ -46,6 +46,7 @@ SimpleFormulaElement ChemicalFormula::readIsotope(QString line)
     QString id(getLine(it, line.cend()));
     double index = id.toDouble();
     if(id.isEmpty()) index = 1.0;
+    else if(id[0] == '[') index = 1.0;
 
     SimpleFormulaElement el(element, nucleons);
     el.setindex(index);
