@@ -98,19 +98,26 @@ void MainWindow::set_layouts()
     chemical_layout->setAlignment(Qt::AlignTop);
 
 
+    chemical_layout->addLayout(density_sublayout);
     density_sublayout->addWidget(new QLabel("Density:"));
     density_sublayout->addWidget(density_LineEdit);
     density_sublayout->addWidget(density_ComboBox);
     density_sublayout->addWidget(calculate_PushButton);
 
-    chemical_layout->addLayout(density_sublayout);
     chemical_layout->addStretch(10);
 
+
+    chemical_layout->addLayout(sldresult_sublayout);
     sldresult_sublayout->addWidget(sldresult_Label);
     sldresult_sublayout->addWidget(sldresult_LineEdit);
     sldresult_sublayout->addWidget(sldresult_combobox);
 
-    chemical_layout->addLayout(sldresult_sublayout);
+
+    chemical_layout->addLayout(r2_layout);
+    r2_layout->addWidget(r2_label);
+    r2_layout->addWidget(r2_lineedit);
+    r2_layout->addWidget(r2_combobox);
+
 }
 
 void MainWindow::set_signals()
@@ -137,17 +144,20 @@ void MainWindow::initialize()
 
 
     density_sublayout =    new QHBoxLayout();
-    sldresult_sublayout =      new QHBoxLayout();
-
     density_LineEdit = new QLineEdit(central_widget);
     density_ComboBox = new QComboBox();
     calculate_PushButton = new QPushButton(central_widget);
 
 
+    sldresult_sublayout =      new QHBoxLayout();
     sldresult_Label = new QLabel();
     sldresult_LineEdit = new QLineEdit(central_widget);
-
     sldresult_combobox =  new QComboBox();
+
+    r2_layout = new QHBoxLayout();
+    r2_label = new QLabel();
+    r2_lineedit = new QLineEdit();
+    r2_combobox = new QComboBox();
 }
 
 QString MainWindow::result_string(double value, double error)

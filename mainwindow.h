@@ -40,6 +40,11 @@ class MainWindow : public QMainWindow
     QLineEdit   *sldresult_LineEdit = nullptr;
     QComboBox   *sldresult_combobox = nullptr;
 
+    QHBoxLayout *r2_layout = nullptr;
+    QLabel      *r2_label = nullptr;
+    QLineEdit   *r2_lineedit = nullptr;
+    QComboBox   *r2_combobox = nullptr;
+
     void initialize();
 
     void set_menubar();
