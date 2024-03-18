@@ -16,6 +16,7 @@ class Element
     std::complex<double> bc;
     std::complex<double> bi;
     double sigma_a;
+    double sigma_i;
 
     std::complex<double> bc_error;
     std::complex<double> bi_error;
@@ -29,6 +30,7 @@ class Element
     bool is_bc;
     bool is_bi;
     bool is_sigma_a;
+    bool is_sigma_i;
 
 public:
     bool is_empty() { return symbol_ == "";};
@@ -40,6 +42,7 @@ public:
     void set_bc(std::complex<double>);
     void set_bi(std::complex<double>);
     void set_sigmaa(double);
+    void set_sigmai(double);
 
     void set_bc_error(std::complex<double> value) 	{ bc_error = value; }
     void set_bi_error(std::complex<double> value) 	{ bi_error = value; }

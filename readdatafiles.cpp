@@ -43,6 +43,8 @@ void ReadDataFiles::writeData(QStringList list)
     auto sigma= list.at(11).toDouble();
     auto sigmae= list.at(12).toDouble();
 
+    auto sigmai = list.at(13).toDouble();
+
 
     Element temp_element(symb, atom_numb, c_isotop);
     if(list.at(3) != "---") { temp_element.set_mass(mass); }
@@ -62,6 +64,10 @@ void ReadDataFiles::writeData(QStringList list)
     {
         temp_element.set_sigmaa(sigma);
         temp_element.set_sigmaa_error(sigmae);
+    }
+    if(list.at(13) != "---")
+    {
+        temp_element.set_sigmai(sigmai);
     }
 
     set_Elements.push_back(temp_element);

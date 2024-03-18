@@ -25,6 +25,12 @@ void Element::set_sigmaa(double value)
     sigma_a = value;
 }
 
+void Element::set_sigmai(double value)
+{
+    is_sigma_i = true;
+    sigma_i = value;
+}
+
 
 Element::Element(QString elem, unsigned long atom_num, unsigned long c_nucleons)
 {
@@ -35,6 +41,8 @@ Element::Element(QString elem, unsigned long atom_num, unsigned long c_nucleons)
     is_mass = false;
     is_bc = false;
     is_bi = false;
+    is_sigma_a = false;
+    is_sigma_i = false;
 }
 
 bool Element::operator==(const Element &el) const
