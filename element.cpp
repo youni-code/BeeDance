@@ -4,38 +4,38 @@
 void Element::set_mass(double value)
 {
     is_mass = true;
-    mass = value;
+    mass_ = value;
 }
 
 void Element::set_bc(std::complex<double> value)
 {
     is_bc = true;
-    bc = value;
+    bc_ = value;
 }
 
 void Element::set_bi(std::complex<double> value)
 {
     is_bi = true;
-    bi = value;
+    bi_ = value;
 }
 
 void Element::set_sigmaa(double value)
 {
     is_sigma_a = true;
-    sigma_a = value;
+    sigma_a_ = value;
 }
 
 void Element::set_sigmai(double value)
 {
     is_sigma_i = true;
-    sigma_i = value;
+    sigma_i_ = value;
 }
 
 
 Element::Element(QString elem, unsigned long atom_num, unsigned long c_nucleons)
 {
     symbol_ = elem;
-    atomic_number = atom_num;
+    atomic_number_ = atom_num;
     count_nucleons_ = c_nucleons;
 
     is_mass = false;
