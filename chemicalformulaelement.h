@@ -12,7 +12,7 @@ public:
 
     Element* element() { return element_; }
     double index() { return index_; }
-    double mass() { return index_ * element_->get_mass(); }
+    double mass() { return index_ * element_->mass(); }
 
     void set_element(Element element) { element_ = new Element(element); }
     void set_index(double index) { index_ = index; }

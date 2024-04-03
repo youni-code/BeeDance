@@ -47,27 +47,27 @@ void ReadDataFiles::writeData(QStringList list)
 
 
     Element temp_element(symb, atom_numb, c_isotop);
-    if(list.at(3) != "---") { temp_element.set_mass(mass); }
-    if(list.at(4) != "---") {temp_element.set_concentrate(conc); }
+    if(list.at(3) != "---") { temp_element.mass(mass); }
+    if(list.at(4) != "---") {temp_element.concentrate(conc); }
 
     if(list.at(5) != "---")
     {
-        temp_element.set_bc(bc);
-        temp_element.set_bc_error(bce);
+        temp_element.bc(bc);
+        temp_element.bc_err(bce);
     }
     if(list.at(7) != "---")
     {
-        temp_element.set_bi(std::complex(rbi,ibi));
-        temp_element.set_bi_error(std::complex(rbie, ibie));
+        temp_element.bi(std::complex(rbi,ibi));
+        temp_element.bi_err(std::complex(rbie, ibie));
     }
     if(list.at(11) != "---")
     {
-        temp_element.set_sigmaa(sigma);
-        temp_element.set_sigmaa_error(sigmae);
+        temp_element.sigma_a(sigma);
+        temp_element.sigma_a_err(sigmae);
     }
     if(list.at(13) != "---")
     {
-        temp_element.set_sigmai(sigmai);
+        temp_element.sigma_i(sigmai);
     }
 
     set_Elements.push_back(temp_element);
@@ -77,7 +77,7 @@ void ReadDataFiles::writeData(QStringList list)
 
 void ReadDataFiles::show(Element el)
 {
-    qDebug() << el.get_symbol() << "\t" << el.get_mass() << "\t" << el.get_bc().real() << "\t" << el.get_bi().real() << " " << el.get_bi().imag() << "i\t";
+    qDebug() << el.symbol() << "\t" << el.mass() << "\t" << el.bc().real() << "\t" << el.bi().real() << " " << el.bi().imag() << "i\t";
 }
 
 

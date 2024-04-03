@@ -12,7 +12,7 @@ DataTableSLD::DataTableSLD()
 Element DataTableSLD::getElement(const QString symb, const unsigned long nucl) const
 {
     for(auto it = set_elements.cbegin(); it != set_elements.cend(); it++)
-        if(it->get_symbol() == symb && it->get_countNucleons() == nucl)
+        if(it->symbol() == symb && it->nucleons() == nucl)
             return (*it);
     return Element("", 0);
 }

@@ -34,7 +34,7 @@ void MainWindow::set_menubar()
 }
 void MainWindow::show_sld_error_message()
 {
-    sldresult_LineEdit->setText("Error!");
+    rl_sld->setResult("Error!");
     if(!core->is_line_correct())
         return main_statusbar->showMessage("Error! Something wrong with the input line", 5000);
     if(!core->is_density_correct())
@@ -79,14 +79,19 @@ void MainWindow::set_densityline()
 
 void MainWindow::set_results()
 {
-    set_sldresult();
+    rl_sld->setText("SLD", "1/Å²");
+    rl_pot_v->setText("Π<sub>V</sub>", "neV");
+    rl_ch_wl->setText("λ<sub>c</sub>", "---");
+    rl_cr_ang->setText("θ<sub>c</sub>", "---");
+
+    rl_cr_mom->setText("q<sub>c</sub>", "1/cm");
+    rl_atl_c->setText("μ", "1/cm");
+    rl_absorb->setText("μ<sub>α</sub>", "1/cm");
+    rl_scatt->setText("μ<sub>inc</sub>", "1/cm");
 }
 
 void MainWindow::set_sldresult()
 {
-    sldresult_Label->setText("SLD");
-    sldresult_LineEdit->setReadOnly(true);
-    sldresult_combobox->addItem("1/Å²");
 }
 
 void MainWindow::set_layouts()
@@ -107,16 +112,16 @@ void MainWindow::set_layouts()
     chemical_layout->addStretch(10);
 
 
-    chemical_layout->addLayout(sldresult_sublayout);
-    sldresult_sublayout->addWidget(sldresult_Label);
-    sldresult_sublayout->addWidget(sldresult_LineEdit);
-    sldresult_sublayout->addWidget(sldresult_combobox);
+    chemical_layout->addWidget(rl_sld);
+    chemical_layout->addWidget(rl_pot_v);
+    chemical_layout->addWidget(rl_ch_wl);
+    chemical_layout->addWidget(rl_cr_ang);
 
+    chemical_layout->addWidget(rl_cr_mom);
+    chemical_layout->addWidget(rl_atl_c);
+    chemical_layout->addWidget(rl_absorb);
+    chemical_layout->addWidget(rl_scatt);
 
-    chemical_layout->addLayout(r2_layout);
-    r2_layout->addWidget(r2_label);
-    r2_layout->addWidget(r2_lineedit);
-    r2_layout->addWidget(r2_combobox);
 
 }
 
@@ -149,15 +154,14 @@ void MainWindow::initialize()
     calculate_PushButton = new QPushButton(central_widget);
 
 
-    sldresult_sublayout =      new QHBoxLayout();
-    sldresult_Label = new QLabel();
-    sldresult_LineEdit = new QLineEdit(central_widget);
-    sldresult_combobox =  new QComboBox();
-
-    r2_layout = new QHBoxLayout();
-    r2_label = new QLabel();
-    r2_lineedit = new QLineEdit();
-    r2_combobox = new QComboBox();
+    rl_sld = new ResultLine();
+    rl_pot_v = new ResultLine();
+    rl_ch_wl = new ResultLine();
+    rl_cr_ang = new ResultLine();
+    rl_cr_mom = new ResultLine();
+    rl_atl_c = new ResultLine();
+    rl_absorb = new ResultLine();
+    rl_scatt = new ResultLine();
 }
 
 QString MainWindow::result_string(double value, double error)
@@ -205,7 +209,7 @@ void MainWindow::press_calculate_button()
     double result = core->get_sld();
     double error = core->get_sld_err();
 
-    sldresult_LineEdit->setText(result_string(result, error));
+    rl_sld->setResult(result, error);
 
     main_statusbar->showMessage("Completed", 5000);
 }

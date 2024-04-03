@@ -1,31 +1,31 @@
 #include "element.h"
 
 
-void Element::set_mass(double value)
+void Element::mass(double value)
 {
     is_mass = true;
     mass_ = value;
 }
 
-void Element::set_bc(std::complex<double> value)
+void Element::bc(std::complex<double> value)
 {
     is_bc = true;
     bc_ = value;
 }
 
-void Element::set_bi(std::complex<double> value)
+void Element::bi(std::complex<double> value)
 {
     is_bi = true;
     bi_ = value;
 }
 
-void Element::set_sigmaa(double value)
+void Element::sigma_a(double value)
 {
     is_sigma_a = true;
     sigma_a_ = value;
 }
 
-void Element::set_sigmai(double value)
+void Element::sigma_i(double value)
 {
     is_sigma_i = true;
     sigma_i_ = value;

@@ -3,6 +3,7 @@
 
 #include "chemicaltextedit.h"
 #include "chemicallabel.h"
+#include "resultline.h"
 
 #include <QMainWindow>
 #include <QTextEdit>
@@ -35,15 +36,15 @@ class MainWindow : public QMainWindow
     QComboBox *density_ComboBox = nullptr;
     QPushButton *calculate_PushButton = nullptr;
 
-    QHBoxLayout *sldresult_sublayout = nullptr;
-    QLabel      *sldresult_Label = nullptr;
-    QLineEdit   *sldresult_LineEdit = nullptr;
-    QComboBox   *sldresult_combobox = nullptr;
+    ResultLine *rl_sld = nullptr;
+    ResultLine *rl_pot_v = nullptr;
+    ResultLine *rl_ch_wl = nullptr;
+    ResultLine *rl_cr_ang = nullptr;
+    ResultLine *rl_cr_mom = nullptr;
+    ResultLine *rl_atl_c = nullptr;
+    ResultLine *rl_absorb = nullptr;
+    ResultLine *rl_scatt = nullptr;
 
-    QHBoxLayout *r2_layout = nullptr;
-    QLabel      *r2_label = nullptr;
-    QLineEdit   *r2_lineedit = nullptr;
-    QComboBox   *r2_combobox = nullptr;
 
     void initialize();
 

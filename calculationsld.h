@@ -20,6 +20,16 @@ public:
 
     double get_im_sld();
     double get_im_sld_error();
+
+    double get_potential_v();
+    double get_characteristic_wavelength();
+    double get_critical_angle();
+    double get_critical_momentum();
 };
+
+inline double CalculationSLD::get_potential_v()
+{
+
+}
 
 #endif // CALCULATIONSLD_H
