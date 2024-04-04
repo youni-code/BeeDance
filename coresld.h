@@ -41,6 +41,8 @@ public:
     double get_sld();
     double get_sld_err();
 
+    double get_potv();
+
 };
 
 #endif // CORESLD_H

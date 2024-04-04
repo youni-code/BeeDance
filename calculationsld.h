@@ -8,6 +8,9 @@ class CalculationSLD
     std::vector<ChemicalFormulaElement> elements_;
     // DataTableSLD* table_;
     double density_;
+
+    double m_a = 1.66053907e-24; // g/Da
+
 public:
     CalculationSLD();
     // void set_table(DataTableSLD* table) { table_ = table; }
@@ -26,10 +29,5 @@ public:
     double get_critical_angle();
     double get_critical_momentum();
 };
-
-inline double CalculationSLD::get_potential_v()
-{
-
-}
 
 #endif // CALCULATIONSLD_H

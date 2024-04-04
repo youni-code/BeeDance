@@ -109,3 +109,8 @@ double CoreSLD::get_sld_err()
     calc_sld->set_elements(to_chemical_formula_element(chem_formula->getElements()));
     return calc_sld->get_real_sld_error();
 }
+
+double CoreSLD::get_potv()
+{
+    return calc_sld->get_potential_v();
+}

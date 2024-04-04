@@ -206,10 +206,13 @@ void MainWindow::press_calculate_button()
 
     if(!core->is_correct()) return show_sld_error_message();
 
-    double result = core->get_sld();
-    double error = core->get_sld_err();
+    double result_sld = core->get_sld();
+    double error_sld = core->get_sld_err();
 
-    rl_sld->setResult(result, error);
+    double result_pot_v = core->get_potv();
+
+    rl_sld->setResult(result_sld, error_sld);
+    rl_pot_v->setResult(result_pot_v, result_pot_v/100);
 
     main_statusbar->showMessage("Completed", 5000);
 }
