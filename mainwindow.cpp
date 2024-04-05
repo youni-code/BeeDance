@@ -212,7 +212,7 @@ void MainWindow::press_calculate_button()
     double result_pot_v = core->get_potv();
 
     rl_sld->setResult(result_sld, error_sld);
-    rl_pot_v->setResult(result_pot_v, result_pot_v/100);
+    rl_pot_v->setResult(result_pot_v);
 
     main_statusbar->showMessage("Completed", 5000);
 }

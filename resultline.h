@@ -23,6 +23,7 @@ public:
     void setText(QString label, QString combobox);
     void setResult(QString text);
     void setResult(double value, double error);
+    void setResult(double value);
     QHBoxLayout* getLayout() { return layout; };
     // void setResult(double res, double err);
 

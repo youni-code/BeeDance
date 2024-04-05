@@ -36,7 +36,8 @@ double CalculationSLD::get_real_sld_error()
 
 double CalculationSLD::get_potential_v()
 {
-    double c_lambda_mu = 1e-24 / m_a;
-    return c_lambda_mu * get_real_sld();
+    qDebug() << c_sldV;
+    qDebug() << c_lambda;
+    return c_sldV * get_real_sld();
 }
 

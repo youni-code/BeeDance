@@ -1,6 +1,6 @@
 #ifndef CALCULATIONSLD_H
 #define CALCULATIONSLD_H
-// #include "datatablesld.h"
+
 #include "chemicalformulaelement.h"
 
 class CalculationSLD
@@ -9,7 +9,21 @@ class CalculationSLD
     // DataTableSLD* table_;
     double density_;
 
-    double m_a = 1.66053907e-24; // g/Da
+    const double lambda_0 = 1.798;
+    const double pi = 3.14159265358979323846;
+    const double h = 6.6260690e-34;
+    const double m_a = 1.66053907e-24; // g/Da
+    const double u_eV = 1.6021765e-19;
+    const double m_n = 1.6749273e-27;
+    const double v = 100;
+
+    const double hcr = h / (2 * pi);
+    const double c = (hcr * hcr / m_n) * 2 * pi; ;
+    const double c_sldV = (c * 1e29) / (u_eV);
+    const double c_lambda = ((h)/(u_eV * 1e-9) * 1e10) / std::sqrt(2 * (m_n)/(u_eV * 1e-9));
+    const double lambda_c = c_lambda / std::sqrt(v);
+    const double teta_c = 1e3 / lambda_c;
+    const double q_c = 4 * pi / lambda_c;
 
 public:
     CalculationSLD();

@@ -71,3 +71,8 @@ void ResultLine::setResult(double value, double error)
     // return result;
 
 }
+
+void ResultLine::setResult(double value)
+{
+    textedit->setText(QString::number(value));
+}
