@@ -1,5 +1,10 @@
 #include "calculationsld.h"
 
+double CalculationSLD::sigma_a()
+{
+
+}
+
 CalculationSLD::CalculationSLD() {}
 
 double CalculationSLD::get_real_sld()
