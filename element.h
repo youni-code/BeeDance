@@ -57,7 +57,8 @@ public:
 
     std::complex<double> bc() const { return bc_; }
     std::complex<double> bi() const { return bi_;  }
-    std::complex<double> sigma_a() const { return sigma_a_;  }
+    double sigma_a() const { return sigma_a_;  }
+    double sigma_i() const { return sigma_i_;  }
 
     std::complex<double> bc_err() const { return bc_error_; }
     std::complex<double> bi_err() const { return bi_error_;  }

@@ -8,6 +8,7 @@ class CalculationSLD
     std::vector<ChemicalFormulaElement> elements_;
     // DataTableSLD* table_;
     double density_;
+    double lambda_;
 
     const double lambda_0 = 1.798;
     const double pi = 3.14159265358979323846;
@@ -24,6 +25,18 @@ class CalculationSLD
     const double lambda_c = c_lambda / std::sqrt(v);
     const double teta_c = 1e3 / lambda_c;
     const double q_c = 4 * pi / lambda_c;
+
+    std::complex<double> b(Element*);
+
+
+    double c_summ();
+    double sigma_a();
+    double a_mass();
+    double sigma_i();
+
+
+    double sigma_t();
+    double sigma_c();
 
 public:
     CalculationSLD();

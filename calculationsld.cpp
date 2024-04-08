@@ -1,8 +1,54 @@
 #include "calculationsld.h"
 
+
+std::complex<double> CalculationSLD::b(Element *elem)
+{
+    double real = elem->bc().real();
+    double imag = - ((elem->sigma_a() * lambda_ / lambda_0 + elem->sigma_i()) * 1e2) / (2 * lambda_ * 1e5);
+
+    return std::complex(real, imag);
+}
+
+double CalculationSLD::c_summ()
+{
+    double sum(0.0);
+    for(auto &it : elements_) sum += it.index();
+    return sum;
+}
+
 double CalculationSLD::sigma_a()
 {
+    double sigma(0);
+    for(auto &it : elements_)
+        sigma += it.index() * it.element()->sigma_a();
+    return sigma;
+}
 
+double CalculationSLD::a_mass()
+{
+    double mass(0);
+    for(auto &it : elements_)
+        mass += it.index() * it.element()->mass();
+    return mass;
+}
+
+double CalculationSLD::sigma_i()
+{
+    double sigma(0);
+    for(auto &it : elements_)
+        sigma += it.index() * it.element()->sigma_i();
+    return sigma;
+}
+
+double CalculationSLD::sigma_t()
+{
+    double result(0);
+    for(auto &it : elements_)
+    {
+        auto comp = b(it.element());
+        result +=  4 * pi * it.index() * std::sqrt(comp.imag() * comp.imag() + comp.real() * comp.real()) * 1e-2;
+    }
+    return result;
 }
 
 CalculationSLD::CalculationSLD() {}
