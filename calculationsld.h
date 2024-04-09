@@ -28,21 +28,25 @@ class CalculationSLD
 
     std::complex<double> b(Element*);
 
-
     double c_summ();
     double sigma_a();
     double a_mass();
     double sigma_i();
 
-
     double sigma_t();
     double sigma_c();
+    double sigma_i_elem();
+
+    double b_a();
+    double b_i();
+    double b_im();
 
 public:
     CalculationSLD();
     // void set_table(DataTableSLD* table) { table_ = table; }
     void set_elements(std::vector<ChemicalFormulaElement> elements) { elements_ = elements; }
     void set_density(double density) { density_ = density; }
+    void set_lambda(double lambda) { lambda_ = lambda; }
 
 
     double get_real_sld();

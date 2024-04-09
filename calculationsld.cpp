@@ -46,9 +46,41 @@ double CalculationSLD::sigma_t()
     for(auto &it : elements_)
     {
         auto comp = b(it.element());
-        result +=  4 * pi * it.index() * std::sqrt(comp.imag() * comp.imag() + comp.real() * comp.real()) * 1e-2;
+        result +=  4 * pi * it.index() *(comp.imag() * comp.imag() + comp.real() * comp.real()) * 1e-2;
     }
     return result;
+}
+
+double CalculationSLD::sigma_c()
+{
+    std::complex res(0);
+    for(auto &it : elements_)
+    {
+        std::complex comp = b(it.element());
+        res += it.index() * comp / c_summ();
+    }
+    double sigma = 4 * pi * (res.real() * res.real() + res.imag() * res.imag()) * 1e-2 * c_summ();
+    return sigma;
+}
+
+double CalculationSLD::sigma_i_elem()
+{
+    return sigma_t() - sigma_c();
+}
+
+double CalculationSLD::b_a()
+{
+    return (sigma_a() * (lambda_ / lambda_0) * 1e2) / (2 * lambda_ * 1e5);
+}
+
+double CalculationSLD::b_i()
+{
+    return ((sigma_i() + sigma_i_elem()) * 1e2) / (2 * lambda_ * 1e5);
+}
+
+double CalculationSLD::b_im()
+{
+    return b_a() + b_i();
 }
 
 CalculationSLD::CalculationSLD() {}
