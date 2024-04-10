@@ -30,7 +30,6 @@ ResultLine::ResultLine(QWidget *parent)
     label->setFixedWidth(30);
 
     combobox->setFixedWidth(80);
-    // this->setToolTip("hhhhh");
 }
 
 void ResultLine::setText(QString slabel, QString scombobox)

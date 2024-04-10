@@ -107,6 +107,12 @@ void MainWindow::set_layouts()
     density_sublayout->addWidget(new QLabel("Density:"));
     density_sublayout->addWidget(density_LineEdit);
     density_sublayout->addWidget(density_ComboBox);
+
+    chemical_layout->addLayout(lambda_sublayout);
+    lambda_sublayout->addWidget(new QLabel("λ:"));
+    lambda_sublayout->addWidget(lambda_LineEdit);
+    lambda_sublayout->addWidget(lambda_ComboBox);
+
     density_sublayout->addWidget(calculate_PushButton);
 
     chemical_layout->addStretch(10);
@@ -147,10 +153,17 @@ void MainWindow::initialize()
     formula_TextEdit = new ChemicalTextEdit();
     formula_Label = new ChemicalLabel();
 
+    lamb_dens_sublayout = new QVBoxLayout();
+    pushbutton_sublayout = new QHBoxLayout();
 
     density_sublayout =    new QHBoxLayout();
     density_LineEdit = new QLineEdit(central_widget);
     density_ComboBox = new QComboBox();
+
+    lambda_sublayout = 	new QHBoxLayout();
+    lambda_LineEdit =	new QLineEdit();
+    lambda_ComboBox = 	new QComboBox();
+
     calculate_PushButton = new QPushButton(central_widget);
 
 

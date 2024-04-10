@@ -31,9 +31,19 @@ class MainWindow : public QMainWindow
     ChemicalTextEdit *formula_TextEdit = nullptr;
     ChemicalLabel *formula_Label = nullptr;
 
+
+
     QHBoxLayout *density_sublayout = nullptr;
     QLineEdit *density_LineEdit = nullptr;
     QComboBox *density_ComboBox = nullptr;
+
+    QHBoxLayout *lambda_sublayout = nullptr;
+    QLineEdit 	*lambda_LineEdit = nullptr;
+    QComboBox 	*lambda_ComboBox = nullptr;
+
+
+    QVBoxLayout *lamb_dens_sublayout = nullptr;
+    QHBoxLayout *pushbutton_sublayout = nullptr;
     QPushButton *calculate_PushButton = nullptr;
 
     ResultLine *rl_sld = nullptr;
