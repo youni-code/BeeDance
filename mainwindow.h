@@ -34,10 +34,12 @@ class MainWindow : public QMainWindow
 
 
     QHBoxLayout *density_sublayout = nullptr;
+    QLabel *density_label = nullptr;
     QLineEdit *density_LineEdit = nullptr;
     QComboBox *density_ComboBox = nullptr;
 
     QHBoxLayout *lambda_sublayout = nullptr;
+    QLabel 		*lambda_label = nullptr;
     QLineEdit 	*lambda_LineEdit = nullptr;
     QComboBox 	*lambda_ComboBox = nullptr;
 
@@ -45,6 +47,11 @@ class MainWindow : public QMainWindow
     QVBoxLayout *lamb_dens_sublayout = nullptr;
     QHBoxLayout *pushbutton_sublayout = nullptr;
     QPushButton *calculate_PushButton = nullptr;
+
+
+    QHBoxLayout *inputdata_button_sublayout = nullptr;
+    QVBoxLayout *inputdata_sublayout = nullptr;
+
 
     ResultLine *rl_sld = nullptr;
     ResultLine *rl_pot_v = nullptr;
@@ -68,6 +75,11 @@ class MainWindow : public QMainWindow
     void set_sldresult();
 
     void set_layouts();
+    void set_formula_layout();
+    void set_density_lambda_layout();
+    void set_results_layout();
+
+
     void set_signals();
 
     void show_sld_error_message();

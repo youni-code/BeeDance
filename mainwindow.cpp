@@ -10,6 +10,7 @@
 #include <QStatusBar>
 #include <QString>
 #include <QRegularExpression>
+#include <QSizePolicy>
 
 void MainWindow::set_menubar()
 {
@@ -96,27 +97,54 @@ void MainWindow::set_sldresult()
 
 void MainWindow::set_layouts()
 {
+    set_formula_layout();
+
+    set_density_lambda_layout();
+
+    set_results_layout();
+}
+
+void MainWindow::set_formula_layout()
+{
     central_widget->setLayout(chemical_layout);
 
     chemical_layout->addWidget(formula_TextEdit);
     chemical_layout->addWidget(formula_Label);
     chemical_layout->setAlignment(Qt::AlignTop);
 
+}
 
-    chemical_layout->addLayout(density_sublayout);
-    density_sublayout->addWidget(new QLabel("Density:"));
+void MainWindow::set_density_lambda_layout()
+{
+
+    chemical_layout->addLayout(inputdata_button_sublayout);
+    inputdata_button_sublayout->addLayout(inputdata_sublayout);
+
+
+    // chemical_layout->addLayout(density_sublayout);
+    inputdata_sublayout->addLayout(density_sublayout);
+    density_sublayout->addWidget(density_label);
+    density_label->setFixedWidth(45);
     density_sublayout->addWidget(density_LineEdit);
     density_sublayout->addWidget(density_ComboBox);
+    density_ComboBox->setFixedWidth(60);
 
-    chemical_layout->addLayout(lambda_sublayout);
-    lambda_sublayout->addWidget(new QLabel("λ:"));
+    inputdata_sublayout->addLayout(lambda_sublayout);
+    lambda_sublayout->addWidget(lambda_label);
+    lambda_label->setFixedWidth(45);
     lambda_sublayout->addWidget(lambda_LineEdit);
     lambda_sublayout->addWidget(lambda_ComboBox);
+    lambda_ComboBox->setFixedWidth(60);
 
-    density_sublayout->addWidget(calculate_PushButton);
+    // density_sublayout->addWidget(calculate_PushButton);
+    inputdata_button_sublayout->addWidget(calculate_PushButton);
+    calculate_PushButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
+}
+
+void MainWindow::set_results_layout()
+{
     chemical_layout->addStretch(10);
-
 
     chemical_layout->addWidget(rl_sld);
     chemical_layout->addWidget(rl_pot_v);
@@ -127,7 +155,6 @@ void MainWindow::set_layouts()
     chemical_layout->addWidget(rl_atl_c);
     chemical_layout->addWidget(rl_absorb);
     chemical_layout->addWidget(rl_scatt);
-
 
 }
 
@@ -156,11 +183,19 @@ void MainWindow::initialize()
     lamb_dens_sublayout = new QVBoxLayout();
     pushbutton_sublayout = new QHBoxLayout();
 
+    inputdata_sublayout = new QVBoxLayout();
+    inputdata_button_sublayout = new QHBoxLayout();
+
+
+
+
     density_sublayout =    new QHBoxLayout();
+    density_label = new QLabel("Density:");
     density_LineEdit = new QLineEdit(central_widget);
     density_ComboBox = new QComboBox();
 
     lambda_sublayout = 	new QHBoxLayout();
+    lambda_label = new QLabel("λ:");
     lambda_LineEdit =	new QLineEdit();
     lambda_ComboBox = 	new QComboBox();
 
