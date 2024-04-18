@@ -75,6 +75,9 @@ double CalculationSLD::b_a()
 
 double CalculationSLD::b_i()
 {
+    qDebug() << "sigma_i" << sigma_i();
+    qDebug() << "sigma_i_elem" << sigma_i_elem();
+    qDebug() << "lambda" << lambda_;
     return ((sigma_i() + sigma_i_elem()) * 1e2) / (2 * lambda_ * 1e5);
 }
 
@@ -83,10 +86,21 @@ double CalculationSLD::b_im()
     return b_a() + b_i();
 }
 
+double CalculationSLD::sld()
+{
+    qDebug() << "c_sld" << c_sld;
+    qDebug() << "a_mass" << a_mass();
+    qDebug() << "b_i" << b_i();
+    qDebug() << "sld" << c_sld * density_ / a_mass() * b_i();
+
+    return  c_sld * density_ / a_mass() * b_i();
+}
+
 CalculationSLD::CalculationSLD() {}
 
 double CalculationSLD::get_real_sld()
 {
+    return sld();
     double a_formula(0);
     double b_formula(0);
 

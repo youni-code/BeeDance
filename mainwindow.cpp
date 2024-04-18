@@ -72,6 +72,8 @@ void MainWindow::set_densityline()
 {
     density_LineEdit->setValidator(new QDoubleValidator());
     density_LineEdit->setText("1.0");
+    lambda_LineEdit->setValidator(new QDoubleValidator());
+    lambda_LineEdit->setText("1.798");
 
     density_ComboBox->addItem("g/cm³");
 
@@ -85,10 +87,16 @@ void MainWindow::set_results()
     rl_ch_wl->setText("λ<sub>c</sub>", "---");
     rl_cr_ang->setText("θ<sub>c</sub>", "---");
 
+
     rl_cr_mom->setText("q<sub>c</sub>", "1/cm");
+
     rl_atl_c->setText("μ", "1/cm");
+
     rl_absorb->setText("μ<sub>α</sub>", "1/cm");
+    rl_absorb->setTip("linear absorption coefficient");
+
     rl_scatt->setText("μ<sub>inc</sub>", "1/cm");
+    rl_scatt->setTip("element incoherence cross section");
 }
 
 void MainWindow::set_sldresult()
@@ -251,6 +259,7 @@ void MainWindow::press_calculate_button()
 
     core->setFormula(formula_TextEdit->toPlainText());
     core->setDensity(density_LineEdit->text().toDouble());
+    core->setLambda(lambda_LineEdit->text().toDouble());
 
     if(!core->is_correct()) return show_sld_error_message();
 

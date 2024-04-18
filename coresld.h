@@ -36,7 +36,8 @@ public:
     bool is_all_data_exist();
 
     void setFormula(QString formula);
-    void setDensity(double density);;
+    void setDensity(double density);
+    void setLambda(double density);
 
     double get_sld();
     double get_sld_err();

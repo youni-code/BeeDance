@@ -75,3 +75,8 @@ void ResultLine::setResult(double value)
 {
     textedit->setText(QString::number(value));
 }
+
+void ResultLine::setTip(QString line)
+{
+    label->setToolTip(line);
+}

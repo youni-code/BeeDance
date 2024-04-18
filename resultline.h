@@ -24,6 +24,8 @@ public:
     void setResult(QString text);
     void setResult(double value, double error);
     void setResult(double value);
+
+    void setTip(QString);
     QHBoxLayout* getLayout() { return layout; };
     // void setResult(double res, double err);
 

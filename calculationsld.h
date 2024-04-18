@@ -21,6 +21,7 @@ class CalculationSLD
     const double hcr = h / (2 * pi);
     const double c = (hcr * hcr / m_n) * 2 * pi; ;
     const double c_sldV = (c * 1e29) / (u_eV);
+    const double c_sld = 1e-29 / m_a;
     const double c_lambda = ((h)/(u_eV * 1e-9) * 1e10) / std::sqrt(2 * (m_n)/(u_eV * 1e-9));
     const double lambda_c = c_lambda / std::sqrt(v);
     const double teta_c = 1e3 / lambda_c;
@@ -40,6 +41,9 @@ class CalculationSLD
     double b_a();
     double b_i();
     double b_im();
+
+    double sld();
+    double sld_im();
 
 public:
     CalculationSLD();

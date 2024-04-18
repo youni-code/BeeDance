@@ -93,6 +93,11 @@ void CoreSLD::setDensity(double density)
     calc_sld->set_density(density_);
 }
 
+void CoreSLD::setLambda(double lambda)
+{
+    calc_sld->set_lambda(lambda);
+}
+
 double CoreSLD::get_sld()
 {
     chem_formula->setFormula(str_formula);
