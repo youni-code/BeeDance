@@ -39,10 +39,21 @@ public:
     void setDensity(double density);
     void setLambda(double density);
 
-    double get_sld();
-    double get_sld_err();
+    double get_sld() { return calc_sld->get_real_sld(); }
+    double get_sld_err() { return calc_sld->get_real_sld_error(); }
 
-    double get_potv();
+    double get_potv() { return calc_sld->get_potential_v(); }
+    double get_potv_err() { return calc_sld->get_potential_v_error(); }
+
+    double get_charact_wavelength() { return calc_sld->get_characteristic_wavelength(); }
+
+    double get_critical_angle() { return calc_sld->get_critical_angle(); }
+
+    double get_critical_momentum() { return calc_sld->get_critical_momentum(); }
+
+    double get_true_absorbtion() { return calc_sld->get_true_absorption(); }
+
+    double get_incoherrent_scattering() { return calc_sld->get_incoh_scatt(); }
 
 };
 

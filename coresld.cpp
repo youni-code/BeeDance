@@ -98,24 +98,20 @@ void CoreSLD::setLambda(double lambda)
     calc_sld->set_lambda(lambda);
 }
 
-double CoreSLD::get_sld()
-{
-    chem_formula->setFormula(str_formula);
-    calc_sld->set_density(density_);
-    calc_sld->set_elements(to_chemical_formula_element(multiformula_to_singleformula(str_formula)));
-    return calc_sld->get_real_sld();
-}
 
-double CoreSLD::get_sld_err()
-{
-    chem_formula->setFormula(str_formula);
-    calc_sld->set_density(density_);
-    for(auto &it : chem_formula->getElements()) qDebug() << "get_sld_err: " << it.symbol() << it.index();
-    calc_sld->set_elements(to_chemical_formula_element(chem_formula->getElements()));
-    return calc_sld->get_real_sld_error();
-}
 
-double CoreSLD::get_potv()
-{
-    return calc_sld->get_potential_v();
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,5 @@
 #include "calculationsld.h"
+#include <QDebug>
 
 
 std::complex<double> CalculationSLD::b(Element *elem)
@@ -21,22 +22,23 @@ double CalculationSLD::sigma_a()
     double sigma(0);
     for(auto &it : elements_)
         sigma += it.index() * it.element()->sigma_a();
+
     return sigma;
 }
 
 double CalculationSLD::a_mass()
 {
     double mass(0);
-    for(auto &it : elements_)
-        mass += it.index() * it.element()->mass();
+    for(auto &it : elements_) mass += it.index() * it.element()->mass();
+
     return mass;
 }
 
 double CalculationSLD::sigma_i()
 {
     double sigma(0);
-    for(auto &it : elements_)
-        sigma += it.index() * it.element()->sigma_i();
+    for(auto &it : elements_) sigma += it.index() * it.element()->sigma_i();
+
     return sigma;
 }
 
@@ -68,6 +70,22 @@ double CalculationSLD::sigma_i_elem()
     return sigma_t() - sigma_c();
 }
 
+double CalculationSLD::b_c()
+{
+    double result(0);
+    for(auto &it : elements_) result += it.index() * it.element()->bc().real();
+
+    return result;
+}
+
+double CalculationSLD::delta_b_c()
+{
+    double result(0);
+    for(auto &it : elements_) result += it.index() * pow(it.element()->bc_err().real(), 2);
+
+    return sqrt(result);
+}
+
 double CalculationSLD::b_a()
 {
     return (sigma_a() * (lambda_ / lambda_0) * 1e2) / (2 * lambda_ * 1e5);
@@ -75,9 +93,6 @@ double CalculationSLD::b_a()
 
 double CalculationSLD::b_i()
 {
-    qDebug() << "sigma_i" << sigma_i();
-    qDebug() << "sigma_i_elem" << sigma_i_elem();
-    qDebug() << "lambda" << lambda_;
     return ((sigma_i() + sigma_i_elem()) * 1e2) / (2 * lambda_ * 1e5);
 }
 
@@ -88,53 +103,64 @@ double CalculationSLD::b_im()
 
 double CalculationSLD::sld()
 {
-    qDebug() << "c_sld" << c_sld;
-    qDebug() << "a_mass" << a_mass();
-    qDebug() << "b_i" << b_i();
-    qDebug() << "sld" << c_sld * density_ / a_mass() * b_i();
+    return  c_sld * density_ / a_mass() * b_c();
+}
 
-    return  c_sld * density_ / a_mass() * b_i();
+double CalculationSLD::delta_sld()
+{
+    qDebug() << "delta: " << delta_b_c();
+    return  c_sld * density_ / a_mass() * delta_b_c();
+}
+
+double CalculationSLD::v()
+{
+    return c_sldV * sld();
+}
+
+double CalculationSLD::delta_v()
+{
+    return c_sldV * delta_sld();
+}
+
+double CalculationSLD::lambda_c()
+{
+    if(v() > 0.0) return c_lambda / std::sqrt(v());
+    return 0.0;
+}
+
+double CalculationSLD::teta_c()
+{
+    if(lambda_c() > 0.0) return 1e3 / v();
+    return 0.0;
+}
+
+double CalculationSLD::q_c()
+{
+    if(lambda_c() > 0.0) return 4 * pi / lambda_c();
+    return 0.0;
+}
+
+double CalculationSLD::mu_a()
+{
+    return c_sigma_mu * density_ * sigma_a() / (a_mass()) * (lambda_ / lambda_0);
+}
+
+double CalculationSLD::mu_i()
+{
+    qDebug() << "sigma i: " << sigma_i();
+    qDebug() << "sigma i element: " << sigma_i_elem();
+    return c_sigma_mu * density_ * (sigma_i() + sigma_i_elem()) / a_mass();
 }
 
 CalculationSLD::CalculationSLD() {}
 
-double CalculationSLD::get_real_sld()
-{
-    return sld();
-    double a_formula(0);
-    double b_formula(0);
 
-    for(auto &it : elements_)
-    {
-        a_formula += it.index() * it.element()->mass();
-        b_formula += it.index() * it.element()->bc().real();// * std::pow(10, -5);
-    }
 
-    return (density_ * b_formula) / (a_formula * 1.660153907) * std::pow(10, -5);
-}
 
-double CalculationSLD::get_real_sld_error()
-{
-    double a_formula(0);
-    double b_formula(0);
-    for(auto &it : elements_)
-    {
-        qDebug() << it.element()->symbol() << ": " << it.index();
-    }
 
-    for(auto &it : elements_)
-    {
-        a_formula += it.index() * it.element()->mass();
-        double sq_b = it.index() * it.element()->bc_err().real();
-        b_formula += sq_b * sq_b;
-    }
-    return (density_ * std::pow(b_formula, 0.5)) / (a_formula * 1.660153907) * std::pow(10, -5);
-}
 
-double CalculationSLD::get_potential_v()
-{
-    qDebug() << c_sldV;
-    qDebug() << c_lambda;
-    return c_sldV * get_real_sld();
-}
+
+
+
+
 

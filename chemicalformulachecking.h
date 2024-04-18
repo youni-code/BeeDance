@@ -1,8 +1,6 @@
 #ifndef CHEMICALFORMULACHECKING_H
 #define CHEMICALFORMULACHECKING_H
 #include <QRegularExpression>
-#include <QDebug>
-
 
 class ChemicalFormulaChecking
 {

@@ -45,6 +45,9 @@ void ResultLine::setResult(QString text)
 
 void ResultLine::setResult(double value, double error)
 {
+    // textedit->setText(QString::number(value) + "__" + QString::number(error)); return;
+
+
     double exp_value = std::floor(std::log10(std::abs(value)));
     double exp_error = std::floor(std::log10(std::abs(error)));
 
@@ -56,8 +59,8 @@ void ResultLine::setResult(double value, double error)
 
     QString result = mantissa_string(QString::number(std::round(value / std::pow(10, min_exp - 1))));
     QString value_str = QString::number(std::copysign(mantissa_value, value) * std::pow(10, min_exp - 1));
-    qDebug() << value_str << "count of digits: "<< value_str.count("[0-9]");
-    qDebug() << "value_str" << value_str;
+    // qDebug() << value_str << "count of digits: "<< value_str.count("[0-9]");
+    // qDebug() << "value_str" << value_str;
 
     if(value_str.split('e').size() == 2)
         result += "(" + QString::number(mantissa_error) + ")E" + value_str.split('e').last();

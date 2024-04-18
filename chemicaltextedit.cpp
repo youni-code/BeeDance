@@ -70,7 +70,6 @@ void ChemicalTextEdit::changeText()
 {
     disconnectSlotsSignals();
 
-    // qDebug() << this->textCursor().anchor();
     // auto curspos = this->textCursor().anchor();
     // auto cursorpos = this->textCursor();
 

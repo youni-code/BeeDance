@@ -66,6 +66,9 @@ void MainWindow::set_chemicalline()
     formula_TextEdit->setText("H2ONeCaMgFeCo");
     formula_TextEdit->setMaximumHeight(1.2 * density_LineEdit->height());
     formula_TextEdit->setFont(f);
+
+
+    formula_TextEdit->setText("H2O");
 }
 
 void MainWindow::set_densityline()
@@ -83,20 +86,27 @@ void MainWindow::set_densityline()
 void MainWindow::set_results()
 {
     rl_sld->setText("SLD", "1/Å²");
+    rl_sld->setTip("Scattering Length Density");
+
     rl_pot_v->setText("Π<sub>V</sub>", "neV");
-    rl_ch_wl->setText("λ<sub>c</sub>", "---");
-    rl_cr_ang->setText("θ<sub>c</sub>", "---");
+    rl_pot_v->setTip("Potential V");
 
+    rl_ch_wl->setText("λ<sub>c</sub>", "Å");
+    rl_ch_wl->setTip("Characteristic wavelength");
 
-    rl_cr_mom->setText("q<sub>c</sub>", "1/cm");
+    rl_cr_ang->setText("θ<sub>c</sub>", "mrad/Å");
+    rl_cr_ang->setTip("Critical angle");
+
+    rl_cr_mom->setText("q<sub>c</sub>", "1/Å");
+    rl_cr_mom->setTip("Attenuation coefficient");
 
     rl_atl_c->setText("μ", "1/cm");
 
     rl_absorb->setText("μ<sub>α</sub>", "1/cm");
-    rl_absorb->setTip("linear absorption coefficient");
+    rl_absorb->setTip("Linear absorption coefficient");
 
     rl_scatt->setText("μ<sub>inc</sub>", "1/cm");
-    rl_scatt->setTip("element incoherence cross section");
+    rl_scatt->setTip("Element incoherence cross section");
 }
 
 void MainWindow::set_sldresult()
@@ -106,9 +116,7 @@ void MainWindow::set_sldresult()
 void MainWindow::set_layouts()
 {
     set_formula_layout();
-
     set_density_lambda_layout();
-
     set_results_layout();
 }
 
@@ -233,8 +241,8 @@ QString MainWindow::result_string(double value, double error)
 
     QString result = mantissa_string(QString::number(std::round(value / std::pow(10, min_exp - 1))));
     QString value_str = QString::number(std::copysign(mantissa_value, value) * std::pow(10, min_exp - 1));
-    qDebug() << value_str << "count of digits: "<< value_str.count("[0-9]");
-    qDebug() << "value_str" << value_str;
+    // qDebug() << value_str << "count of digits: "<< value_str.count("[0-9]");
+    // qDebug() << "value_str" << value_str;
 
     if(value_str.split('e').size() == 2)
         result += "(" + QString::number(mantissa_error) + ")E" + value_str.split('e').last();
@@ -267,9 +275,26 @@ void MainWindow::press_calculate_button()
     double error_sld = core->get_sld_err();
 
     double result_pot_v = core->get_potv();
+    double result_pot_v_err = core->get_potv_err();
+
+    double result_char_wl = core->get_charact_wavelength();
+
+    double result_crit_angle = core->get_critical_angle();
+
+    double result_crit_momentum = core->get_critical_momentum();
+
+    double result_true_absorb = core->get_true_absorbtion();
+
+    double result_scatt = core->get_incoherrent_scattering();
 
     rl_sld->setResult(result_sld, error_sld);
-    rl_pot_v->setResult(result_pot_v);
+    rl_pot_v->setResult(result_pot_v, result_pot_v_err);
+    rl_ch_wl->setResult(result_char_wl);
+    rl_cr_ang->setResult(result_crit_angle);
+    rl_cr_mom->setResult(result_crit_momentum);
+    rl_absorb->setResult(result_true_absorb);
+    rl_scatt->setResult(result_scatt);
+    rl_atl_c->setResult(result_true_absorb + result_scatt);
 
     main_statusbar->showMessage("Completed", 5000);
 }

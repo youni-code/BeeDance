@@ -2,7 +2,6 @@
 #define ELEMENT_H
 #include <QString>
 #include <complex>
-#include <QDebug>
 
 class Element
 {
