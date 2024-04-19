@@ -20,7 +20,6 @@ void ReadDataFiles::readData()
     }
 
     file.close();
-
 }
 
 void ReadDataFiles::writeData(QStringList list)
@@ -44,6 +43,7 @@ void ReadDataFiles::writeData(QStringList list)
     auto sigmae= list.at(12).toDouble();
 
     auto sigmai = list.at(13).toDouble();
+    auto sigmaie = list.at(14).toDouble();
 
 
     Element temp_element(symb, atom_numb, c_isotop);
@@ -68,6 +68,7 @@ void ReadDataFiles::writeData(QStringList list)
     if(list.at(13) != "---")
     {
         temp_element.sigma_i(sigmai);
+        temp_element.sigma_i_err(sigmaie);
     }
 
     set_Elements.push_back(temp_element);

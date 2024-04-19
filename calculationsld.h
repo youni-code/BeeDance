@@ -31,22 +31,33 @@ class CalculationSLD
     std::complex<double> b(Element*);
 
     double c_summ();
-    double sigma_a();
     double a_mass();
+
+    double sigma_a();
+    double delta_sigma_a();
+
     double sigma_i();
+    double delta_sigma_i();
 
     double sigma_t();
+    double delta_sigma_t();
+
     double sigma_c();
+    double delta_sigma_c();
+
     double sigma_i_elem();
+    double delta_sigma_i_elem();
 
     double b_c();
     double delta_b_c();
+
     double b_a();
     double b_i();
     double b_im();
 
     double sld();
     double delta_sld();
+
     double sld_im();
     double delta_sld_im();
 
@@ -54,14 +65,19 @@ class CalculationSLD
     double delta_v();
 
     double lambda_c();
+    double delta_lambda_c();
 
     double teta_c();
+    double delta_teta_c();
 
     double q_c();
+    double delta_q_c();
 
     double mu_a();
+    double delta_mu_a();
 
     double mu_i();
+    double delta_mu_i();
 
 public:
     CalculationSLD();
@@ -81,9 +97,17 @@ public:
     double get_potential_v_error() { return delta_v(); }
 
     double get_characteristic_wavelength() { return lambda_c(); }
+    double get_characteristic_wavelength_error() { return delta_lambda_c(); }
+
     double get_critical_angle() { return teta_c(); };
+    double get_critical_angle_error() { return delta_teta_c(); };
+
     double get_critical_momentum() { return q_c(); };
+    double get_critical_momentum_error() { return delta_q_c(); };
+
     double get_true_absorption() { return mu_a(); }
+    double get_true_absorption_error() { return delta_mu_a(); }
+
     double get_incoh_scatt() { return mu_i(); }
 };
 

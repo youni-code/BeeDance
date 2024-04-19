@@ -278,8 +278,12 @@ void MainWindow::press_calculate_button()
     double result_pot_v_err = core->get_potv_err();
 
     double result_char_wl = core->get_charact_wavelength();
+    double result_char_wle = core->get_charact_wavelength_error();
+    qDebug() << result_char_wl;
+    qDebug() << result_char_wle;
 
     double result_crit_angle = core->get_critical_angle();
+    double result_crit_angle_err = core->get_critical_angle_error();
 
     double result_crit_momentum = core->get_critical_momentum();
 
@@ -289,7 +293,7 @@ void MainWindow::press_calculate_button()
 
     rl_sld->setResult(result_sld, error_sld);
     rl_pot_v->setResult(result_pot_v, result_pot_v_err);
-    rl_ch_wl->setResult(result_char_wl);
+    rl_ch_wl->setResult(result_char_wl, result_char_wle);
     rl_cr_ang->setResult(result_crit_angle);
     rl_cr_mom->setResult(result_crit_momentum);
     rl_absorb->setResult(result_true_absorb);

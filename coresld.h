@@ -46,8 +46,10 @@ public:
     double get_potv_err() { return calc_sld->get_potential_v_error(); }
 
     double get_charact_wavelength() { return calc_sld->get_characteristic_wavelength(); }
+    double get_charact_wavelength_error() { return calc_sld->get_characteristic_wavelength_error(); }
 
     double get_critical_angle() { return calc_sld->get_critical_angle(); }
+    double get_critical_angle_error() { return calc_sld->get_critical_angle_error(); }
 
     double get_critical_momentum() { return calc_sld->get_critical_momentum(); }
 

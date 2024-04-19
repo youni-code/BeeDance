@@ -26,6 +26,16 @@ double CalculationSLD::sigma_a()
     return sigma;
 }
 
+double CalculationSLD::delta_sigma_a()
+{
+    double d_sigma(0);
+    for(auto &it : elements_)
+        d_sigma += it.index() * pow(it.element()->sigma_a_err(), 2);
+
+    return sqrt(d_sigma);
+
+}
+
 double CalculationSLD::a_mass()
 {
     double mass(0);
@@ -40,6 +50,15 @@ double CalculationSLD::sigma_i()
     for(auto &it : elements_) sigma += it.index() * it.element()->sigma_i();
 
     return sigma;
+}
+
+double CalculationSLD::delta_sigma_i()
+{
+    double sigma(0);
+    for(auto &it : elements_)
+        sigma += it.index() * pow(it.element()->sigma_i_err(), 2);
+
+    return sqrt(sigma);
 }
 
 double CalculationSLD::sigma_t()
@@ -68,6 +87,10 @@ double CalculationSLD::sigma_c()
 double CalculationSLD::sigma_i_elem()
 {
     return sigma_t() - sigma_c();
+}
+
+double CalculationSLD::delta_sigma_i_elem()
+{
 }
 
 double CalculationSLD::b_c()
@@ -128,9 +151,24 @@ double CalculationSLD::lambda_c()
     return 0.0;
 }
 
+double CalculationSLD::delta_lambda_c()
+{
+    if(v() > 0.0)
+        return (lambda_c() / 2) * (delta_v() / v());
+
+    return 0.0;
+}
+
 double CalculationSLD::teta_c()
 {
     if(lambda_c() > 0.0) return 1e3 / v();
+    return 0.0;
+}
+
+double CalculationSLD::delta_teta_c()
+{
+    if(lambda_c() > 0.0)
+        return teta_c() * (delta_lambda_c() / lambda_c());
     return 0.0;
 }
 
@@ -140,9 +178,21 @@ double CalculationSLD::q_c()
     return 0.0;
 }
 
+double CalculationSLD::delta_q_c()
+{
+    if(lambda_c() > 0.0)
+        return q_c() * (delta_lambda_c() / lambda_c());
+    return 0.0;
+}
+
 double CalculationSLD::mu_a()
 {
     return c_sigma_mu * density_ * sigma_a() / (a_mass()) * (lambda_ / lambda_0);
+}
+
+double CalculationSLD::delta_mu_a()
+{
+    return c_sigma_mu * density_ * delta_sigma_a() / (a_mass()) * (lambda_ / lambda_0);
 }
 
 double CalculationSLD::mu_i()
@@ -150,6 +200,12 @@ double CalculationSLD::mu_i()
     qDebug() << "sigma i: " << sigma_i();
     qDebug() << "sigma i element: " << sigma_i_elem();
     return c_sigma_mu * density_ * (sigma_i() + sigma_i_elem()) / a_mass();
+}
+
+double CalculationSLD::delta_mu_i()
+{
+    // double brackets = sqrt(pow(delta_sigma_i(), 2) + pow(delta_sigma_i_elem(), 2));
+    // return c_sigma_mu * density_ / a_mass() * brackets;
 }
 
 CalculationSLD::CalculationSLD() {}
