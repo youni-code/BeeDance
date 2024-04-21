@@ -12,18 +12,20 @@
 #include <QRegularExpression>
 #include <QSizePolicy>
 
+#include <QFileDialog>
+
 void MainWindow::set_menubar()
 {
     QMenu *menu_file = new QMenu("File", main_menubar);
-    menu_file->addAction("Open...");
+    menu_file->addAction(open_action);
     menu_file->addSeparator();
-    menu_file->addAction("Save");
-    menu_file->addAction("Save as...");
+    // menu_file->addAction("Save");
+    menu_file->addAction(saveas_action);
     menu_file->addSeparator();
-    menu_file->addAction("Exit");
+    menu_file->addAction(exit_action);
 
     QMenu *menu_help = new QMenu("Help", main_menubar);
-    menu_help->addAction("Help...");
+    menu_help->addAction(help_action);
 
     QMenu *menu_view = new QMenu("View");
     menu_view->addAction("Style...");
@@ -75,10 +77,11 @@ void MainWindow::set_densityline()
 {
     density_LineEdit->setValidator(new QDoubleValidator());
     density_LineEdit->setText("1.0");
+    density_ComboBox->addItem("g/cm³");
     lambda_LineEdit->setValidator(new QDoubleValidator());
     lambda_LineEdit->setText("1.798");
+    lambda_ComboBox->addItem("---");
 
-    density_ComboBox->addItem("g/cm³");
 
     calculate_PushButton->setText("Run");
 }
@@ -98,15 +101,16 @@ void MainWindow::set_results()
     rl_cr_ang->setTip("Critical angle");
 
     rl_cr_mom->setText("q<sub>c</sub>", "1/Å");
-    rl_cr_mom->setTip("Attenuation coefficient");
+    rl_cr_mom->setTip("Critical momentum");
 
     rl_atl_c->setText("μ", "1/cm");
+    rl_atl_c->setTip("Attenuation coefficient");
 
     rl_absorb->setText("μ<sub>α</sub>", "1/cm");
     rl_absorb->setTip("Linear absorption coefficient");
 
     rl_scatt->setText("μ<sub>inc</sub>", "1/cm");
-    rl_scatt->setTip("Element incoherence cross section");
+    rl_scatt->setTip("Incoherent scattering");
 }
 
 void MainWindow::set_sldresult()
@@ -132,30 +136,25 @@ void MainWindow::set_formula_layout()
 
 void MainWindow::set_density_lambda_layout()
 {
-
     chemical_layout->addLayout(inputdata_button_sublayout);
     inputdata_button_sublayout->addLayout(inputdata_sublayout);
 
-
-    // chemical_layout->addLayout(density_sublayout);
     inputdata_sublayout->addLayout(density_sublayout);
     density_sublayout->addWidget(density_label);
-    density_label->setFixedWidth(45);
+    density_label->setFixedWidth(55);
     density_sublayout->addWidget(density_LineEdit);
     density_sublayout->addWidget(density_ComboBox);
     density_ComboBox->setFixedWidth(60);
 
     inputdata_sublayout->addLayout(lambda_sublayout);
     lambda_sublayout->addWidget(lambda_label);
-    lambda_label->setFixedWidth(45);
+    lambda_label->setFixedWidth(55);
     lambda_sublayout->addWidget(lambda_LineEdit);
     lambda_sublayout->addWidget(lambda_ComboBox);
     lambda_ComboBox->setFixedWidth(60);
 
-    // density_sublayout->addWidget(calculate_PushButton);
     inputdata_button_sublayout->addWidget(calculate_PushButton);
     calculate_PushButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-
 }
 
 void MainWindow::set_results_layout()
@@ -171,13 +170,17 @@ void MainWindow::set_results_layout()
     chemical_layout->addWidget(rl_atl_c);
     chemical_layout->addWidget(rl_absorb);
     chemical_layout->addWidget(rl_scatt);
-
 }
 
 void MainWindow::set_signals()
 {
     connect(formula_TextEdit, SIGNAL(changeFormula(QString)), formula_Label, SLOT(setFormula(QString)));
     connect(calculate_PushButton, SIGNAL(pressed()), this, SLOT(press_calculate_button()));
+
+    connect(exit_action, SIGNAL(triggered()), qApp, SLOT(exit()));
+    connect(open_action, SIGNAL(triggered()), this, SLOT(open_file_submenu()));
+    connect(saveas_action, SIGNAL(triggered()), this, SLOT(saveas_file_submenu()));
+    connect(help_action, SIGNAL(triggered()), this, SLOT(help_submenu()));
 
     emit formula_TextEdit->changeFormula(formula_TextEdit->toPlainText());
 }
@@ -189,6 +192,11 @@ void MainWindow::initialize()
     central_widget = new QWidget(this);
 
     main_menubar = new QMenuBar(central_widget);
+    exit_action = new QAction("Exit");
+    open_action = new QAction("Open...");
+    saveas_action = new QAction("Save as...");
+    help_action = new QAction("Help...");
+
     main_statusbar = new QStatusBar(central_widget);
 
 
@@ -201,8 +209,6 @@ void MainWindow::initialize()
 
     inputdata_sublayout = new QVBoxLayout();
     inputdata_button_sublayout = new QHBoxLayout();
-
-
 
 
     density_sublayout =    new QHBoxLayout();
@@ -226,30 +232,7 @@ void MainWindow::initialize()
     rl_atl_c = new ResultLine();
     rl_absorb = new ResultLine();
     rl_scatt = new ResultLine();
-}
 
-QString MainWindow::result_string(double value, double error)
-{
-    double exp_value = std::floor(std::log10(std::abs(value)));
-    double exp_error = std::floor(std::log10(std::abs(error)));
-
-    double min_exp = std::min(exp_value, exp_error);
-
-    double mantissa_value = std::round(value / std::pow(10, min_exp - 1)); // мантисса без дробной части
-    double mantissa_error = std::round(error / std::pow(10, min_exp - 1)); // мантисса без дробной части
-
-
-    QString result = mantissa_string(QString::number(std::round(value / std::pow(10, min_exp - 1))));
-    QString value_str = QString::number(std::copysign(mantissa_value, value) * std::pow(10, min_exp - 1));
-    // qDebug() << value_str << "count of digits: "<< value_str.count("[0-9]");
-    // qDebug() << "value_str" << value_str;
-
-    if(value_str.split('e').size() == 2)
-        result += "(" + QString::number(mantissa_error) + ")E" + value_str.split('e').last();
-    else
-        result += "(" + QString::number(mantissa_error) + ")";
-
-    return result;
 }
 
 QString MainWindow::mantissa_string(QString value)
@@ -279,29 +262,63 @@ void MainWindow::press_calculate_button()
 
     double result_char_wl = core->get_charact_wavelength();
     double result_char_wle = core->get_charact_wavelength_error();
-    qDebug() << result_char_wl;
-    qDebug() << result_char_wle;
 
     double result_crit_angle = core->get_critical_angle();
     double result_crit_angle_err = core->get_critical_angle_error();
 
     double result_crit_momentum = core->get_critical_momentum();
+    double result_crit_momentum_err = core->get_critical_momentum_error();
 
     double result_true_absorb = core->get_true_absorbtion();
+    double result_true_absorb_err = core->get_true_absorbtion_error();
 
     double result_scatt = core->get_incoherrent_scattering();
+    double result_scatt_err = core->get_incoherrent_scattering_error();
+
+    double result_mu = core->get_mu();
+    double result_mu_err = core->get_mu_error();
 
     rl_sld->setResult(result_sld, error_sld);
     rl_pot_v->setResult(result_pot_v, result_pot_v_err);
     rl_ch_wl->setResult(result_char_wl, result_char_wle);
-    rl_cr_ang->setResult(result_crit_angle);
-    rl_cr_mom->setResult(result_crit_momentum);
-    rl_absorb->setResult(result_true_absorb);
-    rl_scatt->setResult(result_scatt);
-    rl_atl_c->setResult(result_true_absorb + result_scatt);
+    rl_cr_ang->setResult(result_crit_angle, result_crit_angle_err);
+    rl_cr_mom->setResult(result_crit_momentum, result_crit_momentum_err);
+    rl_absorb->setResult(result_true_absorb, result_true_absorb_err);
+    rl_scatt->setResult(result_scatt, result_scatt_err);
+    rl_atl_c->setResult(result_mu, result_mu_err);
 
     main_statusbar->showMessage("Completed", 5000);
 }
+
+void MainWindow::open_file_submenu()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), "", "text format(*.txt)");
+    qDebug() << filename;
+}
+
+void MainWindow::saveas_file_submenu()
+{
+    QString filters("Music files (*.mp3);;Text files (*.txt);;All files (*.*)");
+    QString defaultFilter("Text files (*.txt)");
+
+    /* Static method approach */
+    QFileDialog::getSaveFileName(0, "Save file", QDir::currentPath(),
+                                 filters, &defaultFilter);
+
+    // QString filename = QFileDialog::getSaveFileName(this, tr("Save file as..."), QDir::currentPath(), "text format(*.txt)");
+    // qDebug() << filename;
+
+}
+
+void MainWindow::help_submenu()
+{
+    QWidget *frame = new QWidget();
+    frame->setGeometry(this->pos().rx(), this->pos().ry(), 800, 950);
+    frame->setStyleSheet("background-image: url(data/help_screenshot.png)");
+    frame->setFixedSize(frame->size());
+    frame->show();
+}
+
 
 
 MainWindow::MainWindow(QWidget *parent)

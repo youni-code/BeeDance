@@ -25,6 +25,11 @@ class MainWindow : public QMainWindow
     QWidget *central_widget = nullptr;
 
     QMenuBar *main_menubar = nullptr;
+    QAction *exit_action = nullptr;
+    QAction *open_action = nullptr;
+    QAction *saveas_action = nullptr;
+    QAction *help_action = nullptr;
+
     QStatusBar *main_statusbar = nullptr;
 
     QVBoxLayout *chemical_layout = nullptr;
@@ -84,10 +89,15 @@ class MainWindow : public QMainWindow
 
     void show_sld_error_message();
 
-    QString result_string(double value, double error);
     QString mantissa_string(QString value);
 private slots:
     void press_calculate_button();
+
+    void open_file_submenu();
+    void saveas_file_submenu();
+    void help_submenu();
+
+    // void help_submenu();
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();

@@ -9,6 +9,19 @@ QString ResultLine::mantissa_string(QString value)
     return value;
 }
 
+QString ResultLine::add_point(double val, double err)
+{
+    QString s_value = QString::number(val);
+    QString s_error = QString::number(err);
+
+    if(s_value.at(0) == '-')
+        s_value.insert(2, '.');
+    else
+        s_value.insert(1, '.');
+
+    return s_value + "(" + s_error + ")";
+}
+
 ResultLine::ResultLine(QWidget *parent)
     : QWidget{parent}
 {
@@ -45,33 +58,21 @@ void ResultLine::setResult(QString text)
 
 void ResultLine::setResult(double value, double error)
 {
-    // textedit->setText(QString::number(value) + "__" + QString::number(error)); return;
+    if(value == 0.0 || error == 0.0) return textedit->setText("---");
+    if(error == 0.0) return textedit->setText(QString::number(value));
 
-
-    double exp_value = std::floor(std::log10(std::abs(value)));
-    double exp_error = std::floor(std::log10(std::abs(error)));
-
+    double exp_value = exp(value);
+    double exp_error = exp(error);
     double min_exp = std::min(exp_value, exp_error);
+    double max_exp = std::max(exp_value, exp_error);
 
-    double mantissa_value = std::round(value / std::pow(10, min_exp - 1)); // мантисса без дробной части
-    double mantissa_error = std::round(error / std::pow(10, min_exp - 1)); // мантисса без дробной части
+    double mantissa_value = mantissa(value, min_exp); // мантисса без дробной части
+    double mantissa_error = mantissa(error, min_exp); // мантисса без дробной части
 
+    QString result = mantissa_string(QString::number(mantissa_value));
 
-    QString result = mantissa_string(QString::number(std::round(value / std::pow(10, min_exp - 1))));
-    QString value_str = QString::number(std::copysign(mantissa_value, value) * std::pow(10, min_exp - 1));
-    // qDebug() << value_str << "count of digits: "<< value_str.count("[0-9]");
-    // qDebug() << "value_str" << value_str;
-
-    if(value_str.split('e').size() == 2)
-        result += "(" + QString::number(mantissa_error) + ")E" + value_str.split('e').last();
-    else
-        result += "(" + QString::number(mantissa_error) + ")";
-
-    textedit->setText(result);
-
-
-    // return result;
-
+    result = add_point(mantissa_value, mantissa_error) + "E" + QString::number(max_exp);
+    return textedit->setText(result);
 }
 
 void ResultLine::setResult(double value)

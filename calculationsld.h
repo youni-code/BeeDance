@@ -28,7 +28,10 @@ class CalculationSLD
     const double q_c_ = 4 * pi / lambda_c_;
     const double c_sigma_mu = 1e-24 / m_a;
 
+    double mod(std::complex<double>);
+
     std::complex<double> b(Element*);
+    std::complex<double> delta_b(Element*);
 
     double c_summ();
     double a_mass();
@@ -52,8 +55,13 @@ class CalculationSLD
     double delta_b_c();
 
     double b_a();
+    double delta_b_a();
+
     double b_i();
+    double delta_b_i();
+
     double b_im();
+    double delta_b_im();
 
     double sld();
     double delta_sld();
@@ -63,6 +71,9 @@ class CalculationSLD
 
     double v();
     double delta_v();
+
+    double v_im();
+    double delta_v_im();
 
     double lambda_c();
     double delta_lambda_c();
@@ -79,6 +90,9 @@ class CalculationSLD
     double mu_i();
     double delta_mu_i();
 
+    double mu();
+    double delta_mu();
+
 public:
     CalculationSLD();
 
@@ -90,8 +104,8 @@ public:
     double get_real_sld() { return sld(); }
     double get_real_sld_error() { return delta_sld(); }
 
-    double get_im_sld();
-    double get_im_sld_error();
+    double get_im_sld() { return sld_im(); }
+    double get_im_sld_error() { return delta_sld_im(); }
 
     double get_potential_v() { return v(); }
     double get_potential_v_error() { return delta_v(); }
@@ -109,6 +123,10 @@ public:
     double get_true_absorption_error() { return delta_mu_a(); }
 
     double get_incoh_scatt() { return mu_i(); }
+    double get_incoh_scatt_error() { return delta_mu_i(); }
+
+    double get_mu() { return mu(); }
+    double get_mu_error() { return delta_mu(); }
 };
 
 #endif // CALCULATIONSLD_H

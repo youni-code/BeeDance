@@ -52,10 +52,16 @@ public:
     double get_critical_angle_error() { return calc_sld->get_critical_angle_error(); }
 
     double get_critical_momentum() { return calc_sld->get_critical_momentum(); }
+    double get_critical_momentum_error() { return calc_sld->get_critical_momentum_error(); }
 
     double get_true_absorbtion() { return calc_sld->get_true_absorption(); }
+    double get_true_absorbtion_error() { return calc_sld->get_true_absorption_error(); }
 
     double get_incoherrent_scattering() { return calc_sld->get_incoh_scatt(); }
+    double get_incoherrent_scattering_error() { return calc_sld->get_incoh_scatt_error(); }
+
+    double get_mu() { return calc_sld->get_mu(); }
+    double get_mu_error() { return calc_sld->get_mu_error(); }
 
 };
 

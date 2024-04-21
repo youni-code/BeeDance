@@ -18,6 +18,12 @@ private:
 
     QString mantissa_string(QString);
 
+    // степень после эксп
+    double exp(double value) { return std::floor(std::log10(std::abs(value))); }
+    double mantissa(double value, double exp) { return  std::round(value / std::pow(10, exp - 1));}
+    QString add_point(double val, double err);
+
+
 public:
     explicit ResultLine(QWidget *parent = nullptr);
     void setText(QString label, QString combobox);

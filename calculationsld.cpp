@@ -2,10 +2,23 @@
 #include <QDebug>
 
 
+double CalculationSLD::mod(std::complex<double> val)
+{
+    return sqrt(val.real() * val.real() + val.imag() * val.imag());
+}
+
 std::complex<double> CalculationSLD::b(Element *elem)
 {
     double real = elem->bc().real();
     double imag = - ((elem->sigma_a() * lambda_ / lambda_0 + elem->sigma_i()) * 1e2) / (2 * lambda_ * 1e5);
+
+    return std::complex(real, imag);
+}
+
+std::complex<double> CalculationSLD::delta_b(Element *elem)
+{
+    double real = elem->bc_err().real();
+    double imag = - sqrt(pow(elem->sigma_a_err() * lambda_ / lambda_0, 2) + pow(elem->sigma_i_err(), 2)) * (1e2) / (2 * lambda_ * 1e5);
 
     return std::complex(real, imag);
 }
@@ -72,6 +85,19 @@ double CalculationSLD::sigma_t()
     return result;
 }
 
+double CalculationSLD::delta_sigma_t()
+{
+    double sub_result(0);
+    for(auto &it : elements_)
+    {
+        auto delta_val = delta_b(it.element());
+        auto val = b(it.element());
+        sub_result +=  it.index() * pow(mod(val) * mod(delta_val), 2);
+    }
+    return 4 * pi * sqrt(sub_result) * 1e-2;
+
+}
+
 double CalculationSLD::sigma_c()
 {
     std::complex res(0);
@@ -84,6 +110,20 @@ double CalculationSLD::sigma_c()
     return sigma;
 }
 
+double CalculationSLD::delta_sigma_c()
+{
+    std::complex<double> sub_res1(0);
+    double sub_res2(0);
+
+    for(auto &it : elements_)
+    {
+        sub_res1 += b(it.element());
+        sub_res2 += it.index() * pow(mod(delta_b(it.element())), 2);
+    }
+
+    return 4 * pi * mod(sub_res1) * sqrt(sub_res2) * (1e-2 / c_summ());
+}
+
 double CalculationSLD::sigma_i_elem()
 {
     return sigma_t() - sigma_c();
@@ -91,6 +131,7 @@ double CalculationSLD::sigma_i_elem()
 
 double CalculationSLD::delta_sigma_i_elem()
 {
+    return sqrt(pow(delta_sigma_t(), 2) + pow(delta_sigma_c(), 2));
 }
 
 double CalculationSLD::b_c()
@@ -114,14 +155,29 @@ double CalculationSLD::b_a()
     return (sigma_a() * (lambda_ / lambda_0) * 1e2) / (2 * lambda_ * 1e5);
 }
 
+double CalculationSLD::delta_b_a()
+{
+    return (delta_sigma_a() * (lambda_ / lambda_0) * 1e2) / (2 * lambda_ * 1e5);
+}
+
 double CalculationSLD::b_i()
 {
     return ((sigma_i() + sigma_i_elem()) * 1e2) / (2 * lambda_ * 1e5);
 }
 
+double CalculationSLD::delta_b_i()
+{
+    return (sqrt(pow(delta_sigma_i(), 2) + pow(delta_sigma_i_elem(), 2)) * 1e2) / (2 * lambda_ * 1e5);
+}
+
 double CalculationSLD::b_im()
 {
     return b_a() + b_i();
+}
+
+double CalculationSLD::delta_b_im()
+{
+    return sqrt(pow(delta_b_a(), 2) + pow(delta_b_i(), 2));
 }
 
 double CalculationSLD::sld()
@@ -131,8 +187,17 @@ double CalculationSLD::sld()
 
 double CalculationSLD::delta_sld()
 {
-    qDebug() << "delta: " << delta_b_c();
     return  c_sld * density_ / a_mass() * delta_b_c();
+}
+
+double CalculationSLD::sld_im()
+{
+    return c_sld * density_ / a_mass() * b_im();
+}
+
+double CalculationSLD::delta_sld_im()
+{
+    return c_sld * density_ / a_mass() * delta_b_im();
 }
 
 double CalculationSLD::v()
@@ -143,6 +208,16 @@ double CalculationSLD::v()
 double CalculationSLD::delta_v()
 {
     return c_sldV * delta_sld();
+}
+
+double CalculationSLD::v_im()
+{
+    return c_sldV * sld_im();
+}
+
+double CalculationSLD::delta_v_im()
+{
+    return c_sldV * delta_sld_im();
 }
 
 double CalculationSLD::lambda_c()
@@ -197,15 +272,22 @@ double CalculationSLD::delta_mu_a()
 
 double CalculationSLD::mu_i()
 {
-    qDebug() << "sigma i: " << sigma_i();
-    qDebug() << "sigma i element: " << sigma_i_elem();
     return c_sigma_mu * density_ * (sigma_i() + sigma_i_elem()) / a_mass();
 }
 
 double CalculationSLD::delta_mu_i()
 {
-    // double brackets = sqrt(pow(delta_sigma_i(), 2) + pow(delta_sigma_i_elem(), 2));
-    // return c_sigma_mu * density_ / a_mass() * brackets;
+    return c_sigma_mu * density_ * sqrt(pow(delta_sigma_i(), 2) + pow(delta_sigma_i_elem(), 2)) / a_mass();
+}
+
+double CalculationSLD::mu()
+{
+    return mu_a() + mu_i();
+}
+
+double CalculationSLD::delta_mu()
+{
+    return delta_mu_a() + delta_mu_i();
 }
 
 CalculationSLD::CalculationSLD() {}
