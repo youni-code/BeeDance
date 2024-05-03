@@ -19,7 +19,6 @@ void MainWindow::set_menubar()
     QMenu *menu_file = new QMenu("File", main_menubar);
     menu_file->addAction(open_action);
     menu_file->addSeparator();
-    // menu_file->addAction("Save");
     menu_file->addAction(saveas_action);
     menu_file->addSeparator();
     menu_file->addAction(exit_action);
@@ -35,18 +34,6 @@ void MainWindow::set_menubar()
     main_menubar->addSeparator();
     main_menubar->addMenu(menu_help);
 }
-void MainWindow::show_sld_error_message()
-{
-    rl_sld->setResult("Error!");
-    if(!core->is_line_correct())
-        return main_statusbar->showMessage("Error! Something wrong with the input line", 5000);
-    if(!core->is_density_correct())
-        return main_statusbar->showMessage("Error! Density is wrong ", 5000);
-    if(!core->is_all_data_exist())
-        return main_statusbar->showMessage("Error! There aren't some elements", 5000);
-
-    return;
-}
 void MainWindow::set_widgets()
 {
     set_chemicalline();
@@ -59,40 +46,47 @@ void MainWindow::set_widgets()
 
 void MainWindow::set_chemicalline()
 {
-    auto f = formula_TextEdit->font();
-    f.setPointSize(16);
+    QFont f = formula_TextEdit->font();
+    f.setPointSize(18);
 
     formula_Label->setFont(f);
-
-    formula_TextEdit->setAcceptRichText(false);
-    formula_TextEdit->setText("H2ONeCaMgFeCo");
-    formula_TextEdit->setMaximumHeight(1.2 * density_LineEdit->height());
+    // formula_Label.
     formula_TextEdit->setFont(f);
-
-
-    formula_TextEdit->setText("H2O");
+    formula_TextEdit->setAcceptRichText(false);
+    formula_TextEdit->setMaximumHeight(1.3 * density_LineEdit->height());
+    formula_TextEdit->setPlaceholderText("chemical formula e.g. H2O");
 }
 
 void MainWindow::set_densityline()
 {
-    density_LineEdit->setValidator(new QDoubleValidator());
+    QValidator *doublevalid = new QDoubleValidator();
+    doublevalid->setLocale(QLocale::C);
+
+    density_LineEdit->setValidator(doublevalid);
     density_LineEdit->setText("1.0");
     density_ComboBox->addItem("g/cm³");
-    lambda_LineEdit->setValidator(new QDoubleValidator());
-    lambda_LineEdit->setText("1.798");
-    lambda_ComboBox->addItem("---");
+    density_ComboBox->setFixedWidth(35);
 
+    lambda_LineEdit->setValidator(doublevalid);
+    lambda_LineEdit->setText("1.798");
+    lambda_ComboBox->addItem("Å");
 
     calculate_PushButton->setText("Run");
 }
 
 void MainWindow::set_results()
 {
-    rl_sld->setText("SLD", "1/Å²");
-    rl_sld->setTip("Scattering Length Density");
+    rl_sld->setText("Re(SLD)", "1/Å²");
+    rl_sld->setTip("Real part of Scattering Length Density");
 
-    rl_pot_v->setText("Π<sub>V</sub>", "neV");
-    rl_pot_v->setTip("Potential V");
+    rl_sld_im->setText("Im(SLD)", "1/Å²");
+    rl_sld_im->setTip("Imaginary part of Scattering Length Density");
+
+    rl_pot_v->setText("Re(V)", "neV");
+    rl_pot_v->setTip("Real part of Potential");
+
+    rl_pot_v_im->setText("Im(V)", "neV");
+    rl_pot_v_im->setTip("Imaginary part of Potential");
 
     rl_ch_wl->setText("λ<sub>c</sub>", "Å");
     rl_ch_wl->setTip("Characteristic wavelength");
@@ -107,15 +101,12 @@ void MainWindow::set_results()
     rl_atl_c->setTip("Attenuation coefficient");
 
     rl_absorb->setText("μ<sub>α</sub>", "1/cm");
-    rl_absorb->setTip("Linear absorption coefficient");
+    rl_absorb->setTip("True absorption coefficient");
 
     rl_scatt->setText("μ<sub>inc</sub>", "1/cm");
-    rl_scatt->setTip("Incoherent scattering");
+    rl_scatt->setTip("Incoherent scattering attenuation");
 }
 
-void MainWindow::set_sldresult()
-{
-}
 
 void MainWindow::set_layouts()
 {
@@ -144,14 +135,14 @@ void MainWindow::set_density_lambda_layout()
     density_label->setFixedWidth(55);
     density_sublayout->addWidget(density_LineEdit);
     density_sublayout->addWidget(density_ComboBox);
-    density_ComboBox->setFixedWidth(60);
+    density_ComboBox->setFixedWidth(70);
 
     inputdata_sublayout->addLayout(lambda_sublayout);
     lambda_sublayout->addWidget(lambda_label);
     lambda_label->setFixedWidth(55);
     lambda_sublayout->addWidget(lambda_LineEdit);
     lambda_sublayout->addWidget(lambda_ComboBox);
-    lambda_ComboBox->setFixedWidth(60);
+    lambda_ComboBox->setFixedWidth(70);
 
     inputdata_button_sublayout->addWidget(calculate_PushButton);
     calculate_PushButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -159,30 +150,110 @@ void MainWindow::set_density_lambda_layout()
 
 void MainWindow::set_results_layout()
 {
+    QFont font_resultbox;
+    font_resultbox.setBold(true);
+    result_box->setTitle("Results");
+    result_box->setFlat(false);
+    result_box->setStyleSheet("QGroupBox { font-weight: bold; font-size: 18px} ");
+    result_box->setAlignment(Qt::AlignCenter);
+    result_box->setFont(font_resultbox);
+
     chemical_layout->addStretch(10);
 
-    chemical_layout->addWidget(rl_sld);
-    chemical_layout->addWidget(rl_pot_v);
-    chemical_layout->addWidget(rl_ch_wl);
-    chemical_layout->addWidget(rl_cr_ang);
+    chemical_layout->addWidget(result_box);
+    result_box->setLayout(groupbox_layout);
 
-    chemical_layout->addWidget(rl_cr_mom);
-    chemical_layout->addWidget(rl_atl_c);
-    chemical_layout->addWidget(rl_absorb);
-    chemical_layout->addWidget(rl_scatt);
+    groupbox_layout->addWidget(rl_sld);
+    groupbox_layout->addWidget(rl_sld_im);
+    groupbox_layout->addWidget(rl_pot_v);
+    groupbox_layout->addWidget(rl_pot_v_im);
+    groupbox_layout->addWidget(rl_ch_wl);
+    groupbox_layout->addWidget(rl_cr_ang);
+
+    groupbox_layout->addWidget(rl_cr_mom);
+    groupbox_layout->addWidget(rl_atl_c);
+    groupbox_layout->addWidget(rl_absorb);
+    groupbox_layout->addWidget(rl_scatt);
 }
 
 void MainWindow::set_signals()
 {
-    connect(formula_TextEdit, SIGNAL(changeFormula(QString)), formula_Label, SLOT(setFormula(QString)));
-    connect(calculate_PushButton, SIGNAL(pressed()), this, SLOT(press_calculate_button()));
+    connect(formula_TextEdit,       SIGNAL(changeFormula(QString)), formula_Label,  SLOT(setFormula(QString)));
+    connect(calculate_PushButton,   SIGNAL(pressed()),              this,           SLOT(press_calculate_button()));
 
-    connect(exit_action, SIGNAL(triggered()), qApp, SLOT(exit()));
-    connect(open_action, SIGNAL(triggered()), this, SLOT(open_file_submenu()));
-    connect(saveas_action, SIGNAL(triggered()), this, SLOT(saveas_file_submenu()));
-    connect(help_action, SIGNAL(triggered()), this, SLOT(help_submenu()));
+    connect(exit_action,    SIGNAL(triggered()), qApp, SLOT(exit()));
+    connect(open_action,    SIGNAL(triggered()), this, SLOT(open_file_submenu()));
+    connect(saveas_action,  SIGNAL(triggered()), this, SLOT(saveas_file_submenu()));
+    connect(help_action,    SIGNAL(triggered()), this, SLOT(help_submenu()));
 
     emit formula_TextEdit->changeFormula(formula_TextEdit->toPlainText());
+}
+
+void MainWindow::calculation()
+{
+    core->setFormula(formula_TextEdit->toPlainText());
+    core->setDensity(density_LineEdit->text().toDouble());
+    core->setLambda(lambda_LineEdit->text().toDouble());
+
+
+    if(core->valid_sld())
+        rl_sld->setResult(      core->get_sld(),                    core->get_sld_err());
+    if(core->valid_sld_im())
+        rl_sld_im->setResult(   core->get_sld_im(),                 core->get_sld_im_err());
+
+    rl_pot_v->setResult(    core->get_potv(),                   core->get_potv_err());
+    rl_pot_v_im->setResult( core->get_potv_im(),                core->get_potv_im_err());
+
+    rl_ch_wl->setResult(    core->get_charact_wavelength(),     core->get_charact_wavelength_error());
+    rl_cr_ang->setResult(   core->get_critical_angle(),         core->get_critical_angle_error());
+
+    rl_cr_mom->setResult(   core->get_critical_momentum(),      core->get_critical_momentum_error());
+    rl_absorb->setResult(   core->get_true_absorbtion(),        core->get_true_absorbtion_error());
+
+    rl_scatt->setResult(    core->get_incoherrent_scattering(), core->get_incoherrent_scattering_error());
+    rl_atl_c->setResult(    core->get_mu(),                     core->get_mu_error());
+}
+
+bool MainWindow::checking()
+{
+    core->setFormula(formula_TextEdit->toPlainText());
+    if(!core->is_line_correct()) return false;
+    if(density_LineEdit->text().toDouble() <= 0.0) return false;
+    if(lambda_LineEdit->text().toDouble() <= 0.0) return false;
+
+    return true;
+
+}
+
+QString MainWindow::errors_list()
+{
+    QString error_line;
+    core->setFormula(formula_TextEdit->toPlainText());
+
+    if(!core->is_line_correct())                    error_line += "Line incorrect;\t";
+    if(density_LineEdit->text().toDouble() <= 0.0)  error_line += "Density incorrect;\t";
+    if(lambda_LineEdit->text().toDouble() <= 0.0)   error_line += "Lambda incorrect;\t";
+
+    return error_line;
+}
+
+void MainWindow::non_results()
+{
+    rl_sld->setResult("---");
+    rl_sld_im->setResult("---");
+
+    rl_pot_v->setResult("---");
+    rl_pot_v_im->setResult("---");
+
+    rl_ch_wl->setResult("---");
+    rl_cr_ang->setResult("---");
+
+    rl_cr_mom->setResult("---");
+    rl_absorb->setResult("---");
+
+    rl_scatt->setResult("---");
+    rl_atl_c->setResult("---");
+
 }
 
 void MainWindow::initialize()
@@ -224,8 +295,13 @@ void MainWindow::initialize()
     calculate_PushButton = new QPushButton(central_widget);
 
 
+    groupbox_layout = new QVBoxLayout();
+    result_box = new QGroupBox();
     rl_sld = new ResultLine();
+    rl_sld_im = new ResultLine();
     rl_pot_v = new ResultLine();
+    rl_pot_v_im = new ResultLine();
+
     rl_ch_wl = new ResultLine();
     rl_cr_ang = new ResultLine();
     rl_cr_mom = new ResultLine();
@@ -235,59 +311,16 @@ void MainWindow::initialize()
 
 }
 
-QString MainWindow::mantissa_string(QString value)
-{
-    if(value[0] == '-')
-        value.insert(2, ".");
-    else
-        value.insert(1, ".");
-    return value;
-}
-
 void MainWindow::press_calculate_button()
 {
     main_statusbar->showMessage("Calculating...");
 
-    core->setFormula(formula_TextEdit->toPlainText());
-    core->setDensity(density_LineEdit->text().toDouble());
-    core->setLambda(lambda_LineEdit->text().toDouble());
+    if(errors_list() != "")
+        return main_statusbar->showMessage("Error(s): " + errors_list(), 5000);
 
-    if(!core->is_correct()) return show_sld_error_message();
-
-    double result_sld = core->get_sld();
-    double error_sld = core->get_sld_err();
-
-    double result_pot_v = core->get_potv();
-    double result_pot_v_err = core->get_potv_err();
-
-    double result_char_wl = core->get_charact_wavelength();
-    double result_char_wle = core->get_charact_wavelength_error();
-
-    double result_crit_angle = core->get_critical_angle();
-    double result_crit_angle_err = core->get_critical_angle_error();
-
-    double result_crit_momentum = core->get_critical_momentum();
-    double result_crit_momentum_err = core->get_critical_momentum_error();
-
-    double result_true_absorb = core->get_true_absorbtion();
-    double result_true_absorb_err = core->get_true_absorbtion_error();
-
-    double result_scatt = core->get_incoherrent_scattering();
-    double result_scatt_err = core->get_incoherrent_scattering_error();
-
-    double result_mu = core->get_mu();
-    double result_mu_err = core->get_mu_error();
-
-    rl_sld->setResult(result_sld, error_sld);
-    rl_pot_v->setResult(result_pot_v, result_pot_v_err);
-    rl_ch_wl->setResult(result_char_wl, result_char_wle);
-    rl_cr_ang->setResult(result_crit_angle, result_crit_angle_err);
-    rl_cr_mom->setResult(result_crit_momentum, result_crit_momentum_err);
-    rl_absorb->setResult(result_true_absorb, result_true_absorb_err);
-    rl_scatt->setResult(result_scatt, result_scatt_err);
-    rl_atl_c->setResult(result_mu, result_mu_err);
-
-    main_statusbar->showMessage("Completed", 5000);
+    non_results();
+    calculation();
+    main_statusbar->showMessage("Completed", 4000);
 }
 
 void MainWindow::open_file_submenu()
@@ -304,10 +337,6 @@ void MainWindow::saveas_file_submenu()
     /* Static method approach */
     QFileDialog::getSaveFileName(0, "Save file", QDir::currentPath(),
                                  filters, &defaultFilter);
-
-    // QString filename = QFileDialog::getSaveFileName(this, tr("Save file as..."), QDir::currentPath(), "text format(*.txt)");
-    // qDebug() << filename;
-
 }
 
 void MainWindow::help_submenu()

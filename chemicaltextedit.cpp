@@ -62,24 +62,12 @@ QString ChemicalTextEdit::plainToHtml(QString plaintext)
 
 ChemicalTextEdit::ChemicalTextEdit()
 {
-
     connectSlotsSignals();
 }
 
 void ChemicalTextEdit::changeText()
 {
     disconnectSlotsSignals();
-
-    // auto curspos = this->textCursor().anchor();
-    // auto cursorpos = this->textCursor();
-
-
-    // this->setHtml(this->toPlainText());
     emit changeFormula(plainToHtml(this->toPlainText()));
-
-    // cursorpos.setPosition(curspos);
-    // setTextCursor(cursorpos);
-
-
     connectSlotsSignals();
 }

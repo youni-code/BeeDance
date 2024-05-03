@@ -3,31 +3,32 @@
 
 void Element::mass(double value)
 {
-    is_mass = true;
+    is_mass_ = true;
     mass_ = value;
 }
 
-void Element::bc(std::complex<double> value)
+
+void Element::bc_comp(std::complex<double> value)
 {
-    is_bc = true;
-    bc_ = value;
+    is_bc_ = true;
+    bc_comp_ = value;
 }
 
-void Element::bi(std::complex<double> value)
+void Element::bi_comp(std::complex<double> value)
 {
-    is_bi = true;
-    bi_ = value;
+    is_bi_ = true;
+    bi_comp_ = value;
 }
 
 void Element::sigma_a(double value)
 {
-    is_sigma_a = true;
+    is_sigma_a_ = true;
     sigma_a_ = value;
 }
 
 void Element::sigma_i(double value)
 {
-    is_sigma_i = true;
+    is_sigma_i_ = true;
     sigma_i_ = value;
 }
 
@@ -38,11 +39,11 @@ Element::Element(QString elem, unsigned long atom_num, unsigned long c_nucleons)
     atomic_number_ = atom_num;
     count_nucleons_ = c_nucleons;
 
-    is_mass = false;
-    is_bc = false;
-    is_bi = false;
-    is_sigma_a = false;
-    is_sigma_i = false;
+    is_mass_ = false;
+    is_bc_ = false;
+    is_bi_ = false;
+    is_sigma_a_ = false;
+    is_sigma_i_ = false;
 }
 
 bool Element::operator==(const Element &el) const

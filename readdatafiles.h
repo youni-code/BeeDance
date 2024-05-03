@@ -10,8 +10,6 @@ private:
 
     void readData();
     void writeData(QStringList);
-    void show(Element el);
-
 public:
     std::vector<Element> getElements() { return set_Elements; }
     ReadDataFiles();

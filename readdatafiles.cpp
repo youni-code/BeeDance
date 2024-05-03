@@ -47,18 +47,24 @@ void ReadDataFiles::writeData(QStringList list)
 
 
     Element temp_element(symb, atom_numb, c_isotop);
-    if(list.at(3) != "---") { temp_element.mass(mass); }
-    if(list.at(4) != "---") {temp_element.concentrate(conc); }
+    if(list.at(3) != "---")
+    {
+        temp_element.mass(mass);
+    }
+    if(list.at(4) != "---")
+    {
+        temp_element.concentrate(conc);
+    }
 
     if(list.at(5) != "---")
     {
-        temp_element.bc(bc);
-        temp_element.bc_err(bce);
+        temp_element.bc_comp(bc);
+        temp_element.bc_comp_err(bce);
     }
     if(list.at(7) != "---")
     {
-        temp_element.bi(std::complex(rbi,ibi));
-        temp_element.bi_err(std::complex(rbie, ibie));
+        temp_element.bi_comp(std::complex(rbi,ibi));
+        temp_element.bi_comp_err(std::complex(rbie, ibie));
     }
     if(list.at(11) != "---")
     {
@@ -75,13 +81,6 @@ void ReadDataFiles::writeData(QStringList list)
     // show(temp_element);
     return;
 }
-
-void ReadDataFiles::show(Element el)
-{
-    qDebug() << el.symbol() << "\t" << el.mass() << "\t" << el.bc().real() << "\t" << el.bi().real() << " " << el.bi().imag() << "i\t";
-}
-
-
 
 ReadDataFiles::ReadDataFiles()
 {

@@ -1,30 +1,41 @@
 #include "resultline.h"
 
-QString ResultLine::mantissa_string(QString value)
+QString ResultLine::set_result(double v, double e)
 {
-    if(value[0] == '-')
-        value.insert(2, ".");
-    else
-        value.insert(1, ".");
-    return value;
+    if(v == 0.0 || e == 0.0) return "---";
+    if(e == 0.0) return QString::number(v);
+
+    // log10 of value and error
+    double exp_v = std::floor(std::log10(std::abs(v)));
+    double exp_e = std::floor(std::log10(std::abs(e)));
+    double min_exp = std::min(exp_v, exp_e);
+    double max_exp = std::max(exp_v, exp_e);
+
+    // Integer part has as many digits as need to have 2 digits to show error
+    double val_v = v * std::pow(10, -min_exp + 1);
+    double val_e = e * std::pow(10, -min_exp + 1);
+
+    double end_v = std::round(val_v);
+    double end_e = std::round(val_e);
+
+    // convert all digits in string
+    QString full_v = QString::number(std::floor(end_v), 'g', std::floor(std::log10(end_v)) + 1);;
+    QString full_e = QString::number(std::floor(end_e), 'g', std::floor(std::log10(end_e)) + 1);;
+
+    QString result = full_v + "(" + full_e + ")e" + QString::number(max_exp);
+    if (result.at(0) == '-') result.insert(2, '.');
+    else result.insert(1, '.');
+
+    return result;
 }
 
-QString ResultLine::add_point(double val, double err)
-{
-    QString s_value = QString::number(val);
-    QString s_error = QString::number(err);
-
-    if(s_value.at(0) == '-')
-        s_value.insert(2, '.');
-    else
-        s_value.insert(1, '.');
-
-    return s_value + "(" + s_error + ")";
-}
 
 ResultLine::ResultLine(QWidget *parent)
     : QWidget{parent}
 {
+    QFont font;
+    font.setPointSize(12);
+
     layout = new QHBoxLayout;
 
     label = new QLabel;
@@ -39,10 +50,11 @@ ResultLine::ResultLine(QWidget *parent)
 
     textedit->setReadOnly(true);
 
-    label->setToolTip("help");
-    label->setFixedWidth(30);
+    label->setFixedWidth(70);
+    label->setFont(font);
 
     combobox->setFixedWidth(80);
+
 }
 
 void ResultLine::setText(QString slabel, QString scombobox)
@@ -58,21 +70,8 @@ void ResultLine::setResult(QString text)
 
 void ResultLine::setResult(double value, double error)
 {
-    if(value == 0.0 || error == 0.0) return textedit->setText("---");
-    if(error == 0.0) return textedit->setText(QString::number(value));
-
-    double exp_value = exp(value);
-    double exp_error = exp(error);
-    double min_exp = std::min(exp_value, exp_error);
-    double max_exp = std::max(exp_value, exp_error);
-
-    double mantissa_value = mantissa(value, min_exp); // мантисса без дробной части
-    double mantissa_error = mantissa(error, min_exp); // мантисса без дробной части
-
-    QString result = mantissa_string(QString::number(mantissa_value));
-
-    result = add_point(mantissa_value, mantissa_error) + "E" + QString::number(max_exp);
-    return textedit->setText(result);
+    textedit->setText(set_result(value, error));
+    return;
 }
 
 void ResultLine::setResult(double value)
@@ -80,7 +79,4 @@ void ResultLine::setResult(double value)
     textedit->setText(QString::number(value));
 }
 
-void ResultLine::setTip(QString line)
-{
-    label->setToolTip(line);
-}
+

@@ -34,6 +34,8 @@ class CalculationSLD
     std::complex<double> delta_b(Element*);
 
     double c_summ();
+
+    // bool valid_a_mass();
     double a_mass();
 
     double sigma_a();
@@ -63,15 +65,18 @@ class CalculationSLD
     double b_im();
     double delta_b_im();
 
+    bool valid_sld();
     double sld();
     double delta_sld();
 
+    bool valid_sld_im();
     double sld_im();
     double delta_sld_im();
 
     double v();
     double delta_v();
 
+    bool valid_v_im();
     double v_im();
     double delta_v_im();
 
@@ -101,14 +106,20 @@ public:
     void set_lambda(double lambda) { lambda_ = lambda; }
 
 
+    bool valid_real_sld();
     double get_real_sld() { return sld(); }
     double get_real_sld_error() { return delta_sld(); }
 
+    bool valid_im_sld();
     double get_im_sld() { return sld_im(); }
     double get_im_sld_error() { return delta_sld_im(); }
 
+    bool valid_v();
     double get_potential_v() { return v(); }
     double get_potential_v_error() { return delta_v(); }
+
+    double get_im_potential_v() { return v_im(); }
+    double get_im_potential_v_error() { return delta_v_im(); }
 
     double get_characteristic_wavelength() { return lambda_c(); }
     double get_characteristic_wavelength_error() { return delta_lambda_c(); }
