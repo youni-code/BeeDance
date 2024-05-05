@@ -59,16 +59,11 @@ class MainWindow : public QMainWindow
     QGroupBox *result_box = nullptr;
     QVBoxLayout *groupbox_layout = nullptr;
 
-    ResultLine *rl_sld = nullptr;
-    ResultLine *rl_sld_im = nullptr;
-    ResultLine *rl_pot_v = nullptr;
-    ResultLine *rl_pot_v_im = nullptr;
-    ResultLine *rl_ch_wl = nullptr;
-    ResultLine *rl_cr_ang = nullptr;
-    ResultLine *rl_cr_mom = nullptr;
-    ResultLine *rl_atl_c = nullptr;
-    ResultLine *rl_absorb = nullptr;
-    ResultLine *rl_scatt = nullptr;
+    ResultLine *rl_sld = nullptr; ResultLine *rl_sld_im = nullptr;
+    ResultLine *rl_pot_v = nullptr; ResultLine *rl_pot_v_im = nullptr;
+    ResultLine *rl_ch_wl = nullptr; ResultLine *rl_cr_ang = nullptr;
+    ResultLine *rl_cr_mom = nullptr; ResultLine *rl_atl_c = nullptr;
+    ResultLine *rl_absorb = nullptr; ResultLine *rl_scatt = nullptr;
 
 
     void initialize();

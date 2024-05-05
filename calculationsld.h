@@ -6,7 +6,6 @@
 class CalculationSLD
 {
     std::vector<ChemicalFormulaElement> elements_;
-    // DataTableSLD* table_;
     double density_;
     double lambda_;
 
@@ -34,67 +33,48 @@ class CalculationSLD
     std::complex<double> delta_b(Element*);
 
     double c_summ();
-
-    // bool valid_a_mass();
     double a_mass();
 
     double sigma_a();
     double delta_sigma_a();
-
     double sigma_i();
     double delta_sigma_i();
-
     double sigma_t();
     double delta_sigma_t();
-
     double sigma_c();
     double delta_sigma_c();
-
     double sigma_i_elem();
     double delta_sigma_i_elem();
 
     double b_c();
     double delta_b_c();
-
     double b_a();
     double delta_b_a();
-
     double b_i();
     double delta_b_i();
-
     double b_im();
     double delta_b_im();
 
-    bool valid_sld();
     double sld();
     double delta_sld();
-
-    bool valid_sld_im();
     double sld_im();
     double delta_sld_im();
-
     double v();
     double delta_v();
-
-    bool valid_v_im();
     double v_im();
     double delta_v_im();
 
     double lambda_c();
     double delta_lambda_c();
-
     double teta_c();
     double delta_teta_c();
-
     double q_c();
     double delta_q_c();
 
     double mu_a();
     double delta_mu_a();
-
     double mu_i();
     double delta_mu_i();
-
     double mu();
     double delta_mu();
 
@@ -118,24 +98,31 @@ public:
     double get_potential_v() { return v(); }
     double get_potential_v_error() { return delta_v(); }
 
+    bool valid_im_potential_v();
     double get_im_potential_v() { return v_im(); }
     double get_im_potential_v_error() { return delta_v_im(); }
 
+    bool valid_characteristic_wavelength();
     double get_characteristic_wavelength() { return lambda_c(); }
     double get_characteristic_wavelength_error() { return delta_lambda_c(); }
 
+    bool valid_critical_angle();
     double get_critical_angle() { return teta_c(); };
     double get_critical_angle_error() { return delta_teta_c(); };
 
+    bool valid_critical_momentum();
     double get_critical_momentum() { return q_c(); };
     double get_critical_momentum_error() { return delta_q_c(); };
 
+    bool valid_true_absorption();
     double get_true_absorption() { return mu_a(); }
     double get_true_absorption_error() { return delta_mu_a(); }
 
+    bool valid_incoh_scatt();
     double get_incoh_scatt() { return mu_i(); }
     double get_incoh_scatt_error() { return delta_mu_i(); }
 
+    bool valid_mu();
     double get_mu() { return mu(); }
     double get_mu_error() { return delta_mu(); }
 };

@@ -13,6 +13,7 @@
 #include <QSizePolicy>
 
 #include <QFileDialog>
+#include "resultswidget.h"
 
 void MainWindow::set_menubar()
 {
@@ -174,6 +175,8 @@ void MainWindow::set_results_layout()
     groupbox_layout->addWidget(rl_atl_c);
     groupbox_layout->addWidget(rl_absorb);
     groupbox_layout->addWidget(rl_scatt);
+
+    chemical_layout->addWidget(new ResultsWidget());
 }
 
 void MainWindow::set_signals()
@@ -196,22 +199,20 @@ void MainWindow::calculation()
     core->setLambda(lambda_LineEdit->text().toDouble());
 
 
-    if(core->valid_sld())
-        rl_sld->setResult(      core->get_sld(),                    core->get_sld_err());
-    if(core->valid_sld_im())
-        rl_sld_im->setResult(   core->get_sld_im(),                 core->get_sld_im_err());
+    if(core->valid_sld())       rl_sld->setResult(      core->get_sld(),                    core->get_sld_err());
+    if(core->valid_sld_im())    rl_sld_im->setResult(   core->get_sld_im(),                 core->get_sld_im_err());
 
-    rl_pot_v->setResult(    core->get_potv(),                   core->get_potv_err());
-    rl_pot_v_im->setResult( core->get_potv_im(),                core->get_potv_im_err());
+    if(core->valid_potv())      rl_pot_v->setResult(    core->get_potv(),                   core->get_potv_err());
+    if(core->valid_potv_im())   rl_pot_v_im->setResult( core->get_potv_im(),                core->get_potv_im_err());
 
-    rl_ch_wl->setResult(    core->get_charact_wavelength(),     core->get_charact_wavelength_error());
-    rl_cr_ang->setResult(   core->get_critical_angle(),         core->get_critical_angle_error());
+    if(core->valid_charact_wavelenght()) rl_ch_wl->setResult(    core->get_charact_wavelength(),     core->get_charact_wavelength_error());
+    if(core->valid_critical_angle()) rl_cr_ang->setResult(   core->get_critical_angle(),         core->get_critical_angle_error());
 
-    rl_cr_mom->setResult(   core->get_critical_momentum(),      core->get_critical_momentum_error());
-    rl_absorb->setResult(   core->get_true_absorbtion(),        core->get_true_absorbtion_error());
+    if(core->valid_critical_momenutm()) rl_cr_mom->setResult(   core->get_critical_momentum(),      core->get_critical_momentum_error());
+    if(core->valid_true_absorbtion()) rl_absorb->setResult(   core->get_true_absorbtion(),        core->get_true_absorbtion_error());
 
-    rl_scatt->setResult(    core->get_incoherrent_scattering(), core->get_incoherrent_scattering_error());
-    rl_atl_c->setResult(    core->get_mu(),                     core->get_mu_error());
+    if(core->valid_incoherrent_scattering()) rl_scatt->setResult(    core->get_incoherrent_scattering(), core->get_incoherrent_scattering_error());
+    if(core->valid_mu()) rl_atl_c->setResult(    core->get_mu(),                     core->get_mu_error());
 }
 
 bool MainWindow::checking()

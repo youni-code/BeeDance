@@ -146,29 +146,10 @@ double CalculationSLD::delta_b_i()  { return (sqrt(pow(delta_sigma_i(), 2) + pow
 double CalculationSLD::b_im()       { return b_a() + b_i(); }
 double CalculationSLD::delta_b_im() { return sqrt(pow(delta_b_a(), 2) + pow(delta_b_i(), 2)); }
 
-bool CalculationSLD::valid_sld()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass()) return false;
-        if(!it.element()->is_bc()) return false;
-    }
-    return true;
-}
 
 double CalculationSLD::sld()        { return  c_sld * density_ / a_mass() * b_c(); }
 double CalculationSLD::delta_sld()  { return  c_sld * density_ / a_mass() * delta_b_c(); }
 
-bool CalculationSLD::valid_sld_im()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_sigma_a()) return false;
-        if(!it.element()->is_sigma_i()) return false;
-    }
-    return true;
-}
 
 double CalculationSLD::sld_im()         { return c_sld * density_ / a_mass() * b_im(); }
 double CalculationSLD::delta_sld_im()   { return c_sld * density_ / a_mass() * delta_b_im(); }
@@ -183,10 +164,7 @@ bool CalculationSLD::valid_v()
     return true;
 }
 
-double CalculationSLD::v()          { return c_sldV * sld(); }
-double CalculationSLD::delta_v()    { return c_sldV * delta_sld(); }
-
-bool CalculationSLD::valid_v_im()
+bool CalculationSLD::valid_im_potential_v()
 {
     for(auto &it : elements_)
     {
@@ -196,6 +174,75 @@ bool CalculationSLD::valid_v_im()
     }
     return true;
 }
+
+bool CalculationSLD::valid_characteristic_wavelength()
+{
+    for(auto &it : elements_)
+    {
+        if(!it.element()->is_mass())    return false;
+        if(!it.element()->is_bc()) return false;
+    }
+    return true;
+
+}
+
+bool CalculationSLD::valid_critical_angle()
+{
+    for(auto &it : elements_)
+    {
+        if(!it.element()->is_mass())    return false;
+        if(!it.element()->is_bc()) return false;
+    }
+    return true;
+}
+
+bool CalculationSLD::valid_critical_momentum()
+{
+    for(auto &it : elements_)
+    {
+        if(!it.element()->is_mass())    return false;
+        if(!it.element()->is_bc()) return false;
+    }
+    return true;
+
+}
+
+bool CalculationSLD::valid_true_absorption()
+{
+    for(auto &it : elements_)
+    {
+        if(!it.element()->is_mass())    return false;
+        if(!it.element()->is_sigma_a()) return false;
+    }
+    return true;
+
+}
+
+bool CalculationSLD::valid_incoh_scatt()
+{
+    for(auto &it : elements_)
+    {
+        if(!it.element()->is_mass())    return false;
+        if(!it.element()->is_sigma_i()) return false;
+    }
+    return true;
+
+}
+
+bool CalculationSLD::valid_mu()
+{
+    for(auto &it : elements_)
+    {
+        if(!it.element()->is_mass())    return false;
+        if(!it.element()->is_sigma_a()) return false;
+        if(!it.element()->is_sigma_i()) return false;
+    }
+    return true;
+}
+
+double CalculationSLD::v()          { return c_sldV * sld(); }
+double CalculationSLD::delta_v()    { return c_sldV * delta_sld(); }
+
 
 double CalculationSLD::v_im()       { return c_sldV * sld_im(); }
 double CalculationSLD::delta_v_im() { return c_sldV * delta_sld_im(); }
@@ -265,7 +312,6 @@ bool CalculationSLD::valid_im_sld()
 {
     for(auto &it : elements_)
     {
-        if(!it.element()->is_bi())      return false;
         if(!it.element()->is_sigma_a()) return false;
         if(!it.element()->is_sigma_i()) return false;
         if(!it.element()->is_mass())    return false;

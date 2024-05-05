@@ -51,24 +51,31 @@ public:
     double get_potv()       { return calc_sld->get_potential_v(); }
     double get_potv_err()   { return calc_sld->get_potential_v_error(); }
 
+    bool valid_potv_im()    { return calc_sld->valid_im_potential_v(); }
     double get_potv_im()        { return calc_sld->get_im_potential_v(); }
     double get_potv_im_err()    { return calc_sld->get_im_potential_v_error(); }
 
+    bool valid_charact_wavelenght()         { return calc_sld->valid_characteristic_wavelength(); }
     double get_charact_wavelength()         { return calc_sld->get_characteristic_wavelength(); }
     double get_charact_wavelength_error()   { return calc_sld->get_characteristic_wavelength_error(); }
 
+    bool valid_critical_angle()         { return calc_sld->valid_critical_angle(); }
     double get_critical_angle()         { return calc_sld->get_critical_angle(); }
     double get_critical_angle_error()   { return calc_sld->get_critical_angle_error(); }
 
+    bool valid_critical_momenutm()          { return calc_sld->valid_critical_momentum(); }
     double get_critical_momentum()          { return calc_sld->get_critical_momentum(); }
     double get_critical_momentum_error()    { return calc_sld->get_critical_momentum_error(); }
 
+    bool valid_true_absorbtion()        { return calc_sld->valid_true_absorption(); }
     double get_true_absorbtion()        { return calc_sld->get_true_absorption(); }
     double get_true_absorbtion_error()  { return calc_sld->get_true_absorption_error(); }
 
+    bool valid_incoherrent_scattering()         { return calc_sld->valid_incoh_scatt(); }
     double get_incoherrent_scattering()         { return calc_sld->get_incoh_scatt(); }
     double get_incoherrent_scattering_error()   { return calc_sld->get_incoh_scatt_error(); }
 
+    bool valid_mu()         { return calc_sld->valid_mu(); }
     double get_mu()         { return calc_sld->get_mu(); }
     double get_mu_error()   { return calc_sld->get_mu_error(); }
 
