@@ -12,14 +12,17 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QDoubleSpinBox>
-#include <QGroupBox>
 #include <QLabel>
 #include <QComboBox>
 #include "coresld.h"
+#include "resultswidget.h"
+#include "inputwidget.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+    ResultsWidget *rw;
 
     CoreSLD *core = nullptr;
     QWidget *central_widget = nullptr;
@@ -56,37 +59,25 @@ class MainWindow : public QMainWindow
     QVBoxLayout *inputdata_sublayout = nullptr;
 
 
-    QGroupBox *result_box = nullptr;
-    QVBoxLayout *groupbox_layout = nullptr;
-
-    ResultLine *rl_sld = nullptr; ResultLine *rl_sld_im = nullptr;
-    ResultLine *rl_pot_v = nullptr; ResultLine *rl_pot_v_im = nullptr;
-    ResultLine *rl_ch_wl = nullptr; ResultLine *rl_cr_ang = nullptr;
-    ResultLine *rl_cr_mom = nullptr; ResultLine *rl_atl_c = nullptr;
-    ResultLine *rl_absorb = nullptr; ResultLine *rl_scatt = nullptr;
-
-
     void initialize();
     void set_menubar();
 
     void set_widgets();
     void set_chemicalline();
     void set_densityline();
-    void set_results();
 
     void set_layouts();
     void set_formula_layout();
     void set_density_lambda_layout();
     void set_results_layout();
 
-    void set_signals();
 
+
+    void set_signals();
 
     void calculation();
     bool checking();
     QString errors_list();
-
-    void non_results();
 
 private slots:
     void press_calculate_button();

@@ -91,3 +91,21 @@ ResultsWidget::ResultsWidget(QWidget *parent)
     construct();
 
 }
+
+void ResultsWidget::clear()
+{
+    rl_sld->setResult("---");
+    rl_sld_im->setResult("---");
+
+    rl_pot_v->setResult("---");
+    rl_pot_v_im->setResult("---");
+
+    rl_ch_wl->setResult("---");
+    rl_cr_ang->setResult("---");
+
+    rl_cr_mom->setResult("---");
+    rl_absorb->setResult("---");
+
+    rl_scatt->setResult("---");
+    rl_atl_c->setResult("---");
+}

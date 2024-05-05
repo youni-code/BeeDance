@@ -39,6 +39,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         chemicalformulaelement.h chemicalformulaelement.cpp
         resultline.h resultline.cpp
         resultswidget.h resultswidget.cpp
+        inputwidget.h inputwidget.cpp
 
         # tests/test_datatablesld/CMakeLists.txt
         # tests/test_datatablesld/t_datatablesld.cpp
