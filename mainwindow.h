@@ -23,6 +23,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     ResultsWidget *rw;
+    InputWidget *iw;
 
     CoreSLD *core = nullptr;
     QWidget *central_widget = nullptr;

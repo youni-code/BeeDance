@@ -43,11 +43,18 @@ class InputWidget : public QWidget
     void set_density_lambda_layout();
     void set_formula_layout();
 
+    void set_signals() { connect(calculate_PushButton, SIGNAL(pressed()), this, SIGNAL(push_button())); }
+
 public:
     explicit InputWidget(QWidget *parent = nullptr);
 
+    QString get_chemicalformula()   { return formula_TextEdit->toPlainText(); }
+    double get_density()            { return density_LineEdit->text().toDouble(); }
+    double get_lambda()             { return lambda_LineEdit->text().toDouble(); }
+
 
 signals:
+    void push_button();
 };
 
 #endif // INPUTWIDGET_H

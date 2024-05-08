@@ -115,8 +115,8 @@ void MainWindow::set_density_lambda_layout()
 
 void MainWindow::set_results_layout()
 {
+    chemical_layout->addWidget(iw);
     chemical_layout->addWidget(rw);
-    chemical_layout->addWidget(new InputWidget());
 }
 
 void MainWindow::set_signals()
@@ -218,6 +218,7 @@ void MainWindow::initialize()
 
     calculate_PushButton = new QPushButton(central_widget);
     rw = new ResultsWidget();
+    iw = new InputWidget();
 }
 
 void MainWindow::press_calculate_button()

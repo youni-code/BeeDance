@@ -94,6 +94,8 @@ void InputWidget::set_formula_layout()
 
 
 
+
+
 InputWidget::InputWidget(QWidget *parent)
     : QWidget{parent}
 {
@@ -102,6 +104,7 @@ InputWidget::InputWidget(QWidget *parent)
     set_densityline();
     set_formula_layout();
     set_density_lambda_layout();
+    set_signals();
 
 }
 
