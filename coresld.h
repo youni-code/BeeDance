@@ -79,6 +79,8 @@ public:
     double get_mu()         { return calc_sld->get_mu(); }
     double get_mu_error()   { return calc_sld->get_mu_error(); }
 
+    bool valid_all()        { return calc_sld->valid_all(); }
+
 };
 
 #endif // CORESLD_H

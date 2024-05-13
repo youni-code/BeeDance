@@ -13,6 +13,7 @@
 #include <QSizePolicy>
 
 #include <QFileDialog>
+#include <QStyleFactory>
 #include "resultswidget.h"
 
 void MainWindow::set_menubar()
@@ -27,118 +28,47 @@ void MainWindow::set_menubar()
     QMenu *menu_help = new QMenu("Help", main_menubar);
     menu_help->addAction(help_action);
 
-    QMenu *menu_view = new QMenu("View");
-    menu_view->addAction("Style...");
+    // QMenu *menu_view = new QMenu("View");
+    // light_theme = menu_view->addAction("Light style");
+    // dark_theme = menu_view->addAction("Dark style");
 
     main_menubar->addMenu(menu_file);
-    main_menubar->addMenu(menu_view);
+    // main_menubar->addMenu(menu_view);
     main_menubar->addSeparator();
     main_menubar->addMenu(menu_help);
-}
-void MainWindow::set_widgets()
-{
-    set_chemicalline();
-    set_densityline();
 
     this->setMenuBar(main_menubar);
     this->setStatusBar(main_statusbar);
 }
-
-void MainWindow::set_chemicalline()
-{
-    QFont f = formula_TextEdit->font();
-    f.setPointSize(18);
-
-    formula_Label->setFont(f);
-    formula_TextEdit->setFont(f);
-    formula_TextEdit->setAcceptRichText(false);
-    formula_TextEdit->setMaximumHeight(1.3 * density_LineEdit->height());
-    formula_TextEdit->setPlaceholderText("chemical formula e.g. H2O");
-}
-
-void MainWindow::set_densityline()
-{
-    QValidator *doublevalid = new QDoubleValidator();
-    doublevalid->setLocale(QLocale::C);
-
-    density_LineEdit->setValidator(doublevalid);
-    density_LineEdit->setText("1.0");
-    density_ComboBox->addItem("g/cm³");
-    density_ComboBox->setFixedWidth(35);
-
-    lambda_LineEdit->setValidator(doublevalid);
-    lambda_LineEdit->setText("1.798");
-    lambda_ComboBox->addItem("Å");
-
-    calculate_PushButton->setText("Run");
-}
-
-void MainWindow::set_layouts()
-{
-    set_formula_layout();
-    set_density_lambda_layout();
-    set_results_layout();
-}
-
-void MainWindow::set_formula_layout()
-{
-    central_widget->setLayout(chemical_layout);
-
-    chemical_layout->addWidget(formula_TextEdit);
-    chemical_layout->addWidget(formula_Label);
-    chemical_layout->setAlignment(Qt::AlignTop);
-
-}
-
-void MainWindow::set_density_lambda_layout()
-{
-    chemical_layout->addLayout(inputdata_button_sublayout);
-    inputdata_button_sublayout->addLayout(inputdata_sublayout);
-
-    inputdata_sublayout->addLayout(density_sublayout);
-    density_sublayout->addWidget(density_label);
-    density_label->setFixedWidth(55);
-    density_sublayout->addWidget(density_LineEdit);
-    density_sublayout->addWidget(density_ComboBox);
-    density_ComboBox->setFixedWidth(70);
-
-    inputdata_sublayout->addLayout(lambda_sublayout);
-    lambda_sublayout->addWidget(lambda_label);
-    lambda_label->setFixedWidth(55);
-    lambda_sublayout->addWidget(lambda_LineEdit);
-    lambda_sublayout->addWidget(lambda_ComboBox);
-    lambda_ComboBox->setFixedWidth(70);
-
-    inputdata_button_sublayout->addWidget(calculate_PushButton);
-    calculate_PushButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-}
-
-void MainWindow::set_results_layout()
+void MainWindow::set_widgets()
 {
     chemical_layout->addWidget(iw);
+    // chemical_layout->addSpacing(10);
+    chemical_layout->addStretch(10);
     chemical_layout->addWidget(rw);
 }
 
+
 void MainWindow::set_signals()
 {
-    connect(formula_TextEdit,       SIGNAL(changeFormula(QString)), formula_Label,  SLOT(setFormula(QString)));
-    connect(calculate_PushButton,   SIGNAL(pressed()),              this,           SLOT(press_calculate_button()));
+    connect(iw,   SIGNAL(push_button()),              this,           SLOT(press_calculate_button()));
 
     connect(exit_action,    SIGNAL(triggered()), qApp, SLOT(exit()));
     connect(open_action,    SIGNAL(triggered()), this, SLOT(open_file_submenu()));
     connect(saveas_action,  SIGNAL(triggered()), this, SLOT(saveas_file_submenu()));
     connect(help_action,    SIGNAL(triggered()), this, SLOT(help_submenu()));
 
-    emit formula_TextEdit->changeFormula(formula_TextEdit->toPlainText());
+    connect(light_theme, SIGNAL(triggered()), this, SLOT(set_light()));
+    connect(dark_theme, SIGNAL(triggered()), this, SLOT(set_dark()));
 }
 
 void MainWindow::calculation()
 {
     rw->clear();
 
-    core->setFormula(formula_TextEdit->toPlainText());
-    core->setDensity(density_LineEdit->text().toDouble());
-    core->setLambda(lambda_LineEdit->text().toDouble());
+    core->setFormula(iw->get_chemicalformula());
+    core->setDensity(iw->get_density());
+    core->setLambda(iw->get_lambda());
 
 
     if(core->valid_sld())       rw->set_re_sld(core->get_sld(), core->get_sld_err());
@@ -157,25 +87,14 @@ void MainWindow::calculation()
     if(core->valid_incoherrent_scattering()) rw->set_mu_inc(core->get_incoherrent_scattering(), core->get_incoherrent_scattering_error());
 }
 
-bool MainWindow::checking()
-{
-    core->setFormula(formula_TextEdit->toPlainText());
-    if(!core->is_line_correct()) return false;
-    if(density_LineEdit->text().toDouble() <= 0.0) return false;
-    if(lambda_LineEdit->text().toDouble() <= 0.0) return false;
-
-    return true;
-
-}
-
 QString MainWindow::errors_list()
 {
     QString error_line;
-    core->setFormula(formula_TextEdit->toPlainText());
+    core->setFormula(iw->get_chemicalformula());
 
-    if(!core->is_line_correct())                    error_line += "Line incorrect;\t";
-    if(density_LineEdit->text().toDouble() <= 0.0)  error_line += "Density incorrect;\t";
-    if(lambda_LineEdit->text().toDouble() <= 0.0)   error_line += "Lambda incorrect;\t";
+    if(!core->is_line_correct())  error_line += "Line incorrect;\t";
+    if(iw->get_density() <= 0.0)  error_line += "Density incorrect;\t";
+    if(iw->get_lambda() <= 0.0)   error_line += "Lambda incorrect;\t";
 
     return error_line;
 }
@@ -194,42 +113,22 @@ void MainWindow::initialize()
 
     main_statusbar = new QStatusBar(central_widget);
 
-
     chemical_layout =        new QVBoxLayout(central_widget);
-    formula_TextEdit = new ChemicalTextEdit();
-    formula_Label = new ChemicalLabel();
 
-    lamb_dens_sublayout = new QVBoxLayout();
-    pushbutton_sublayout = new QHBoxLayout();
-
-    inputdata_sublayout = new QVBoxLayout();
-    inputdata_button_sublayout = new QHBoxLayout();
-
-
-    density_sublayout =    new QHBoxLayout();
-    density_label = new QLabel("Density:");
-    density_LineEdit = new QLineEdit(central_widget);
-    density_ComboBox = new QComboBox();
-
-    lambda_sublayout = 	new QHBoxLayout();
-    lambda_label = new QLabel("λ:");
-    lambda_LineEdit =	new QLineEdit();
-    lambda_ComboBox = 	new QComboBox();
-
-    calculate_PushButton = new QPushButton(central_widget);
     rw = new ResultsWidget();
     iw = new InputWidget();
 }
 
 void MainWindow::press_calculate_button()
 {
+    QString error;
     main_statusbar->showMessage("Calculating...");
-
     if(errors_list() != "")
-        return main_statusbar->showMessage("Error(s): " + errors_list(), 5000);
-
+        return main_statusbar->showMessage("Error(s): " + errors_list(), 7000);
+    if(!core->valid_all())
+        error = "There isn't enough data for some calculations.";
     calculation();
-    main_statusbar->showMessage("Completed", 4000);
+    main_statusbar->showMessage("Completed. " + error, 7000);
 }
 
 void MainWindow::open_file_submenu()
@@ -243,20 +142,17 @@ void MainWindow::saveas_file_submenu()
     QString filters("Music files (*.mp3);;Text files (*.txt);;All files (*.*)");
     QString defaultFilter("Text files (*.txt)");
 
-    /* Static method approach */
-    QFileDialog::getSaveFileName(0, "Save file", QDir::currentPath(),
-                                 filters, &defaultFilter);
+    QFileDialog::getSaveFileName(0, "Save file", QDir::currentPath(), filters, &defaultFilter);
 }
 
 void MainWindow::help_submenu()
 {
     QWidget *frame = new QWidget();
-    frame->setGeometry(this->pos().rx(), this->pos().ry(), 800, 950);
+    frame->setGeometry(this->pos().rx(), this->pos().ry(), 602, 974);
     frame->setStyleSheet("background-image: url(data/help_screenshot.png)");
     frame->setFixedSize(frame->size());
     frame->show();
 }
-
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -265,7 +161,7 @@ MainWindow::MainWindow(QWidget *parent)
     initialize();
     set_menubar();
     set_widgets();
-    set_layouts();
+
     this->setWindowTitle("BeeDance");
     this->setCentralWidget(central_widget);
 

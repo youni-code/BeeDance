@@ -1,17 +1,23 @@
 #include "calculationsld.h"
 #include <QDebug>
 
-double CalculationSLD::mod(std::complex<double> val) { return sqrt(val.real() * val.real() + val.imag() * val.imag()); }
+double CalculationSLD::mod(std::complex<double> val) const
+{
+    return sqrt(val.real() * val.real() + val.imag() * val.imag());
+}
 
-std::complex<double> CalculationSLD::b(Element *elem) { return std::complex(elem->bc_comp().real(), - ((elem->sigma_a() * lambda_ / lambda_0 + elem->sigma_i()) * 1e2) / (2 * lambda_ * 1e5)); }
+std::complex<double> CalculationSLD::b(Element *elem) const
+{
+    return std::complex(elem->bc_comp().real(), - ((elem->sigma_a() * lambda_ / lambda_0 + elem->sigma_i()) * 1e2) / (2 * lambda_ * 1e5));
+}
 
-std::complex<double> CalculationSLD::delta_b(Element *elem)
+std::complex<double> CalculationSLD::delta_b(Element *elem) const
 {
     double imag = - sqrt(pow(elem->sigma_a_err() * lambda_ / lambda_0, 2) + pow(elem->sigma_i_err(), 2)) * (1e2) / (2 * lambda_ * 1e5);
     return std::complex(elem->bc_comp_err().real(), imag);
 }
 
-double CalculationSLD::c_summ()
+double CalculationSLD::c_summ() const
 {
     double sum(0.0);
     for(auto &it : elements_)
@@ -19,7 +25,7 @@ double CalculationSLD::c_summ()
     return sum;
 }
 
-double CalculationSLD::a_mass()
+double CalculationSLD::a_mass() const
 {
     double mass(0);
     for(auto &it : elements_)
@@ -27,16 +33,7 @@ double CalculationSLD::a_mass()
     return mass;
 }
 
-
-// bool CalculationSLD::valid_a_mass()
-// {
-//     for(auto &it : elements_)
-//         if(!it.element()->is_mass())
-//             return false;
-//     return true;
-// }
-
-double CalculationSLD::sigma_a()
+double CalculationSLD::sigma_a() const
 {
     double sigma(0);
     for(auto &it : elements_)
@@ -44,7 +41,7 @@ double CalculationSLD::sigma_a()
     return sigma;
 }
 
-double CalculationSLD::delta_sigma_a()
+double CalculationSLD::delta_sigma_a() const
 {
     double d_sigma(0);
     for(auto &it : elements_)
@@ -53,7 +50,7 @@ double CalculationSLD::delta_sigma_a()
 }
 
 
-double CalculationSLD::sigma_i()
+double CalculationSLD::sigma_i() const
 {
     double sigma(0);
     for(auto &it : elements_)
@@ -61,7 +58,7 @@ double CalculationSLD::sigma_i()
     return sigma;
 }
 
-double CalculationSLD::delta_sigma_i()
+double CalculationSLD::delta_sigma_i() const
 {
     double sigma(0);
     for(auto &it : elements_)
@@ -70,7 +67,7 @@ double CalculationSLD::delta_sigma_i()
 }
 
 
-double CalculationSLD::sigma_t()
+double CalculationSLD::sigma_t() const
 {
     double result(0);
     for(auto &it : elements_)
@@ -81,7 +78,7 @@ double CalculationSLD::sigma_t()
     return result;
 }
 
-double CalculationSLD::delta_sigma_t()
+double CalculationSLD::delta_sigma_t() const
 {
     double sub_result(0);
     for(auto &it : elements_)
@@ -94,7 +91,7 @@ double CalculationSLD::delta_sigma_t()
 
 }
 
-double CalculationSLD::sigma_c()
+double CalculationSLD::sigma_c() const
 {
     std::complex res(0);
     for(auto &it : elements_)
@@ -105,7 +102,7 @@ double CalculationSLD::sigma_c()
     return 4 * pi * (res.real() * res.real() + res.imag() * res.imag()) * 1e-2 * c_summ();
 }
 
-double CalculationSLD::delta_sigma_c()
+double CalculationSLD::delta_sigma_c() const
 {
     std::complex<double> sub_res1(0);
     double sub_res2(0);
@@ -118,10 +115,10 @@ double CalculationSLD::delta_sigma_c()
     return 4 * pi * mod(sub_res1) * sqrt(sub_res2) * (1e-2 / c_summ());
 }
 
-double CalculationSLD::sigma_i_elem()       { return sigma_t() - sigma_c(); }
-double CalculationSLD::delta_sigma_i_elem() { return sqrt(pow(delta_sigma_t(), 2) + pow(delta_sigma_c(), 2)); }
+double CalculationSLD::sigma_i_elem() const { return sigma_t() - sigma_c(); }
+double CalculationSLD::delta_sigma_i_elem() const { return sqrt(pow(delta_sigma_t(), 2) + pow(delta_sigma_c(), 2)); }
 
-double CalculationSLD::b_c()
+double CalculationSLD::b_c() const
 {
     double result(0);
     for(auto &it : elements_)
@@ -129,193 +126,125 @@ double CalculationSLD::b_c()
     return result;
 }
 
-double CalculationSLD::delta_b_c()
+double CalculationSLD::delta_b_c() const
 {
     double result(0);
-    for(auto &it : elements_) result += it.index() * pow(it.element()->bc_comp_err().real(), 2);
-
+    for(auto &it : elements_)
+        result += it.index() * pow(it.element()->bc_comp_err().real(), 2);
     return sqrt(result);
 }
 
-double CalculationSLD::b_a()        { return (sigma_a() * (lambda_ / lambda_0) * 1e2) / (2 * lambda_ * 1e5); }
-double CalculationSLD::delta_b_a()  { return (delta_sigma_a() * (lambda_ / lambda_0) * 1e2) / (2 * lambda_ * 1e5); }
+double CalculationSLD::b_a()        const { return (sigma_a() * (lambda_ / lambda_0) * 1e2) / (2 * lambda_ * 1e5); }
+double CalculationSLD::delta_b_a()  const { return (delta_sigma_a() * (lambda_ / lambda_0) * 1e2) / (2 * lambda_ * 1e5); }
 
-double CalculationSLD::b_i()        { return ((sigma_i() + sigma_i_elem()) * 1e2) / (2 * lambda_ * 1e5); }
-double CalculationSLD::delta_b_i()  { return (sqrt(pow(delta_sigma_i(), 2) + pow(delta_sigma_i_elem(), 2)) * 1e2) / (2 * lambda_ * 1e5); }
+double CalculationSLD::b_i()        const { return ((sigma_i() + sigma_i_elem()) * 1e2) / (2 * lambda_ * 1e5); }
+double CalculationSLD::delta_b_i()  const { return (sqrt(pow(delta_sigma_i(), 2) + pow(delta_sigma_i_elem(), 2)) * 1e2) / (2 * lambda_ * 1e5); }
 
-double CalculationSLD::b_im()       { return b_a() + b_i(); }
-double CalculationSLD::delta_b_im() { return sqrt(pow(delta_b_a(), 2) + pow(delta_b_i(), 2)); }
-
-
-double CalculationSLD::sld()        { return  c_sld * density_ / a_mass() * b_c(); }
-double CalculationSLD::delta_sld()  { return  c_sld * density_ / a_mass() * delta_b_c(); }
+double CalculationSLD::b_im()       const { return b_a() + b_i(); }
+double CalculationSLD::delta_b_im() const { return sqrt(pow(delta_b_a(), 2) + pow(delta_b_i(), 2)); }
 
 
-double CalculationSLD::sld_im()         { return c_sld * density_ / a_mass() * b_im(); }
-double CalculationSLD::delta_sld_im()   { return c_sld * density_ / a_mass() * delta_b_im(); }
-
-bool CalculationSLD::valid_v()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_bc()) return false;
-    }
-    return true;
-}
-
-bool CalculationSLD::valid_im_potential_v()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_sigma_a()) return false;
-        if(!it.element()->is_sigma_i()) return false;
-    }
-    return true;
-}
-
-bool CalculationSLD::valid_characteristic_wavelength()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_bc()) return false;
-    }
-    return true;
-
-}
-
-bool CalculationSLD::valid_critical_angle()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_bc()) return false;
-    }
-    return true;
-}
-
-bool CalculationSLD::valid_critical_momentum()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_bc()) return false;
-    }
-    return true;
-
-}
-
-bool CalculationSLD::valid_true_absorption()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_sigma_a()) return false;
-    }
-    return true;
-
-}
-
-bool CalculationSLD::valid_incoh_scatt()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_sigma_i()) return false;
-    }
-    return true;
-
-}
-
-bool CalculationSLD::valid_mu()
-{
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass())    return false;
-        if(!it.element()->is_sigma_a()) return false;
-        if(!it.element()->is_sigma_i()) return false;
-    }
-    return true;
-}
-
-double CalculationSLD::v()          { return c_sldV * sld(); }
-double CalculationSLD::delta_v()    { return c_sldV * delta_sld(); }
+double CalculationSLD::sld()        const { return  c_sld * density_ / a_mass() * b_c(); }
+double CalculationSLD::delta_sld()  const { return  c_sld * density_ / a_mass() * delta_b_c(); }
 
 
-double CalculationSLD::v_im()       { return c_sldV * sld_im(); }
-double CalculationSLD::delta_v_im() { return c_sldV * delta_sld_im(); }
+double CalculationSLD::sld_im()         const { return c_sld * density_ / a_mass() * b_im(); }
+double CalculationSLD::delta_sld_im()   const { return c_sld * density_ / a_mass() * delta_b_im(); }
 
-double CalculationSLD::lambda_c()
+
+double CalculationSLD::v()          const { return c_sldV * sld(); }
+double CalculationSLD::delta_v()    const { return c_sldV * delta_sld(); }
+
+
+double CalculationSLD::v_im()       const { return c_sldV * sld_im(); }
+double CalculationSLD::delta_v_im() const { return c_sldV * delta_sld_im(); }
+
+double CalculationSLD::lambda_c() const
 {
     if(v() > 0.0) return c_lambda / std::sqrt(v());
     return 0.0;
 }
 
-double CalculationSLD::delta_lambda_c()
+double CalculationSLD::delta_lambda_c() const
 {
     if(v() > 0.0)
         return (lambda_c() / 2) * (delta_v() / v());
     return 0.0;
 }
 
-double CalculationSLD::teta_c()
+double CalculationSLD::teta_c() const
 {
     if(lambda_c() > 0.0)
         return 1e3 / v();
     return 0.0;
 }
 
-double CalculationSLD::delta_teta_c()
+double CalculationSLD::delta_teta_c() const
 {
     if(lambda_c() > 0.0)
         return teta_c() * (delta_lambda_c() / lambda_c());
     return 0.0;
 }
 
-double CalculationSLD::q_c()
+double CalculationSLD::q_c() const
 {
     if(lambda_c() > 0.0) return 4 * pi / lambda_c();
     return 0.0;
 }
 
-double CalculationSLD::delta_q_c()
+double CalculationSLD::delta_q_c() const
 {
     if(lambda_c() > 0.0)
         return q_c() * (delta_lambda_c() / lambda_c());
     return 0.0;
 }
 
-double CalculationSLD::mu_a()       { return c_sigma_mu * density_ * sigma_a() / (a_mass()) * (lambda_ / lambda_0); }
-double CalculationSLD::delta_mu_a() { return c_sigma_mu * density_ * delta_sigma_a() / (a_mass()) * (lambda_ / lambda_0); }
+double CalculationSLD::mu_a() const       { return c_sigma_mu * density_ * sigma_a() / (a_mass()) * (lambda_ / lambda_0); }
+double CalculationSLD::delta_mu_a() const { return c_sigma_mu * density_ * delta_sigma_a() / (a_mass()) * (lambda_ / lambda_0); }
 
-double CalculationSLD::mu_i()       { return c_sigma_mu * density_ * (sigma_i() + sigma_i_elem()) / a_mass(); }
-double CalculationSLD::delta_mu_i() { return c_sigma_mu * density_ * sqrt(pow(delta_sigma_i(), 2) + pow(delta_sigma_i_elem(), 2)) / a_mass(); }
+double CalculationSLD::mu_i() const       { return c_sigma_mu * density_ * (sigma_i() + sigma_i_elem()) / a_mass(); }
+double CalculationSLD::delta_mu_i() const { return c_sigma_mu * density_ * sqrt(pow(delta_sigma_i(), 2) + pow(delta_sigma_i_elem(), 2)) / a_mass(); }
 
-double CalculationSLD::mu()         { return mu_a() + mu_i(); }
-double CalculationSLD::delta_mu()   { return delta_mu_a() + delta_mu_i(); }
+double CalculationSLD::mu() const         { return mu_a() + mu_i(); }
+double CalculationSLD::delta_mu() const   { return delta_mu_a() + delta_mu_i(); }
 
-CalculationSLD::CalculationSLD() {}
 
-bool CalculationSLD::valid_real_sld()
+bool CalculationSLD::v_mass() const
 {
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_mass()) return false;
-        if(!it.element()->is_bc()) return false;
-    }
+    for(auto const &it : elements_)
+        if(!it.element()->is_mass())
+            return false;
     return true;
 }
 
-bool CalculationSLD::valid_im_sld()
+bool CalculationSLD::v_sigma_a() const
 {
-    for(auto &it : elements_)
-    {
-        if(!it.element()->is_sigma_a()) return false;
-        if(!it.element()->is_sigma_i()) return false;
-        if(!it.element()->is_mass())    return false;
-    }
+    for(auto const &it : elements_)
+        if(!it.element()->is_sigma_a())
+            return false;
     return true;
-
 }
+
+bool CalculationSLD::v_sigma_i() const
+{
+    for(auto const &it : elements_)
+        if(!it.element()->is_sigma_i())
+            return false;
+    return true;
+}
+
+bool CalculationSLD::v_bc() const
+{
+    for(auto const &it : elements_)
+        if(!it.element()->is_bc())
+            return false;
+    return true;
+}
+
+CalculationSLD::CalculationSLD()
+{
+}
+
+
+
+

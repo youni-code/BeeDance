@@ -13,7 +13,6 @@ class InputWidget : public QWidget
 {
     Q_OBJECT
 
-
     QVBoxLayout         *chemical_layout = nullptr;
     ChemicalTextEdit    *formula_TextEdit = nullptr;
     ChemicalLabel       *formula_Label = nullptr;
@@ -32,10 +31,8 @@ class InputWidget : public QWidget
     QHBoxLayout *pushbutton_sublayout = nullptr;
     QPushButton *calculate_PushButton = nullptr;
 
-
     QHBoxLayout *inputdata_button_sublayout = nullptr;
     QVBoxLayout *inputdata_sublayout = nullptr;
-
 
     void initialize();
     void set_chemicalline();
@@ -43,15 +40,16 @@ class InputWidget : public QWidget
     void set_density_lambda_layout();
     void set_formula_layout();
 
-    void set_signals() { connect(calculate_PushButton, SIGNAL(pressed()), this, SIGNAL(push_button())); }
+
+
+    void set_signals();
 
 public:
     explicit InputWidget(QWidget *parent = nullptr);
 
-    QString get_chemicalformula()   { return formula_TextEdit->toPlainText(); }
-    double get_density()            { return density_LineEdit->text().toDouble(); }
-    double get_lambda()             { return lambda_LineEdit->text().toDouble(); }
-
+    QString get_chemicalformula() const   { return formula_TextEdit->toPlainText(); }
+    double get_density() const            { return density_LineEdit->text().toDouble(); }
+    double get_lambda() const             { return lambda_LineEdit->text().toDouble(); }
 
 signals:
     void push_button();

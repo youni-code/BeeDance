@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+
     ResultsWidget *rw;
     InputWidget *iw;
 
@@ -34,50 +35,21 @@ class MainWindow : public QMainWindow
     QAction     *saveas_action = nullptr;
     QAction     *help_action = nullptr;
 
+    QAction     *light_theme = nullptr;
+    QAction     *dark_theme = nullptr;
+
     QStatusBar *main_statusbar = nullptr;
 
-
     QVBoxLayout         *chemical_layout = nullptr;
-    ChemicalTextEdit    *formula_TextEdit = nullptr;
-    ChemicalLabel       *formula_Label = nullptr;
-
-    QHBoxLayout *density_sublayout = nullptr;
-    QLabel      *density_label = nullptr;
-    QLineEdit   *density_LineEdit = nullptr;
-    QComboBox   *density_ComboBox = nullptr;
-
-    QHBoxLayout *lambda_sublayout = nullptr;
-    QLabel 		*lambda_label = nullptr;
-    QLineEdit 	*lambda_LineEdit = nullptr;
-    QComboBox 	*lambda_ComboBox = nullptr;
-
-    QVBoxLayout *lamb_dens_sublayout = nullptr;
-    QHBoxLayout *pushbutton_sublayout = nullptr;
-    QPushButton *calculate_PushButton = nullptr;
-
-
-    QHBoxLayout *inputdata_button_sublayout = nullptr;
-    QVBoxLayout *inputdata_sublayout = nullptr;
-
 
     void initialize();
     void set_menubar();
 
     void set_widgets();
-    void set_chemicalline();
-    void set_densityline();
-
-    void set_layouts();
-    void set_formula_layout();
-    void set_density_lambda_layout();
-    void set_results_layout();
-
-
 
     void set_signals();
 
     void calculation();
-    bool checking();
     QString errors_list();
 
 private slots:
@@ -86,6 +58,7 @@ private slots:
     void open_file_submenu();
     void saveas_file_submenu();
     void help_submenu();
+
 
 public:
     MainWindow(QWidget *parent = nullptr);

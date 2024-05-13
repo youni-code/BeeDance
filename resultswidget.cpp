@@ -35,7 +35,7 @@ void ResultsWidget::set_resultlines()
     rl_pot_v_im->setTip("Imaginary part of Potential");
 
     rl_ch_wl->setText("λ<sub>c</sub>", "Å");
-    rl_ch_wl->setTip("Characteristic wavelength");
+    rl_ch_wl->setTip("Characteristic wavelength transfer");
 
     rl_cr_ang->setText("θ<sub>c</sub>", "mrad/Å");
     rl_cr_ang->setTip("Critical angle");
@@ -43,14 +43,15 @@ void ResultsWidget::set_resultlines()
     rl_cr_mom->setText("q<sub>c</sub>", "1/Å");
     rl_cr_mom->setTip("Critical momentum");
 
-    rl_atl_c->setText("μ", "1/cm");
-    rl_atl_c->setTip("Attenuation coefficient");
 
     rl_absorb->setText("μ<sub>α</sub>", "1/cm");
     rl_absorb->setTip("True absorption coefficient");
 
     rl_scatt->setText("μ<sub>inc</sub>", "1/cm");
     rl_scatt->setTip("Incoherent scattering attenuation");
+
+    rl_atl_c->setText("μ", "1/cm");
+    rl_atl_c->setTip("Attenuation coefficient");
 
 }
 
@@ -78,9 +79,9 @@ void ResultsWidget::construct()
     groupbox_layout->addWidget(rl_cr_ang);
 
     groupbox_layout->addWidget(rl_cr_mom);
-    groupbox_layout->addWidget(rl_atl_c);
     groupbox_layout->addWidget(rl_absorb);
     groupbox_layout->addWidget(rl_scatt);
+    groupbox_layout->addWidget(rl_atl_c);
 }
 
 ResultsWidget::ResultsWidget(QWidget *parent)

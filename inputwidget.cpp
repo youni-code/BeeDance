@@ -24,20 +24,18 @@ void InputWidget::initialize()
     lambda_ComboBox = 	new QComboBox();
 
     calculate_PushButton = new QPushButton();
-
 }
 
 void InputWidget::set_chemicalline()
 {
     QFont f = formula_TextEdit->font();
-    f.setPointSize(18);
+    f.setPointSize(19);
 
     formula_Label->setFont(f);
     formula_TextEdit->setFont(f);
     formula_TextEdit->setAcceptRichText(false);
-    formula_TextEdit->setMaximumHeight(1.3 * density_LineEdit->height());
+    formula_TextEdit->setMaximumHeight(2 * f.pointSize() + 2);
     formula_TextEdit->setPlaceholderText("chemical formula e.g. H2O");
-
 }
 
 void InputWidget::set_densityline()
@@ -55,7 +53,6 @@ void InputWidget::set_densityline()
     lambda_ComboBox->addItem("Å");
 
     calculate_PushButton->setText("Run");
-
 }
 
 void InputWidget::set_density_lambda_layout()
@@ -79,7 +76,6 @@ void InputWidget::set_density_lambda_layout()
 
     inputdata_button_sublayout->addWidget(calculate_PushButton);
     calculate_PushButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-
 }
 
 void InputWidget::set_formula_layout()
@@ -89,12 +85,14 @@ void InputWidget::set_formula_layout()
     chemical_layout->addWidget(formula_TextEdit);
     chemical_layout->addWidget(formula_Label);
     chemical_layout->setAlignment(Qt::AlignTop);
-
 }
 
-
-
-
+void InputWidget::set_signals()
+{
+    connect(calculate_PushButton, SIGNAL(pressed()),                this,           SIGNAL(push_button()));
+    connect(formula_TextEdit,     SIGNAL(changeFormula(QString)),   formula_Label,  SLOT(setFormula(QString)));
+    emit formula_TextEdit->changeFormula(formula_TextEdit->toPlainText());
+}
 
 InputWidget::InputWidget(QWidget *parent)
     : QWidget{parent}
@@ -105,6 +103,5 @@ InputWidget::InputWidget(QWidget *parent)
     set_formula_layout();
     set_density_lambda_layout();
     set_signals();
-
 }
 
