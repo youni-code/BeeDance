@@ -53,8 +53,10 @@ void t_chemicalformula::test_brackets_index_inside()
     ChemicalFormula a;
 
     QCOMPARE(a.getLine(a.brackets_index_inside("^13CHe2^2H5(O2^1H2)2Fe2O3")),       "(O2^1H2)2");
+    QCOMPARE(a.getLine(a.brackets_index_inside("^13CHe2^2H5(O2^1H2)2Fe2O3")),       "(O2^1H2)2");
     QCOMPARE(a.getLine(a.brackets_index_inside("He2^2H5(O^1H2)2Fe2O3")),            "(O^1H2)2");
     QCOMPARE(a.getLine(a.brackets_index_inside("^13CHe2^2H5(O2(^1H)2)2Fe2O3")),     "(O2(^1H)2)2");
+    QCOMPARE(a.getLine(a.brackets_index_inside("^13CHe2^2H5(O2(^1H)2)Fe2O3")),      "(O2(^1H)2)");
     QCOMPARE(a.getLine(a.brackets_index_inside("^13CHe2^2H5(O2(^1H)2)Fe2O3")),      "(O2(^1H)2)");
     QCOMPARE(a.getLine(a.brackets_index_inside("^13CHe2^2H52Fe2O3")),               "");
 }

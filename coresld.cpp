@@ -12,6 +12,7 @@ double CoreSLD::full_mass(QString line)
 
 double CoreSLD::read_value_squarebrackets(QString line)
 {
+    qDebug() << line;
     if(line.last(1) == "]") line.chop(1);
     return line.split('[').last().toDouble();
 }
@@ -44,11 +45,14 @@ std::vector<ChemicalFormulaElement> CoreSLD::to_chemical_formula_element(std::ve
 
 std::vector<SimpleFormulaElement> CoreSLD::multiformula_to_singleformula(QString line)
 {
+    qDebug() << "multitosingle: " << line;
     if(!isMultiFormula(line))
     {
+        qDebug() << "It is single formula";
         chem_formula->setFormula(line);
         return chem_formula->getElements();
     }
+    qDebug() << "It is multiformula";
 
     QStringList list_formuls = line.split(']');
     list_formuls.removeLast();
@@ -59,6 +63,9 @@ std::vector<SimpleFormulaElement> CoreSLD::multiformula_to_singleformula(QString
         auto temp_elements = subcalculate_subline(it);
         formula_for_single.insert(formula_for_single.cend(), temp_elements.cbegin(), temp_elements.cend());
     }
+
+    qDebug() << "elements: ";
+    for(auto &it : formula_for_single) qDebug() << it.symbol();
 
     return formula_for_single;
 }

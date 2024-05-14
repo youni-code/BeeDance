@@ -55,6 +55,7 @@ SimpleFormulaElement ChemicalFormula::readIsotope(QString line)
 }
 bool ChemicalFormula::hasBrackets(QString line) const
 {
+    qDebug() << "hasBrackets: " << line;
     static QRegularExpression open_brackets("[(]");
     static QRegularExpression close_brackets("[)]");
 
@@ -178,6 +179,7 @@ std::pair<QString::ConstIterator, QString::ConstIterator> ChemicalFormula::brack
 }
 double ChemicalFormula::get_index(const QString &line)
 {
+    qDebug() << line << "line";
     if(!hasBrackets(line))
         return 0.0;
 
@@ -205,8 +207,10 @@ std::vector<SimpleFormulaElement> ChemicalFormula::getElements(QString subformul
 
     while(hasBrackets(temp_formula))
     {
+        qDebug() << "temp_formula: " << temp_formula;
         auto iters_brackets_with_index = (brackets_index_inside(temp_formula)); // получаем выражение со скобками и индексом
         QString brackets_with_index = getLine(iters_brackets_with_index); // получаем полное выражение
+        qDebug() << "brackets_with_index: " << brackets_with_index;
         temp_formula.erase(iters_brackets_with_index.first, iters_brackets_with_index.second); // удаляем из исходной строки
         QString inner_brackets = getLine(brackets_inside(brackets_with_index)); // получаем внутреннее выражение
         double brackets_index = get_index(brackets_with_index); // получаем индекс

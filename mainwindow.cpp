@@ -58,13 +58,13 @@ void MainWindow::set_signals()
     connect(saveas_action,  SIGNAL(triggered()), this, SLOT(saveas_file_submenu()));
     connect(help_action,    SIGNAL(triggered()), this, SLOT(help_submenu()));
 
-    connect(light_theme, SIGNAL(triggered()), this, SLOT(set_light()));
-    connect(dark_theme, SIGNAL(triggered()), this, SLOT(set_dark()));
+    // connect(light_theme, SIGNAL(triggered()), this, SLOT(set_light()));
+    // connect(dark_theme, SIGNAL(triggered()), this, SLOT(set_dark()));
 }
 
 void MainWindow::calculation()
 {
-    rw->clear();
+    // rw->clear();
 
     core->setFormula(iw->get_chemicalformula());
     core->setDensity(iw->get_density());
@@ -122,9 +122,13 @@ void MainWindow::initialize()
 void MainWindow::press_calculate_button()
 {
     QString error;
+    rw->clear();
     main_statusbar->showMessage("Calculating...");
-    if(errors_list() != "")
-        return main_statusbar->showMessage("Error(s): " + errors_list(), 7000);
+    if(!errors_list().isEmpty())
+    {
+        main_statusbar->showMessage("Error(s): " + errors_list(), 7000);
+        return;
+    }
     if(!core->valid_all())
         error = "There isn't enough data for some calculations.";
     calculation();

@@ -15,7 +15,14 @@ bool ChemicalFormulaChecking::check_format() const
 
     line = line.remove(re_square_brackets);
     line = line.remove(re_element_format);
+
+    auto size = line.size();
     line = line.remove(re_brackets);
+    while (size > line.size())
+    {
+        size = line.size();
+        line = line.remove(re_brackets);
+    }
 
     if(line.isEmpty()) return true;
     return false;
