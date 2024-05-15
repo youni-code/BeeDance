@@ -91,7 +91,8 @@ void CoreSLD::setFormula(QString formula)
 {
     str_formula = formula;
 
-    chem_formula->setFormula(formula);
+    // chem_formula->setFormula(formula);
+    // chem_formula->setFormula(formula);
     calc_sld->set_elements(to_chemical_formula_element(multiformula_to_singleformula(formula)));
 }
 void CoreSLD::setDensity(double density)
