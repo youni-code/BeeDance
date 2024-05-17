@@ -40,8 +40,8 @@ public:
     bool is_empty() const { return symbol_ == ""; }
 
     void mass(double);
-    void concentrate(double co) 				{ conc_ = co; }
-    void number(unsigned long atom) 		{ atomic_number_ = atom; }
+    void concentrate(double co) 				{ conc_ = co; is_conc_ = true; }
+    void number(unsigned long atom) 		{ atomic_number_ = atom; is_atomic_mass_ = true; }
 
     void bc_comp(std::complex<double>);
     void bi_comp(std::complex<double>);

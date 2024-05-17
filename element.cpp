@@ -44,6 +44,8 @@ Element::Element(QString elem, unsigned long atom_num, unsigned long c_nucleons)
     is_bi_ = false;
     is_sigma_a_ = false;
     is_sigma_i_ = false;
+    is_conc_ = false;
+    is_atomic_mass_ = false;
 }
 
 bool Element::operator==(const Element &el) const

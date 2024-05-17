@@ -21,6 +21,7 @@ target_link_libraries(t_chemicalformula Qt6::Test)
 target_link_libraries(t_chemicalformula Qt6::Widgets)
 target_link_libraries(t_chemicalformula chemicalformula)
 target_link_libraries(t_chemicalformula simpleformulaelement)
+target_link_libraries(t_chemicalformula formula)
 # target_link_libraries(t_chemicalformula simpleformulaelement)
 
 # add_test(NAME t_chemicalformula COMMAND t_chemicalformula)

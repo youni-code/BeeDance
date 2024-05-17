@@ -40,6 +40,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         resultline.h resultline.cpp
         resultswidget.h resultswidget.cpp
         inputwidget.h inputwidget.cpp
+        formula.cpp formula.h
+        subformula.h subformula.cpp
 
         # tests/test_datatablesld/CMakeLists.txt
         # tests/test_datatablesld/t_datatablesld.cpp
@@ -106,6 +108,8 @@ add_library(element element.cpp element.h)
 add_library(simpleformulaelement simpleformulaelement.cpp simpleformulaelement.h)
 add_library(datatablesld datatablesld.cpp datatablesld.h)
 add_library(readdatafiles readdatafiles.cpp readdatafiles.h)
+add_library(formula formula.cpp formula.h subformula.cpp subformula.h datatablesld.cpp datatablesld.h chemicalformulaelement.cpp chemicalformulaelement.h datatablesld.cpp datatablesld.h element.cpp element.h readdatafiles.cpp readdatafiles.h)
+
 
 # target_link_libraries(calculator_sld chemicallabel)
 # target_link_libraries(calculator_sld element chemicalformula)
@@ -116,5 +120,6 @@ target_link_libraries(element Qt6::Widgets)
 target_link_libraries(simpleformulaelement Qt6::Widgets)
 target_link_libraries(datatablesld Qt6::Widgets)
 target_link_libraries(readdatafiles Qt6::Widgets)
+target_link_libraries(formula Qt6::Widgets)
 
 add_subdirectory(tests)

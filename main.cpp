@@ -1,11 +1,20 @@
 #include "mainwindow.h"
+#include "formula.h"
 
 #include <QApplication>
 #include <QStyleFactory>
+#include <QDebug>
 
 
 int main(int argc, char *argv[])
 {
+
+    Formula f;
+    qDebug() << f.add_line("((H2((O)))5)5(^3Te)");
+    // auto res = f.get_elements();
+
+
+
     QApplication a(argc, argv);
     // qApp->setStyle(QStyleFactory::create("Fusion"));
     // qApp->setStyle(QStyleFactory::create("Windows"));
