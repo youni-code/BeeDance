@@ -1,11 +1,16 @@
 #include "subformula.h"
 
 
+SubFormula::~SubFormula()
+{
+    clear();
+}
+
 double SubFormula::summ_index()
 {
     double summ(0.0);
     for(auto &e : elements)
-        summ += e->index();
+        summ += e.index();
     for(auto &child : children)
         summ += child->summ_index();
 
@@ -16,15 +21,15 @@ double SubFormula::summ_mass()
 {
     double summ(0.0);
     for(auto &e : elements)
-        summ += e->mass() * e->index();
+        summ += e.mass();
     for(auto &child : children)
         summ += child->summ_mass();
 
     return index * summ;
-
 }
 
-std::vector<ChemicalFormulaElement*> SubFormula::get_elements()
+
+std::vector<ChemicalFormulaElement> SubFormula::get_elements()
 {
     auto result = elements;
 
@@ -33,7 +38,19 @@ std::vector<ChemicalFormulaElement*> SubFormula::get_elements()
         auto vec = it->get_elements();
         result.insert(result.end(), vec.begin(), vec.end());
     }
-    for(auto &it : result) it->mult(index);
+    for(auto &it : result)
+        it.mult(index);
 
     return result;
+}
+
+void SubFormula::clear()
+{
+    for(auto p : children)
+        p->clear();
+    for(auto p : children)
+        delete p;
+
+    children.clear();
+    elements.clear();
 }

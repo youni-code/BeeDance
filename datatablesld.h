@@ -6,13 +6,13 @@
 
 class DataTableSLD
 {
-    std::vector<Element> set_elements;
+    std::vector<Element> elements;
 
     void setData(std::vector<Element>);
 public:
     DataTableSLD();
-    Element getElement(QString, unsigned long = 0) const;
-    Element getElement(const SimpleFormulaElement&) const;
+    Element get_element(QString, unsigned long = 0) const;
+    Element get_element(const SimpleFormulaElement&) const;
 };
 
 #endif // DATATABLESLD_H

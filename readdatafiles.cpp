@@ -77,7 +77,7 @@ void ReadDataFiles::writeData(QStringList list)
         temp_element.sigma_i_err(sigmaie);
     }
 
-    set_Elements.push_back(temp_element);
+    elements.push_back(temp_element);
     // show(temp_element);
     return;
 }

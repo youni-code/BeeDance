@@ -82,6 +82,7 @@ public:
 
 
     Element(QString, unsigned long, unsigned long = 0);
+    Element() : Element("", 0) { }
     bool operator==(const Element&) const;
     bool operator!=(const Element&) const;
 

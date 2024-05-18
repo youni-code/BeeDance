@@ -16,11 +16,10 @@ class Formula
 private:
     DataTableSLD dt_sld;
 
-    bool is_back() { return current != root; };
     bool is_root() { return current == root; }
 
-    void move_to_parent();
-    void add_child();
+    bool move_to_parent();
+    bool add_child();
 
     SubFormula *root;
     SubFormula *current;
@@ -29,12 +28,10 @@ private:
     std::vector<double> squarebrackets_index;
 
 
-
     bool add_element(QString);
-    void close_bracket(QString);
-    void open_bracket(QString);
-    void square_brackets(QString);
-
+    bool close_bracket(QString);
+    bool open_bracket(QString);
+    bool square_brackets(QString);
 
 
     QString remove_int_value(QString &str);
@@ -46,14 +43,15 @@ private:
     QString remove_close_bracket_index(QString &str);
     QString remove_square_brackets(QString &str);
 
+    void clear();
 public:
 
+    bool is_correct(QString str);
 
+    Formula() { current = root = new SubFormula(nullptr); }
+    ~Formula() { clear(); delete root; }
 
-    bool add_line(QString str);
-
-    Formula();
-    std::vector<ChemicalFormulaElement*> get_elements();
+    std::vector<ChemicalFormulaElement> get_elements(QString);
 
 };
 

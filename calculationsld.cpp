@@ -6,15 +6,16 @@ double CalculationSLD::mod(std::complex<double> val) const
     return sqrt(val.real() * val.real() + val.imag() * val.imag());
 }
 
-std::complex<double> CalculationSLD::b(Element *elem) const
+std::complex<double> CalculationSLD::b(const Element &elem) const
 {
-    return std::complex(elem->bc_comp().real(), - ((elem->sigma_a() * lambda_ / lambda_0 + elem->sigma_i()) * 1e2) / (2 * lambda_ * 1e5));
+    return std::complex(elem.bc_comp().real(), - ((elem.sigma_a() * lambda_ / lambda_0 + elem.sigma_i()) * 1e2) / (2 * lambda_ * 1e5));
 }
 
-std::complex<double> CalculationSLD::delta_b(Element *elem) const
+std::complex<double> CalculationSLD::delta_b(const Element &elem) const
 {
-    double imag = - sqrt(pow(elem->sigma_a_err() * lambda_ / lambda_0, 2) + pow(elem->sigma_i_err(), 2)) * (1e2) / (2 * lambda_ * 1e5);
-    return std::complex(elem->bc_comp_err().real(), imag);
+    double imag = - sqrt(pow(elem.sigma_a_err() * lambda_ / lambda_0, 2) + pow(elem.sigma_i_err(), 2)) * (1e2) / (2 * lambda_ * 1e5);
+    return std::complex(elem.bc_comp_err().real(), imag);
+
 }
 
 double CalculationSLD::c_summ() const
@@ -29,7 +30,7 @@ double CalculationSLD::a_mass() const
 {
     double mass(0);
     for(auto &it : elements_)
-        mass += it.index() * it.element()->mass();
+        mass += it.index() * it.element().mass();
     return mass;
 }
 
@@ -37,7 +38,7 @@ double CalculationSLD::sigma_a() const
 {
     double sigma(0);
     for(auto &it : elements_)
-        sigma += it.index() * it.element()->sigma_a();
+        sigma += it.index() * it.element().sigma_a();
     return sigma;
 }
 
@@ -45,7 +46,7 @@ double CalculationSLD::delta_sigma_a() const
 {
     double d_sigma(0);
     for(auto &it : elements_)
-        d_sigma += it.index() * pow(it.element()->sigma_a_err(), 2);
+        d_sigma += it.index() * pow(it.element().sigma_a_err(), 2);
     return sqrt(d_sigma);
 }
 
@@ -54,7 +55,7 @@ double CalculationSLD::sigma_i() const
 {
     double sigma(0);
     for(auto &it : elements_)
-        sigma += it.index() * it.element()->sigma_i();
+        sigma += it.index() * it.element().sigma_i();
     return sigma;
 }
 
@@ -62,7 +63,7 @@ double CalculationSLD::delta_sigma_i() const
 {
     double sigma(0);
     for(auto &it : elements_)
-        sigma += it.index() * pow(it.element()->sigma_i_err(), 2);
+        sigma += it.index() * pow(it.element().sigma_i_err(), 2);
     return sqrt(sigma);
 }
 
@@ -122,7 +123,7 @@ double CalculationSLD::b_c() const
 {
     double result(0);
     for(auto &it : elements_)
-        result += it.index() * it.element()->bc_comp().real();
+        result += it.index() * it.element().bc_comp().real();
     return result;
 }
 
@@ -130,7 +131,7 @@ double CalculationSLD::delta_b_c() const
 {
     double result(0);
     for(auto &it : elements_)
-        result += it.index() * pow(it.element()->bc_comp_err().real(), 2);
+        result += it.index() * pow(it.element().bc_comp_err().real(), 2);
     return sqrt(result);
 }
 
@@ -212,7 +213,7 @@ double CalculationSLD::delta_mu() const   { return delta_mu_a() + delta_mu_i(); 
 bool CalculationSLD::v_mass() const
 {
     for(auto const &it : elements_)
-        if(!it.element()->is_mass())
+        if(!it.element().is_mass())
             return false;
     return true;
 }
@@ -220,7 +221,7 @@ bool CalculationSLD::v_mass() const
 bool CalculationSLD::v_sigma_a() const
 {
     for(auto const &it : elements_)
-        if(!it.element()->is_sigma_a())
+        if(!it.element().is_sigma_a())
             return false;
     return true;
 }
@@ -228,7 +229,7 @@ bool CalculationSLD::v_sigma_a() const
 bool CalculationSLD::v_sigma_i() const
 {
     for(auto const &it : elements_)
-        if(!it.element()->is_sigma_i())
+        if(!it.element().is_sigma_i())
             return false;
     return true;
 }
@@ -236,7 +237,7 @@ bool CalculationSLD::v_sigma_i() const
 bool CalculationSLD::v_bc() const
 {
     for(auto const &it : elements_)
-        if(!it.element()->is_bc())
+        if(!it.element().is_bc())
             return false;
     return true;
 }

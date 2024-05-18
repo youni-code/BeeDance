@@ -23,6 +23,7 @@ private slots:
     void test_remove_open_bracket();
     void test_remove_close_bracket_index();
     void test_remove_square_brackets();
+    void test_add_line();
 
 
 
@@ -347,6 +348,11 @@ void t_chemicalformula::test_remove_square_brackets()
     QCOMPARE(str9, "");
     QCOMPARE(str10, "FeeeF");
     QCOMPARE(str11, "[33Fe3");
+
+}
+
+void t_chemicalformula::test_add_line()
+{
 
 }
 

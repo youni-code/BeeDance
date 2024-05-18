@@ -4,15 +4,12 @@
 
 ChemicalFormulaElement::ChemicalFormulaElement(Element element, double index)
 {
-    element_ = new Element(element);
+    elem_ = element;
     index_ = index;
 }
 
 ChemicalFormulaElement::~ChemicalFormulaElement()
 {
-    // if(element_ != nullptr)
-    //     delete element_;
-    // return;
 }
 
 

@@ -26,8 +26,8 @@ class CalculationSLD
 
     double mod(std::complex<double>) const;
 
-    std::complex<double> b(Element*)        const;
-    std::complex<double> delta_b(Element*)  const;
+    std::complex<double> b(const Element&)        const;
+    std::complex<double> delta_b(const Element&)  const;
 
     double c_summ() const;
     double a_mass() const;

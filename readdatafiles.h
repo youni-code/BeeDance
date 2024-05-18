@@ -6,12 +6,12 @@
 class ReadDataFiles
 {
 private:
-    std::vector<Element> set_Elements;
+    std::vector<Element> elements;
 
     void readData();
     void writeData(QStringList);
 public:
-    std::vector<Element> getElements() { return set_Elements; }
+    std::vector<Element> get_elements() { return elements; }
     ReadDataFiles();
 };
 

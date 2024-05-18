@@ -10,10 +10,10 @@ bool Formula::add_element(QString str)
     QString real_elem;
     double  real_index;
 
+    if(str.at(0) == '^') str.remove(0, 1); // if the first element is ^ - remove it.
 
     QString::ConstIterator it = str.cbegin();
 
-    if((*it) == '^') str.remove(0, 1); // if the first element is ^ - remove it.
 
     for(; it->isDigit() && it != str.cend(); it++)
         nucl.push_back(*it);
@@ -25,84 +25,135 @@ bool Formula::add_element(QString str)
     real_nucl = nucl.toInt();
     real_elem = elem;
     real_index = index.toDouble();
+
     if(index.isEmpty())
         real_index = 1.0;
 
-    Element e = dt_sld.getElement(real_elem, real_nucl);
-    if(e.is_empty()) return false;
+    Element e = dt_sld.get_element(real_elem, real_nucl);
 
+    if(e.is_empty())
+        return false;
 
-    ChemicalFormulaElement *save_element = new ChemicalFormulaElement(e, real_index);
-    current->add_element(save_element);
+    ChemicalFormulaElement save_element(e, real_index);
+    current->add_elem(save_element);
     return true;
 }
 
-void Formula::close_bracket(QString line)
+bool Formula::close_bracket(QString line)
 {
     line.remove(0, 1);
     current->set_index(line.toDouble());
     if(line.isEmpty()) current->set_index(1.0);
-    move_to_parent();
+    return move_to_parent();
 }
 
-void Formula::open_bracket(QString)
+bool Formula::open_bracket(QString)
 {
-    add_child();
+    return add_child();
 }
 
-void Formula::square_brackets(QString line)
+bool Formula::square_brackets(QString line)
 {
+    bool correct;
     line.remove('[');
     line.remove(']');
-    squarebrackets_index.push_back(line.toDouble());
+    double val = line.toDouble(&correct);
+
+    if(!correct)
+        return false;
+
+    if(val == 0.0)
+        return false;
+
+    squarebrackets_index.push_back(val);
+    subformulas.push_back(root);
+    current = root = new SubFormula();
+
+    return true;
 }
 
 
-bool Formula::add_line(QString str)
+bool Formula::is_correct(QString str)
 {
+    clear();
     auto size = str.size();
     while(!str.isEmpty())
     {
-        QString r_open_bracket = remove_open_bracket(str);
-        if(!r_open_bracket.isEmpty())
+        auto c = str.at(0);
+
+        if(c == '(')
         {
-            open_bracket(r_open_bracket);
-            continue;
+            QString line = remove_open_bracket(str);
+            if(line.isEmpty()) return false;
+            open_bracket(line);
         }
-        QString r_element = remove_element(str);
-        if(!r_element.isEmpty())
+        if(c.isUpper() || c == '^')
         {
-            add_element(r_element);
-            continue;
+            QString line = remove_element(str);
+            if(line.isEmpty()) return false;
+            if(!add_element(line)) return false;
         }
-        QString r_close_bracket = remove_close_bracket_index(str);
-        if(!r_close_bracket.isEmpty())
+        if(c == ')')
         {
-            close_bracket(r_close_bracket);
-            continue;
+            QString line = remove_close_bracket_index(str);
+            if(line.isEmpty()) return false;
+            if(!close_bracket(line)) return false;
         }
-        QString r_square_brackets = remove_square_brackets(str);
-        if(!r_square_brackets.isEmpty())
+        if(c == '[')
         {
-            square_brackets(r_square_brackets);
-            continue;
+            QString line = remove_square_brackets(str);
+            if(current != root) return false;
+            if(line.isEmpty()) return false;
+            square_brackets(line);
         }
-        if(size == str.size()) break;
+
+        if(size == str.size()) return false;
         size = str.size();
     }
 
     return str.isEmpty();
 }
 
-
-void Formula::move_to_parent()
+std::vector<ChemicalFormulaElement> Formula::get_elements(QString str)
 {
-    current = current->back();
+    if(!is_correct(str))
+        return std::vector<ChemicalFormulaElement>();
+    if(subformulas.size() != squarebrackets_index.size())
+        return std::vector<ChemicalFormulaElement>();
+    if(subformulas.empty())
+        return root->get_elements();
+
+    std::vector<ChemicalFormulaElement> result;
+
+    for(std::size_t i = 0; i < subformulas.size(); i++)
+    {
+        auto mass = subformulas[i]->summ_mass();
+        auto temp = subformulas[i]->get_elements();
+        auto index = squarebrackets_index[i];
+
+        for(auto &p : temp){
+            p.mult(index/mass);
+            continue;
+        }
+        result.insert(result.cend(), temp.cbegin(), temp.cend());
+    }
+
+    return result;
 }
 
-void Formula::add_child()
+
+bool Formula::move_to_parent()
+{
+    if(current->back() == nullptr) return false;
+
+    current = current->back();
+    return true;
+}
+
+bool Formula::add_child()
 {
     current = current->add_subformula();
+    return true;
 }
 
 QString Formula::remove_int_value(QString &str)
@@ -164,7 +215,6 @@ QString Formula::remove_double_index(QString &str)
     index.toDouble(&correct);
     if(!correct) return QString();
 
-
     return index;
 }
 
@@ -223,7 +273,6 @@ QString Formula::remove_close_bracket_index(QString &str)
 
 QString Formula::remove_square_brackets(QString &str)
 {
-
     if(str.isEmpty())
         return QString();
 
@@ -242,92 +291,12 @@ QString Formula::remove_square_brackets(QString &str)
 }
 
 
-Formula::Formula()
+void Formula::clear()
 {
-    root = new SubFormula(nullptr);
+    root->clear();
     current = root;
+    for(auto p : subformulas)
+        delete p;
+    subformulas.clear();
+    squarebrackets_index.clear();
 }
-
-std::vector<ChemicalFormulaElement *> Formula::get_elements()
-{
-    return root->get_elements();
-}
-
-
-
-// bool Formula::add_line(QString str)
-// {
-//     // QString temp;
-//     while(!str.isEmpty())
-//     {
-//         QChar a = str.at(0);
-
-
-//         if(a == '(')
-//         {
-//             add_child();
-//             str.remove(0, 1);
-//             continue;
-//         }
-//         if(a == ')')
-//         {
-//             if(is_root()) return false;
-//             back();
-//             str.remove(0, 1);
-//             continue;
-
-//         }
-
-//         if(a == '[')
-//         {
-//             if(is_back())
-//                 return false; // must be on the root
-//             str.remove(0, 1);
-
-//             QString num;
-
-//             for(auto n : str)
-//             {
-//                 if(n == ']')
-//                     break;
-//                 num += n;
-//             }
-//             str.remove(0, num.size());
-//             if(str.isEmpty()) // There is no closing square bracket
-//                 return false;
-//             str.remove(0, 1); // remove closing square bracket
-//             bool right;
-//             double sq_index = num.toDouble(&right);
-//             if(!right)
-//                 return false; // if something wrong with convertion return false
-//             squarebrackets_index.push_back(sq_index);
-//         }
-//         if(a == '^')
-//         {
-//             QString elem;
-//             elem.push_back(a);
-//             str.remove(0, 1);
-
-//         }
-//         if(a.isUpper())
-//         {
-
-//         }
-
-
-//     }
-
-
-
-//     // add_element(str);
-//     // QString temp;
-
-
-
-
-
-
-
-
-//     return false;
-// }

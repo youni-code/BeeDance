@@ -1,6 +1,6 @@
 #include "chemicalformula.h"
 #include <QRegularExpression>
-#include <QRegularExpressionMatch>>
+#include <QRegularExpressionMatch>//>
 #include <deque>
 
 QString ChemicalFormula::getLine(QString::ConstIterator cbegin, QString::ConstIterator cend)

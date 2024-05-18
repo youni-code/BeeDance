@@ -6,18 +6,38 @@
 #include <QDebug>
 
 
+void show(std::vector<ChemicalFormulaElement> p)
+{
+    for(auto &c : p)
+        qDebug() << c.element().nucleons() << "\t" << c.element().symbol() << "\t" << c.index();
+}
+
 int main(int argc, char *argv[])
 {
 
     Formula f;
-    qDebug() << f.add_line("((H2((O)))5)5(^3Te)");
+    show(f.get_elements("(H2O)[18]H3[3]"));
+    qDebug() << "0";
+    show(f.get_elements("^10B4C[52]"));
+    qDebug() << "0";
+    // qDebug() << f.is_correct("H2O55^122Te");
+    show(f.get_elements("H2O55^122Te"));
+    qDebug() << "0";
+    show(f.get_elements("H2O55^122Te"));
+    qDebug() << "1";
+    show(f.get_elements("(H2(O5))5^122Te"));
+    qDebug() << "2";
+    show(f.get_elements("((H2((O)))5)5(^122Te)"));
+    qDebug() << "3";
+    show(f.get_elements("(H2((O)))5)5(^122Te)"));
+    qDebug() << f.is_correct("H2O)(55^122Te");
     // auto res = f.get_elements();
 
 
 
     QApplication a(argc, argv);
     // qApp->setStyle(QStyleFactory::create("Fusion"));
-    // qApp->setStyle(QStyleFactory::create("Windows"));
+    // // qApp->setStyle(QStyleFactory::create("Windows"));
     // QPalette newPalette;
     // newPalette.setColor(QPalette::Window,          QColor( 37,  37,  37));
     // newPalette.setColor(QPalette::WindowText,      QColor(212, 212, 212));
@@ -36,11 +56,7 @@ int main(int argc, char *argv[])
     // newPalette.setColor(QPalette::Dark,            QColor( 30,  30,  30));
     // newPalette.setColor(QPalette::Mid,             QColor( 37,  37,  37));
     // newPalette.setColor(QPalette::Shadow,          QColor( 0,    0,   0));
-
-
     // newPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
-
-
     // qApp->setPalette(newPalette);
     MainWindow w;
     w.show();

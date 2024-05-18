@@ -38,7 +38,7 @@ std::vector<ChemicalFormulaElement> CoreSLD::to_chemical_formula_element(std::ve
     if(!is_line_correct()) return result;
 
     for(auto &it: vec)
-        result.push_back(ChemicalFormulaElement(dt_sld->getElement(it), it.index()));
+        result.push_back(ChemicalFormulaElement(dt_sld->get_element(it), it.index()));
 
     return result;
 }
@@ -81,7 +81,7 @@ bool CoreSLD::is_all_data_exist()
     auto elements = chem_formula->getElements();
 
     for(auto const &it : elements)
-        if(dt_sld->getElement(it.symbol(), it.nucleons()).is_empty())
+        if(dt_sld->get_element(it.symbol(), it.nucleons()).is_empty())
             return false;
 
     return true;
