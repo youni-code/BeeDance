@@ -80,11 +80,11 @@ public:
     bool is_bi()        const { return is_bi_; }
 
 
-
     Element(QString, unsigned long, unsigned long = 0);
     Element() : Element("", 0) { }
+    static Element Empty() { return Element("", 0); };
+
     bool operator==(const Element&) const;
-    bool operator!=(const Element&) const;
 
 };
 

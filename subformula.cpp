@@ -54,3 +54,8 @@ void SubFormula::clear()
     children.clear();
     elements.clear();
 }
+
+bool SubFormula::empty()
+{
+    return children.empty() &&  elements.empty();
+}

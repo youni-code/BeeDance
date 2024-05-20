@@ -1,9 +1,11 @@
 #include "resultline.h"
 
-QString ResultLine::set_result(double v, double e)
+QString ResultLine::input_result(double v, double e)
 {
-    if(v == 0.0 || e == 0.0) return "---";
-    if(e == 0.0) return QString::number(v);
+    if(v == 0.0 || e == 0.0)
+        return "---";
+    if(e == 0.0)
+        return QString::number(v);
 
     // log10 of value and error
     double exp_v = std::floor(std::log10(std::abs(v)));
@@ -23,8 +25,11 @@ QString ResultLine::set_result(double v, double e)
     QString full_e = QString::number(std::floor(end_e), 'g', std::floor(std::log10(end_e)) + 1);;
 
     QString result = full_v + "(" + full_e + ")e" + QString::number(max_exp);
-    if (result.at(0) == '-') result.insert(2, '.');
-    else result.insert(1, '.');
+
+    if (result.at(0) == '-')
+        result.insert(2, '.');
+    else
+        result.insert(1, '.');
 
     return result;
 }
@@ -57,26 +62,16 @@ ResultLine::ResultLine(QWidget *parent)
 
 }
 
-void ResultLine::setText(QString slabel, QString scombobox)
+void ResultLine::set_text(QString slabel, QString scombobox)
 {
     label->setText(slabel);
     combobox->addItem(scombobox);
 }
 
-void ResultLine::setResult(QString text)
-{
-    textedit->setText(text);
-}
 
-void ResultLine::setResult(double value, double error)
-{
-    textedit->setText(set_result(value, error));
-    return;
-}
 
-void ResultLine::setResult(double value)
-{
-    textedit->setText(QString::number(value));
-}
+
+
+
 
 

@@ -1,9 +1,9 @@
 #ifndef RESULTSWIDGET_H
 #define RESULTSWIDGET_H
 
-#include "resultline.h"
 #include <QWidget>
 #include <QGroupBox>
+#include "resultline.h"
 
 class ResultsWidget : public QWidget
 {
@@ -28,17 +28,17 @@ public:
 
     void clear();
 
-    void set_re_sld(double v, double e)     { rl_sld->setResult(v, e); }
-    void set_im_sld(double v, double e)     { rl_sld_im->setResult(v, e); }
-    void set_re_v(double v, double e)       { rl_pot_v->setResult(v, e); }
-    void set_im_v(double v, double e)       { rl_pot_v_im->setResult(v, e); }
+    void set_re_sld(double v, double e)     { rl_sld->set_result(v, e); }
+    void set_im_sld(double v, double e)     { rl_sld_im->set_result(v, e); }
+    void set_re_v(double v, double e)       { rl_pot_v->set_result(v, e); }
+    void set_im_v(double v, double e)       { rl_pot_v_im->set_result(v, e); }
 
-    void set_lambda_c(double v, double e)   { rl_ch_wl->setResult(v, e); }
-    void set_tetta_c(double v, double e)    { rl_cr_ang->setResult(v, e); }
-    void set_q_c(double v, double e)        { rl_cr_mom->setResult(v, e); }
-    void set_mu(double v, double e)         { rl_atl_c->setResult(v, e); }
-    void set_mu_a(double v , double e)      { rl_absorb->setResult(v, e); }
-    void set_mu_inc(double v, double e)     { rl_scatt->setResult(v, e); }
+    void set_lambda_c(double v, double e)   { rl_ch_wl->set_result(v, e); }
+    void set_tetta_c(double v, double e)    { rl_cr_ang->set_result(v, e); }
+    void set_q_c(double v, double e)        { rl_cr_mom->set_result(v, e); }
+    void set_mu(double v, double e)         { rl_atl_c->set_result(v, e); }
+    void set_mu_a(double v , double e)      { rl_absorb->set_result(v, e); }
+    void set_mu_inc(double v, double e)     { rl_scatt->set_result(v, e); }
 
 signals:
 };

@@ -1,13 +1,11 @@
 #include <QtTest>
 #include "../../datatablesld.h"
-#include "../../readdatafiles.h"
 
 class t_datatablesld : public QObject
 {
     Q_OBJECT
 
     DataTableSLD *dts;
-    ReadDataFiles *rdf;
 
 public:
     t_datatablesld();

@@ -9,8 +9,8 @@ void InputWidget::initialize()
     lamb_dens_sublayout = new QVBoxLayout();
     pushbutton_sublayout = new QHBoxLayout();
 
-    inputdata_sublayout = new QVBoxLayout();
-    inputdata_button_sublayout = new QHBoxLayout();
+    main_sublayout = new QVBoxLayout();
+    button_sublayout = new QHBoxLayout();
 
 
     density_sublayout =    new QHBoxLayout();
@@ -26,7 +26,7 @@ void InputWidget::initialize()
     calculate_PushButton = new QPushButton();
 }
 
-void InputWidget::set_chemicalline()
+void InputWidget::set_formulaline()
 {
     QFont f = formula_TextEdit->font();
     f.setPointSize(19);
@@ -57,24 +57,24 @@ void InputWidget::set_densityline()
 
 void InputWidget::set_density_lambda_layout()
 {
-    chemical_layout->addLayout(inputdata_button_sublayout);
-    inputdata_button_sublayout->addLayout(inputdata_sublayout);
+    chemical_layout->addLayout(button_sublayout);
+    button_sublayout->addLayout(main_sublayout);
 
-    inputdata_sublayout->addLayout(density_sublayout);
+    main_sublayout->addLayout(density_sublayout);
     density_sublayout->addWidget(density_label);
     density_label->setFixedWidth(55);
     density_sublayout->addWidget(density_LineEdit);
     density_sublayout->addWidget(density_ComboBox);
     density_ComboBox->setFixedWidth(70);
 
-    inputdata_sublayout->addLayout(lambda_sublayout);
+    main_sublayout->addLayout(lambda_sublayout);
     lambda_sublayout->addWidget(lambda_label);
     lambda_label->setFixedWidth(55);
     lambda_sublayout->addWidget(lambda_LineEdit);
     lambda_sublayout->addWidget(lambda_ComboBox);
     lambda_ComboBox->setFixedWidth(70);
 
-    inputdata_button_sublayout->addWidget(calculate_PushButton);
+    button_sublayout->addWidget(calculate_PushButton);
     calculate_PushButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 }
 
@@ -98,7 +98,7 @@ InputWidget::InputWidget(QWidget *parent)
     : QWidget{parent}
 {
     initialize();
-    set_chemicalline();
+    set_formulaline();
     set_densityline();
     set_formula_layout();
     set_density_lambda_layout();

@@ -8,9 +8,6 @@ ChemicalFormulaElement::ChemicalFormulaElement(Element element, double index)
     index_ = index;
 }
 
-ChemicalFormulaElement::~ChemicalFormulaElement()
-{
-}
 
 
 

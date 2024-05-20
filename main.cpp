@@ -1,37 +1,12 @@
 #include "mainwindow.h"
-#include "formula.h"
-
 #include <QApplication>
 #include <QStyleFactory>
 #include <QDebug>
 
 
-void show(std::vector<ChemicalFormulaElement> p)
-{
-    for(auto &c : p)
-        qDebug() << c.element().nucleons() << "\t" << c.element().symbol() << "\t" << c.index();
-}
 
 int main(int argc, char *argv[])
 {
-
-    Formula f;
-    show(f.get_elements("(H2O)[18]H3[3]"));
-    qDebug() << "0";
-    show(f.get_elements("^10B4C[52]"));
-    qDebug() << "0";
-    // qDebug() << f.is_correct("H2O55^122Te");
-    show(f.get_elements("H2O55^122Te"));
-    qDebug() << "0";
-    show(f.get_elements("H2O55^122Te"));
-    qDebug() << "1";
-    show(f.get_elements("(H2(O5))5^122Te"));
-    qDebug() << "2";
-    show(f.get_elements("((H2((O)))5)5(^122Te)"));
-    qDebug() << "3";
-    show(f.get_elements("(H2((O)))5)5(^122Te)"));
-    qDebug() << f.is_correct("H2O)(55^122Te");
-    // auto res = f.get_elements();
 
 
 

@@ -8,22 +8,18 @@ class ChemicalFormulaElement
     double index_;
 public:
     ChemicalFormulaElement(Element element, double index = 0.0);
-    ~ChemicalFormulaElement();
 
-    Element element() const { return elem_; }
+    Element element() const             { return elem_; }
+    void element(Element element)       { elem_ = element; }
 
+    double index() const                { return index_; }
+    void index(double index)            { index_ = index; }
 
-    double index() const { return index_; }
-    double mass() const { return index_ * elem_.mass(); }
+    double mass() const                 { return index_ * elem_.mass(); }
 
-    void set_element(Element element) { ; elem_ = element; }
-    void set_index(double index) { index_ = index; }
-    void plus(double add) { index_ += add; }
-    void mult(double mul) { index_ *= mul; }
-
-    bool has_element() const { return !elem_.is_empty(); }
-
-    void show();
+    void plus(double add)               { index_ += add; }
+    void mult(double mul)               { index_ *= mul; }
+    bool is_empty() const               { return elem_.is_empty(); }
 };
 
 #endif // CHEMICALFORMULAELEMENT_H

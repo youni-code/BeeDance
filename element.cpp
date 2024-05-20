@@ -7,7 +7,6 @@ void Element::mass(double value)
     mass_ = value;
 }
 
-
 void Element::bc_comp(std::complex<double> value)
 {
     is_bc_ = true;
@@ -48,10 +47,6 @@ Element::Element(QString elem, unsigned long atom_num, unsigned long c_nucleons)
     is_atomic_mass_ = false;
 }
 
-
-
-
-
 bool Element::operator==(const Element &el) const
 {
     if(this->symbol_ == el.symbol_ && this->count_nucleons_ == el.count_nucleons_)
@@ -59,7 +54,7 @@ bool Element::operator==(const Element &el) const
 
     return false;
 }
-bool Element::operator!=(const Element &el) const
-{
-    return ((*this) == el);
-}
+// bool Element::operator!=(const Element &el) const
+// {
+//     return ((*this) == el);
+// }

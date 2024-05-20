@@ -16,21 +16,17 @@ private:
     QLineEdit   *textedit;
     QComboBox   *combobox;
 
-    QString mantissa_string(QString);
-
-    QString set_result(double, double);
+    QString input_result(double, double);
 
 public:
     explicit ResultLine(QWidget *parent = nullptr);
-    void setText(QString label, QString combobox);
+    void set_text(QString label, QString combobox);
 
-    void setResult(QString text);
-    void setResult(double value, double error);
-    void setResult(double value);
+    void set_result(QString text)               { textedit->setText(text); }
+    void set_result(double value, double error) { textedit->setText(input_result(value, error)); }
+    void set_result(double value)               { textedit->setText(QString::number(value)); }
 
-    void setTip(QString line)   { label->setToolTip(line); }
-    QHBoxLayout* getLayout()    { return layout; };
-    // void setResult(double res, double err);
+    void set_tip(QString line)      { label->setToolTip(line); }
 
 signals:
 };

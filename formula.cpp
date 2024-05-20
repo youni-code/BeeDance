@@ -10,7 +10,8 @@ bool Formula::add_element(QString str)
     QString real_elem;
     double  real_index;
 
-    if(str.at(0) == '^') str.remove(0, 1); // if the first element is ^ - remove it.
+    if(str.at(0) == '^')
+        str.remove(0, 1); // if the first element is ^ - remove it.
 
     QString::ConstIterator it = str.cbegin();
 
@@ -43,7 +44,9 @@ bool Formula::close_bracket(QString line)
 {
     line.remove(0, 1);
     current->set_index(line.toDouble());
-    if(line.isEmpty()) current->set_index(1.0);
+    if(line.isEmpty())
+        current->set_index(1.0);
+
     return move_to_parent();
 }
 
@@ -75,6 +78,8 @@ bool Formula::square_brackets(QString line)
 
 bool Formula::is_correct(QString str)
 {
+    if(str.isEmpty())
+        return false;
     clear();
     auto size = str.size();
     while(!str.isEmpty())
@@ -84,32 +89,46 @@ bool Formula::is_correct(QString str)
         if(c == '(')
         {
             QString line = remove_open_bracket(str);
-            if(line.isEmpty()) return false;
+            if(line.isEmpty())
+                return false;
             open_bracket(line);
         }
         if(c.isUpper() || c == '^')
         {
             QString line = remove_element(str);
-            if(line.isEmpty()) return false;
-            if(!add_element(line)) return false;
+            if(line.isEmpty())
+                return false;
+            if(!add_element(line))
+                return false;
         }
         if(c == ')')
         {
             QString line = remove_close_bracket_index(str);
-            if(line.isEmpty()) return false;
-            if(!close_bracket(line)) return false;
+            if(line.isEmpty())
+                return false;
+            if(!close_bracket(line))
+                return false;
         }
         if(c == '[')
         {
             QString line = remove_square_brackets(str);
-            if(current != root) return false;
-            if(line.isEmpty()) return false;
+            if(current != root)
+                return false;
+            if(line.isEmpty())
+                return false;
             square_brackets(line);
         }
 
-        if(size == str.size()) return false;
+        if(size == str.size())
+            return false;
         size = str.size();
     }
+
+
+    if(!subformulas.empty() && !root->empty())
+        return false;
+
+
 
     return str.isEmpty();
 }
@@ -131,10 +150,8 @@ std::vector<ChemicalFormulaElement> Formula::get_elements(QString str)
         auto temp = subformulas[i]->get_elements();
         auto index = squarebrackets_index[i];
 
-        for(auto &p : temp){
+        for(auto p : temp)
             p.mult(index/mass);
-            continue;
-        }
         result.insert(result.cend(), temp.cbegin(), temp.cend());
     }
 
@@ -144,7 +161,8 @@ std::vector<ChemicalFormulaElement> Formula::get_elements(QString str)
 
 bool Formula::move_to_parent()
 {
-    if(current->back() == nullptr) return false;
+    if(is_root())
+        return false;
 
     current = current->back();
     return true;
@@ -165,7 +183,8 @@ QString Formula::remove_int_value(QString &str)
     {
         value.push_back(*it);
         it++;
-        if(it == str.cend()) break;
+        if(it == str.cend())
+            break;
     }
     str.erase(str.cbegin(), it);
 
@@ -189,7 +208,8 @@ QString Formula::remove_element_name(QString &str)
     {
         element_name.push_back(*it);
         it++;
-        if(it == str.cend()) break;
+        if(it == str.cend())
+            break;
     }
     str.erase(str.cbegin(), it);
 
@@ -198,7 +218,8 @@ QString Formula::remove_element_name(QString &str)
 
 QString Formula::remove_double_index(QString &str)
 {
-    if(str.isEmpty()) return QString();
+    if(str.isEmpty())
+        return QString();
 
     QString::ConstIterator c_it = str.cbegin();
     QString index;
@@ -207,13 +228,15 @@ QString Formula::remove_double_index(QString &str)
     {
         index.push_back(*c_it);
         c_it++;
-        if(c_it == str.cend()) break;
+        if(c_it == str.cend())
+            break;
     }
     str.erase(str.cbegin(), c_it);
 
     bool correct;
     index.toDouble(&correct);
-    if(!correct) return QString();
+    if(!correct)
+        return QString();
 
     return index;
 }
@@ -232,10 +255,12 @@ QString Formula::remove_element(QString &str)
         str.remove(0, 1);
         elem += remove_int_value(str);
     }
-    if(str.isEmpty()) return QString();
+    if(str.isEmpty())
+        return QString();
 
     name    += remove_element_name(str);
-    if(name.isEmpty()) return QString();
+    if(name.isEmpty())
+        return QString();
 
     index   += remove_double_index(str);
 
@@ -282,8 +307,10 @@ QString Formula::remove_square_brackets(QString &str)
     str.remove(0, 1);
     QString value = remove_double_index(str);
 
-    if(str.at(0) != ']') return QString();
-    if(value.isEmpty()) return QString();
+    if(str.at(0) != ']')
+        return QString();
+    if(value.isEmpty())
+        return QString();
 
     str.remove(0, 1);
 

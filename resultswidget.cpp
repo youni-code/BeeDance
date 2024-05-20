@@ -22,36 +22,36 @@ void ResultsWidget::initialize()
 
 void ResultsWidget::set_resultlines()
 {
-    rl_sld->setText("Re(SLD)", "1/Å²");
-    rl_sld->setTip("Real part of Scattering Length Density");
+    rl_sld->set_text("Re(SLD)", "1/Å²");
+    rl_sld->set_tip("Real part of Scattering Length Density");
 
-    rl_sld_im->setText("Im(SLD)", "1/Å²");
-    rl_sld_im->setTip("Imaginary part of Scattering Length Density");
+    rl_sld_im->set_text("Im(SLD)", "1/Å²");
+    rl_sld_im->set_tip("Imaginary part of Scattering Length Density");
 
-    rl_pot_v->setText("Re(V)", "neV");
-    rl_pot_v->setTip("Real part of Potential");
+    rl_pot_v->set_text("Re(V)", "neV");
+    rl_pot_v->set_tip("Real part of Potential");
 
-    rl_pot_v_im->setText("Im(V)", "neV");
-    rl_pot_v_im->setTip("Imaginary part of Potential");
+    rl_pot_v_im->set_text("Im(V)", "neV");
+    rl_pot_v_im->set_tip("Imaginary part of Potential");
 
-    rl_ch_wl->setText("λ<sub>c</sub>", "Å");
-    rl_ch_wl->setTip("Characteristic wavelength transfer");
+    rl_ch_wl->set_text("λ<sub>c</sub>", "Å");
+    rl_ch_wl->set_tip("Characteristic wavelength transfer");
 
-    rl_cr_ang->setText("θ<sub>c</sub>", "mrad/Å");
-    rl_cr_ang->setTip("Critical angle");
+    rl_cr_ang->set_text("θ<sub>c</sub>", "mrad/Å");
+    rl_cr_ang->set_tip("Critical angle");
 
-    rl_cr_mom->setText("q<sub>c</sub>", "1/Å");
-    rl_cr_mom->setTip("Critical momentum");
+    rl_cr_mom->set_text("q<sub>c</sub>", "1/Å");
+    rl_cr_mom->set_tip("Critical momentum");
 
 
-    rl_absorb->setText("μ<sub>α</sub>", "1/cm");
-    rl_absorb->setTip("True absorption coefficient");
+    rl_absorb->set_text("μ<sub>α</sub>", "1/cm");
+    rl_absorb->set_tip("True absorption coefficient");
 
-    rl_scatt->setText("μ<sub>inc</sub>", "1/cm");
-    rl_scatt->setTip("Incoherent scattering attenuation");
+    rl_scatt->set_text("μ<sub>inc</sub>", "1/cm");
+    rl_scatt->set_tip("Incoherent scattering attenuation");
 
-    rl_atl_c->setText("μ", "1/cm");
-    rl_atl_c->setTip("Attenuation coefficient");
+    rl_atl_c->set_text("μ", "1/cm");
+    rl_atl_c->set_tip("Attenuation coefficient");
 
 }
 
@@ -95,18 +95,18 @@ ResultsWidget::ResultsWidget(QWidget *parent)
 
 void ResultsWidget::clear()
 {
-    rl_sld->setResult("---");
-    rl_sld_im->setResult("---");
+    rl_sld->set_result("---");
+    rl_sld_im->set_result("---");
 
-    rl_pot_v->setResult("---");
-    rl_pot_v_im->setResult("---");
+    rl_pot_v->set_result("---");
+    rl_pot_v_im->set_result("---");
 
-    rl_ch_wl->setResult("---");
-    rl_cr_ang->setResult("---");
+    rl_ch_wl->set_result("---");
+    rl_cr_ang->set_result("---");
 
-    rl_cr_mom->setResult("---");
-    rl_absorb->setResult("---");
+    rl_cr_mom->set_result("---");
+    rl_absorb->set_result("---");
 
-    rl_scatt->setResult("---");
-    rl_atl_c->setResult("---");
+    rl_scatt->set_result("---");
+    rl_atl_c->set_result("---");
 }

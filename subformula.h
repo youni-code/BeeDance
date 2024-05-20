@@ -25,6 +25,7 @@ public:
 
     std::vector<ChemicalFormulaElement> get_elements();
     void clear();
+    bool empty();
 };
 
 #endif // SUBFORMULA_H
