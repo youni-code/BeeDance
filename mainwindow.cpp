@@ -1,5 +1,6 @@
 #include <QApplication>
-#include <QFileDialog>
+// #include <QFileDialog>
+#include <QDesktopServices>
 #include "mainwindow.h"
 
 void MainWindow::set_menubar()
@@ -52,7 +53,7 @@ void MainWindow::pressed_calc_button()
 
     auto errors = errors_list();
     if(!errors.isEmpty())
-        return statusbar->showMessage("There is some mistake: " + errors, 7000);
+        return statusbar->showMessage("There are some mistakes: " + errors, 7000);
 
     set_data();
     calculation();
@@ -124,24 +125,20 @@ void MainWindow::initialize()
 
 void MainWindow::open_file_submenu()
 {
-    QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), "", "text format(*.txt)");
+    // QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), "", "text format(*.txt)");
 }
 
 void MainWindow::saveas_file_submenu()
 {
-    QString filters("Music files (*.mp3);;Text files (*.txt);;All files (*.*)");
-    QString defaultFilter("Text files (*.txt)");
+    // QString filters("Music files (*.mp3);;Text files (*.txt);;All files (*.*)");
+    // QString defaultFilter("Text files (*.txt)");
 
-    QFileDialog::getSaveFileName(0, "Save file", QDir::currentPath(), filters, &defaultFilter);
+    // QFileDialog::getSaveFileName(0, "Save file", QDir::currentPath(), filters, &defaultFilter);
 }
 
 void MainWindow::help_submenu()
 {
-    QWidget *frame = new QWidget();
-    frame->setGeometry(this->pos().rx(), this->pos().ry(), 602, 974);
-    frame->setStyleSheet("background-image: url(data/help_screenshot.png)");
-    frame->setFixedSize(frame->size());
-    frame->show();
+    QDesktopServices::openUrl(QUrl("data/help.pdf"));
 }
 
 
