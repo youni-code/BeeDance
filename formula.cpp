@@ -150,7 +150,7 @@ std::vector<ChemicalFormulaElement> Formula::get_elements(QString str)
         auto temp = subformulas[i]->get_elements();
         auto index = squarebrackets_index[i];
 
-        for(auto p : temp)
+        for(auto &p : temp)
             p.mult(index/mass);
         result.insert(result.cend(), temp.cbegin(), temp.cend());
     }
