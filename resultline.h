@@ -17,6 +17,7 @@ private:
     QComboBox   *combobox;
 
     QString input_result(double, double);
+    QString input_error_more_value(double, double);
 
 public:
     explicit ResultLine(QWidget *parent = nullptr);
@@ -26,7 +27,7 @@ public:
     void set_result(double value, double error) { textedit->setText(input_result(value, error)); }
     void set_result(double value)               { textedit->setText(QString::number(value)); }
 
-    void set_tip(QString line)      { label->setToolTip(line); }
+    void set_tip(QString line)                  { label->setToolTip(line); }
 
 signals:
 };

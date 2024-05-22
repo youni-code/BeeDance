@@ -176,7 +176,7 @@ double CalculationSLD::d_lambda_c() const
 double CalculationSLD::tetta_c() const
 {
     if(lambda_c() > 0.0)
-        return 1e3 / v_re();
+        return 1e3 / lambda_c();
     return 0.0;
 }
 
