@@ -3,7 +3,8 @@
 
 QString ResultLine::input_result(double v, double e)
 {
-    if(e > v) return input_error_more_value(v, e);
+    qDebug() << "value: " << v << ", error: " << e;
+    if(std::abs(e) > std::abs(v)) return input_error_more_value(v, e);
 
     if(v == 0.0 || e == 0.0)
         return "---";
@@ -39,7 +40,6 @@ QString ResultLine::input_result(double v, double e)
 
 QString ResultLine::input_error_more_value(double v, double e)
 {
-    qDebug() << "value: " << v << " " << e;
 
     if(v == 0.0 || e == 0.0)
         return "---";

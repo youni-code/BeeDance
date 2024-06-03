@@ -110,7 +110,7 @@ double CalculationSLD::delta_sigma_c() const
 
     for(auto &it : elements_)
     {
-        sub_res1 += b(it.element());
+        sub_res1 += it.index() * b(it.element());
         sub_res2 += (it.index() / c_summ()) * pow(mod(delta_b(it.element())), 2);
     }
     return 4 * pi * 2 * c_summ() * mod(sub_res1) * sqrt(sub_res2) * (1e-2 / c_summ());
@@ -150,7 +150,7 @@ double CalculationSLD::d_sld_re()  const { return  c_sld * density_ / a_mass() *
 
 
 double CalculationSLD::sld_im()         const { return c_sld * density_ / a_mass() * b_im(); }
-double CalculationSLD::d_sld_im()   const { return c_sld * density_ / a_mass() * delta_b_im(); }
+double CalculationSLD::d_sld_im()   const { return c_sld * (density_ / a_mass()) * delta_b_im(); }
 
 
 double CalculationSLD::v_re()          const { return c_sldV * sld_re(); }
