@@ -21,10 +21,13 @@ set(PROJECT_SOURCES
         mainwindow.h
 )
 
+set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/resources/icon.rc")
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(calculator_sld
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        ${app_icon_resource_windows}
         chemicaltextedit.h chemicaltextedit.cpp
         element.h element.cpp
         coresld.h coresld.cpp
@@ -38,7 +41,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         formula.cpp formula.h
         subformula.h subformula.cpp
 
+
         data/data_sld.txt
+        file.qrc
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET calculator_sld APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -57,6 +62,7 @@ else()
         )
     endif()
 endif()
+
 
 
 target_link_libraries(calculator_sld PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)

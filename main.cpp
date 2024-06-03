@@ -33,7 +33,9 @@ int main(int argc, char *argv[])
     // newPalette.setColor(QPalette::Shadow,          QColor( 0,    0,   0));
     // newPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
     // qApp->setPalette(newPalette);
+
     MainWindow w;
+    w.setWindowIcon(QIcon(":/icon/data/icon2.ico"));
     w.show();
 
 

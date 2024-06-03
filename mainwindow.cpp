@@ -138,7 +138,7 @@ void MainWindow::saveas_file_submenu()
 
 void MainWindow::help_submenu()
 {
-    QDesktopServices::openUrl(QUrl("data/help.pdf"));
+    QDesktopServices::openUrl(QUrl::fromLocalFile("data/help.pdf"));
 }
 
 
