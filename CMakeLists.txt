@@ -12,57 +12,33 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-message("QTVERSIONMAJOR" ${QT_VERSION_MAJOR})
-message("QTVERSION" ${QT_VERSION})
-
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
+    main.cpp
+    mainwindow.cpp mainwindow.h
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt6_add_executable(calculator_sld
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-        ${app_icon_resource_windows}
-        chemicaltextedit.h chemicaltextedit.cpp
-        element.h element.cpp
-        coresld.h coresld.cpp
-        datatablesld.h datatablesld.cpp
-        chemicallabel.h chemicallabel.cpp
-        calculationsld.h calculationsld.cpp
-        chemicalformulaelement.h chemicalformulaelement.cpp
-        resultline.h resultline.cpp
-        resultswidget.h resultswidget.cpp
-        inputwidget.h inputwidget.cpp
-        formula.cpp formula.h
-        subformula.h subformula.cpp
+qt6_add_executable(calculator_sld
+    MANUAL_FINALIZATION
+    ${PROJECT_SOURCES}
+    ${app_icon_resource_windows}
+    coresld.h coresld.cpp
+    calculationsld.h calculationsld.cpp
 
-        data/data_sld.txt
-        file.qrc
-    )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET calculator_sld APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(calculator_sld SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(calculator_sld
-            ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
+    data/data_sld.txt
+    file.qrc )
 
+add_subdirectory(formula)
+add_subdirectory(widgets)
 
+target_link_libraries(calculator_sld PUBLIC Qt6::Widgets)
 
-target_link_libraries(calculator_sld PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(calculator_sld PUBLIC formula)
+target_include_directories(calculator_sld PRIVATE formula)
+
+target_link_libraries(calculator_sld PUBLIC resultwidget)
+target_link_libraries(calculator_sld PUBLIC inputwidget)
+target_include_directories(calculator_sld PRIVATE widgets)
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -82,9 +58,7 @@ include(GNUInstallDirs)
 install(TARGETS calculator_sld
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
 
 add_custom_target(copy_resources ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -92,22 +66,6 @@ add_custom_target(copy_resources ALL
         ${PROJECT_BINARY_DIR}/data
         COMMENT "Copying resources into binary directory")
 
-
-
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(calculator_sld)
 endif()
-
-
-# add_library(chemicallabel chemicallabel.cpp chemicallabel.h)
-# add_library(element element.cpp element.h)
-# add_library(datatablesld datatablesld.cpp datatablesld.h)
-add_library(formula formula.cpp formula.h subformula.cpp subformula.h datatablesld.cpp datatablesld.h chemicalformulaelement.cpp chemicalformulaelement.h element.cpp element.h)
-
-
-# target_link_libraries(chemicallabel Qt6::Widgets)
-# target_link_libraries(element Qt6::Widgets)
-# target_link_libraries(datatablesld Qt6::Widgets)
-target_link_libraries(formula Qt6::Widgets)
-
-add_subdirectory(tests)

@@ -3,4 +3,7 @@
         <file>data/icon.ico</file>
         <file>data/icon2.ico</file>
     </qresource>
+    <qresource prefix="/">
+        <file>data/help.pdf</file>
+    </qresource>
 </RCC>
