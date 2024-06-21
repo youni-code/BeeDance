@@ -35,13 +35,13 @@ void ResultsWidget::set_resultlines()
     rl_pot_v_im->set_tip("Imaginary part of Potential");
 
     rl_ch_wl->set_text("λ<sub>c</sub>", "Å");
-    rl_ch_wl->set_tip("Characteristic wavelength transfer");
+    rl_ch_wl->set_tip("Characteristic wavelength");
 
     rl_cr_ang->set_text("θ<sub>c</sub>", "mrad/Å");
     rl_cr_ang->set_tip("Critical angle");
 
     rl_cr_mom->set_text("q<sub>c</sub>", "1/Å");
-    rl_cr_mom->set_tip("Critical momentum");
+    rl_cr_mom->set_tip("Critical momentum transfer");
 
 
     rl_absorb->set_text("μ<sub>α</sub>", "1/cm");
