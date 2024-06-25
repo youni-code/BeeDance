@@ -6,9 +6,9 @@
 void MainWindow::set_menubar()
 {
     QMenu *menu_file = new QMenu("File", menubar);
-    menu_file->addAction(open_action);
-    menu_file->addSeparator();
-    menu_file->addAction(saveas_action);
+    // menu_file->addAction(open_action);
+    // menu_file->addSeparator();
+    // menu_file->addAction(saveas_action);
     menu_file->addSeparator();
     menu_file->addAction(exit_action);
 
@@ -53,7 +53,7 @@ void MainWindow::pressed_calc_button()
 
     auto errors = errors_list();
     if(!errors.isEmpty())
-        return statusbar->showMessage("There are some mistakes: " + errors, 7000);
+        return statusbar->showMessage("Syntax error(s): " + errors, 7000);
 
     set_data();
     calculation();
@@ -115,8 +115,8 @@ void MainWindow::initialize()
 
     menubar =  new QMenuBar(central_widget);
     exit_action =   new QAction("Exit", menubar);
-    open_action =   new QAction("Open...", menubar);
-    saveas_action = new QAction("Save as...", menubar);
+    // open_action =   new QAction("Open...", menubar);
+    // saveas_action = new QAction("Save as...", menubar);
     help_action =   new QAction("Help...", menubar);
 
     statusbar = new QStatusBar(central_widget);
